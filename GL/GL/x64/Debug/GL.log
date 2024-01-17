@@ -1,0 +1,20 @@
+﻿  Game.cpp
+  GameLoop.cpp
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\CustomTimer.h(13,10): fatal  error C1083: Cannot open include file: 'SDL_timer.h': No such file or directory
+  Light.cpp
+  Vector3.cpp
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(27,10): error C2440: 'return': cannot convert from 'initializer list' to 'Vector3'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(27,3): message : 'Vector3::Vector3': function does not take 2 arguments
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(27,3): message : while trying to match the argument list '(float, float)'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(32,10): error C2440: 'return': cannot convert from 'initializer list' to 'Vector3'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(32,3): message : 'Vector3::Vector3': function does not take 2 arguments
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(32,3): message : while trying to match the argument list '(float, float)'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(38,10): error C2440: 'return': cannot convert from 'initializer list' to 'Vector3'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(38,3): message : 'Vector3::Vector3': function does not take 2 arguments
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.h(38,3): message : while trying to match the argument list '(float, float)'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.cpp(26,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.cpp(83,32): error C2440: '<function-style-cast>': cannot convert from 'initializer list' to 'Vector3'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.cpp(83,32): message : 'Vector3::Vector3': function does not take 2 arguments
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.cpp(83,32): message : while trying to match the argument list '(const float, const float)'
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Vector3.cpp(83,14): error C2737: 'distance': const object must be initialized
+  Generating Code...
