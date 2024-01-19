@@ -1,13 +1,14 @@
 /**************************************************************************************************************
-* Vector2 - Header
+* Vector3 - Header
 *
 * The header file for the Vector2 class. Allows math operators to be applied to Vectors accordingly.
 *
-* Created by Dean Atkinson-Walker 2023
+* Created by Dean Atkinson-Walker 2024
 ***************************************************************************************************************/
 #define print(x){std::cout << (x) << std::endl;}
 
 #pragma once
+#include <cmath>
 
 class Vector3
 {
@@ -24,18 +25,18 @@ public:
 
 	Vector3 operator+(const Vector3& other) const
 	{
-		return { x + other.x, y + other.y };
+		return { x + other.x, y + other.y, z + other.z};
 	}
 
 	Vector3 operator-(const Vector3& other) const
 	{
-		return { x - other.x, y - other.y };
+		return { x - other.x, y - other.y, z - other.z };
 	}
 
 	Vector3 operator*(const float multiplier) const
 	{
 
-		return { x * multiplier, y * multiplier };
+		return { x * multiplier, y * multiplier, z * multiplier };
 	}
 	Vector3 operator/(const float divider) const
 	{
@@ -53,9 +54,8 @@ public:
 	}
 
 	bool Compare(const Vector3& other, float tolerance) const;
-
-
-	float Magnitude() const;
-
+	float Magnitude() const { return sqrt((x * x) + (y * y) + (z * z)); }
 	float Distance(const Vector3& other) const;
+
+	static float FindLookRotation(Vector3 start, Vector3 target);
 };

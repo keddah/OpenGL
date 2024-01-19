@@ -8,5 +8,8 @@ public:
 	void FixedUpdate(float deltaTime);
 
 	void Render();
+
+private:
+	void Init();
 };
 

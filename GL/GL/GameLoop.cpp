@@ -1,7 +1,14 @@
 #include "Game.h"
 #include "CustomTimer.h"
 
+// Initially set values for the time.
+float Time::deltaTime = 0;
+float Time::elapsedGameTime = 0;
+float Time::currentTime = 0;
+float Time::newTime = 0;
+
 Game game;
+
 
 int main()
 {
@@ -14,7 +21,7 @@ int main()
 	while (true)
 	{
 		// The time that has to elapse in order for fixed update to tick.
-		constexpr float timeStep = .0125f;
+		constexpr float timeStep = .015f;
 
 		Time::Update();
 		const float deltaTime = Time::GetDeltaTime();
@@ -34,19 +41,4 @@ int main()
 	}
 
 	return 0;
-}
-
-// Initially set values for the time.
-float Time::deltaTime = 0;
-float Time::elapsedGameTime = 0;
-float Time::currentTime = 0;
-float Time::newTime = 0;
-
-int main()
-{
-	// Using this as the starting point of the delta time
-	Time::SetCurrentTime(Time::GetElapsedTime());
-
-	// Used for fixed update;
-	float tickTimer = 0;
 }

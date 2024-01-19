@@ -12,10 +12,10 @@
 #include <chrono>
 #include <SDL_timer.h>
 
-class Time 
+class Time
 {
 public:
-    static void Update() 
+    static void Update()
     {
         deltaTime = newTime - currentTime;
         currentTime = newTime;
@@ -34,7 +34,7 @@ public:
         elapsedGameTime *= .001f;
     }
     static float GetDeltaTime() { return deltaTime; }
-    
+
     static void SetCurrentTime(float time) { currentTime = time; }
 
 private:
