@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "CustomTimer.h"
 
+#undef main
+
 // Initially set values for the time.
 float Time::deltaTime = 0;
 float Time::elapsedGameTime = 0;
@@ -39,6 +41,8 @@ int main()
 		game.Render();
 		Time::SetLastFrameTime();
 	}
+
+	game.Clean(); 
 
 	return 0;
 }
