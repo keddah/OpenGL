@@ -18,10 +18,8 @@ void Game::InitSDL()
 	// Set the window size = to the size of the user's monitor
 	SDL_DisplayMode display;
 	SDL_GetCurrentDisplayMode(0, &display);
-	int width = display.w;
-	int height = display.h;
 
-	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, display.w, display.h, SDL_WINDOW_OPENGL);
 
 	if (!window)
 	{
@@ -51,6 +49,13 @@ void Game::InitOpenGL()
 		return;
 	}
 
+	const GLint GlewInitResult = glewInit();
+	if (GLEW_OK != GlewInitResult) 
+	{
+		print("couldn't init")
+		exit(EXIT_FAILURE);
+	}
+	
 	if (SDL_GL_SetSwapInterval(1) < 0)
 	{
 		print("Unable to use V-sync")
@@ -60,28 +65,19 @@ void Game::InitOpenGL()
 
 void Game::triangle()
 {
-	GLfloat verts[] =
+	constexpr GLfloat verts[] =
 	{
 		-.5f, .5, 0, // top left
 		-.5, 0, 0, // bottom left
 		.5, 0, 0 // right
 	};
 
-	GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vert_shader, 1, &vert_shader_source, NULL);
-	glCompileShader(vert_shader);
-
-	GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
-	glCompileShader(fragment_shader);
-
 	shader_program = glCreateProgram();
-	glAttachShader(shader_program, vert_shader);
-	glAttachShader(shader_program, fragment_shader);
-	glLinkProgram(shader_program);
+	Shader vert_shader = Shader(shader_program, vert_shader_source);
+	Shader fragment_shader = Shader(shader_program, fragment_shader_source);
 
-	glDeleteShader(vert_shader);
-	glDeleteShader(fragment_shader);
+	vert_shader.Delete();
+	fragment_shader.Delete();
 
 	glGenVertexArrays(1, &vert_array);
 	glGenBuffers(1, &vert_buffer);
@@ -91,14 +87,14 @@ void Game::triangle()
 	glBindBuffer(GL_ARRAY_BUFFER, vert_buffer);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), static_cast<void*>(nullptr));
 	glEnableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 
-void Game::Clean()
+void Game::Clean() const
 {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
