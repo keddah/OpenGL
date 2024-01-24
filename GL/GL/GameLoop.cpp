@@ -9,11 +9,12 @@ float Time::elapsedGameTime = 0;
 float Time::currentTime = 0;
 float Time::newTime = 0;
 
-Game game;
 
 
 int main()
 {
+	Game game;
+
 	// Using this as the starting point of the delta time
 	Time::SetCurrentTime(Time::GetElapsedTime());
 

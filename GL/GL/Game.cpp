@@ -62,34 +62,7 @@ void Game::InitOpenGL()
 		print(SDL_GetError())
 	}
 
-	shader_program = glCreateProgram();
-}
-
-void Game::triangle()
-{
-	constexpr GLfloat verts[] =
-	{
-		-.5f, .5f, 0, // top left
-		-.5f, 0, 0, // bottom left
-		.5f, .5f, 0 // right
-	};
-
-	Shader vert_shader = Shader(shader_program, vert_shader_source);
-	Shader fragment_shader = Shader(shader_program, fragment_shader_source);
-
-	glGenVertexArrays(1, &vert_array);
-	glGenBuffers(1, &vert_buffer);
-
-	glBindVertexArray(vert_array);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vert_buffer);
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), static_cast<void*>(nullptr));
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	tri = new TriangleRenderer();
 }
 
 void Game::Clean() const
@@ -101,7 +74,6 @@ void Game::Clean() const
 
 void Game::Update(float deltaTime)
 {
-	triangle();
 }
 
 void Game::FixedUpdate(float deltaTime)
@@ -113,12 +85,10 @@ void Game::Render()
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// The drawing part
-	glUseProgram(shader_program);
-	glBindVertexArray(vert_array);
+	tri->Render();
 
 	// All the vertex arrays need to be set to draw
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	SDL_GL_SwapWindow(window);
 }

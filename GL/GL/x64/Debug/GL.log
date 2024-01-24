@@ -1,5 +1,2 @@
-﻿  Game.cpp
-  GameLoop.cpp
-C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\CustomTimer.h(33,39): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
-  Generating Code...
-  GL.vcxproj -> C:\Users\Deany\Documents\GitHub\OpenGL\GL\x64\Debug\GL.exe
+﻿  Shader.cpp
+  GL.vcxproj -> C:\Users\S22154781\Downloads\Git\OpenGL\GL\x64\Debug\GL.exe
