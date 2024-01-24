@@ -1,2 +1,13 @@
-﻿  Shader.cpp
-  GL.vcxproj -> C:\Users\S22154781\Downloads\Git\OpenGL\GL\x64\Debug\GL.exe
+﻿  Game.cpp
+  GameLoop.cpp
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\CustomTimer.h(33,39): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+  TriangleRenderer.cpp
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\TriangleRenderer.cpp(44,24): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  Generating Code...
+GameLoop.obj : error LNK2005: "void __cdecl FileReader::PrintShaderLog(unsigned int)" (?PrintShaderLog@FileReader@@YAXI@Z) already defined in Game.obj
+GameLoop.obj : error LNK2005: "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl FileReader::ReadFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?ReadFile@FileReader@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V23@@Z) already defined in Game.obj
+Shader.obj : error LNK2005: "void __cdecl FileReader::PrintShaderLog(unsigned int)" (?PrintShaderLog@FileReader@@YAXI@Z) already defined in Game.obj
+Shader.obj : error LNK2005: "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl FileReader::ReadFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?ReadFile@FileReader@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V23@@Z) already defined in Game.obj
+TriangleRenderer.obj : error LNK2005: "void __cdecl FileReader::PrintShaderLog(unsigned int)" (?PrintShaderLog@FileReader@@YAXI@Z) already defined in Game.obj
+TriangleRenderer.obj : error LNK2005: "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl FileReader::ReadFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?ReadFile@FileReader@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V23@@Z) already defined in Game.obj
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\x64\Debug\GL.exe : fatal error LNK1169: one or more multiply defined symbols found

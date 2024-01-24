@@ -39,8 +39,9 @@ void TriangleRenderer::Render()
 {
 	glUseProgram(shader.GetID());
 
-	GLint colorID = glGetUniformLocation(shader.GetID(), "color");
-	glUniform3f(colorID, 0.2f, 0.3f, 0.0);
+	// glUnifrom used to set values on the GPU
+	GLint colourID = glGetUniformLocation(shader.GetID(), "colour");
+	glUniform3f(colourID, .7, .2f, .45f);
 
 		glEnableVertexAttribArray(vertex_position);
 

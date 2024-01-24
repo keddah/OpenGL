@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include "SDL.h"
-#include "glew.h"
 
 #include "Shader.h"
 #include "TriangleRenderer.h"

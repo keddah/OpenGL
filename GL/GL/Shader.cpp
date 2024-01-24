@@ -9,10 +9,10 @@ void Shader::MakeShader()
 		"}"
 	};
 	const char* fShaderSource[] = { "#version 140\n"
-	"uniform vec3 color;"
+	"uniform vec3 colour;"
 	"out vec4 fragmentColor;\n"
 	"void main() { \n"
-	"fragmentColor = vec4(color.xyz, 1.0);\n"
+	"fragmentColor = vec4(colour.xyz, 1.0);\n"
 	"}"
 	};
 

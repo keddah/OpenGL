@@ -3,7 +3,6 @@
 #include <SDL_opengl.h>
 #include <stdio.h>
 #include <glm.hpp>
-#include<iostream>
 
 #include "Shader.h"
 
@@ -38,5 +37,7 @@ private:
 	GLuint index_buffer;
 
 	Shader shader;
+	float colourWave = 0;
+
 };
 
