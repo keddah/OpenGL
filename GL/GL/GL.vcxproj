@@ -141,6 +141,7 @@
     <ClInclude Include="CustomTimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
@@ -149,6 +150,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>

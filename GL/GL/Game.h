@@ -30,15 +30,14 @@ private:
 	SDL_Window* window;
 	SDL_GLContext openGL_context;
 
-	// Vertex Shader source code
 	std::string vert_shader_source = "#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
 		"void main()\n"
 		"{\n"
 		"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 		"}\0";
-	
-	//Fragment Shader source code
+
+	// Fragment shaders just output a colour for the pixel
 	std::string fragment_shader_source = "#version 330 core\n"
 		"out vec4 FragColor;\n"
 		"void main()\n"

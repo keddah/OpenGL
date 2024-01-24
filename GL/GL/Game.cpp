@@ -61,23 +61,21 @@ void Game::InitOpenGL()
 		print("Unable to use V-sync")
 		print(SDL_GetError())
 	}
+
+	shader_program = glCreateProgram();
 }
 
 void Game::triangle()
 {
 	constexpr GLfloat verts[] =
 	{
-		-.5f, .5, 0, // top left
-		-.5, 0, 0, // bottom left
-		.5, 0, 0 // right
+		-.5f, .5f, 0, // top left
+		-.5f, 0, 0, // bottom left
+		.5f, .5f, 0 // right
 	};
 
-	shader_program = glCreateProgram();
 	Shader vert_shader = Shader(shader_program, vert_shader_source);
 	Shader fragment_shader = Shader(shader_program, fragment_shader_source);
-
-	vert_shader.Delete();
-	fragment_shader.Delete();
 
 	glGenVertexArrays(1, &vert_array);
 	glGenBuffers(1, &vert_buffer);
@@ -98,6 +96,7 @@ void Game::Clean() const
 {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	
 }
 
 void Game::Update(float deltaTime)
@@ -118,6 +117,7 @@ void Game::Render()
 	glUseProgram(shader_program);
 	glBindVertexArray(vert_array);
 
+	// All the vertex arrays need to be set to draw
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	SDL_GL_SwapWindow(window);
