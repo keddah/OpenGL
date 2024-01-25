@@ -1,10 +1,5 @@
 #include "Game.h"
 
-Game::Game()
-{
-	Init();
-}
-
 void Game::InitSDL()
 {
 	// Make the SDL stuff
@@ -62,33 +57,26 @@ void Game::InitOpenGL()
 		print(SDL_GetError())
 	}
 
-	tri = new TriangleRenderer();
-}
-
-void Game::Clean() const
-{
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-	
+	rRunning = true;
+	tri = new TriangleRenderer(cam);
 }
 
 void Game::Update(float deltaTime)
 {
+	cam.Update();
+	controller.Update();
 }
 
 void Game::FixedUpdate(float deltaTime)
 {
 }
 
-void Game::Render()
+void Game::Render() const
 {
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	tri->Render();
-
-	// All the vertex arrays need to be set to draw
-	//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	SDL_GL_SwapWindow(window);
 }

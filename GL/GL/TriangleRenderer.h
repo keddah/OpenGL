@@ -1,10 +1,12 @@
 #pragma once
-#include <glew.h>
+#include "Camera.h"
+#include "Shader.h"
+
 #include <SDL_opengl.h>
 #include <stdio.h>
 #include <glm.hpp>
+#include <gtc/type_ptr.hpp>
 
-#include "Shader.h"
 
 #define print(x) { std::cout << x << std::endl; }
 
@@ -12,23 +14,27 @@
 class TriangleRenderer
 {
 public:
-	TriangleRenderer() { Init(); };
+	TriangleRenderer(Camera& camera) : rCam(camera) { Init(); }
 	~TriangleRenderer() { Clean(); }
 
 	void Update();
-	void Render();
-	void Clean() { glDeleteProgram(shader.GetID()); }
+	void Render() const;
+	void Clean() const
+	{
+		glDeleteBuffers(1, &vertex_buffer);
+		glDeleteProgram(shader.GetID());
+	}
 
 private:
 	void Init() { if(InitShaders()) InitVertices(); }
 	bool InitShaders();
 	void InitVertices();
 
-	GLfloat vertices[6] =
+	GLfloat vertices[9] =
 	{
-		-.5f, .5f, // top left
-		-.5f, 0, // bottom left
-		.5f, .5f, // right
+		0, .5f, 0,// top
+		-.5f, -.5f, 0,// bottom left
+		.5f, -.5, 0// bottom right
 	};
 
 	GLint vertex_position = -1;
@@ -38,6 +44,12 @@ private:
 
 	Shader shader;
 	float colourWave = 0;
+
+	Camera& rCam;
+	
+	GLint model_matrix_address = -1;
+	GLint view_matrix_address = -1;
+	GLint projection_matrix_address = -1;
 
 };
 

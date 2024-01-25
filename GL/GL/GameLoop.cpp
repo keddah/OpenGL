@@ -9,11 +9,13 @@ float Time::elapsedGameTime = 0;
 float Time::currentTime = 0;
 float Time::newTime = 0;
 
+// Will be made a reference by the Game class...
+bool running = false;
 
 
 int main()
 {
-	Game game;
+	Game game{running};
 
 	// Using this as the starting point of the delta time
 	Time::SetCurrentTime(Time::GetElapsedTime());
@@ -21,7 +23,7 @@ int main()
 	// Used for fixed update;
 	float tickTimer = 0;
 
-	while (true)
+	while (running)
 	{
 		// The time that has to elapse in order for fixed update to tick.
 		constexpr float timeStep = .015f;

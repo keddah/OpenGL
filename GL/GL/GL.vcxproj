@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomTimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Light.h" />
@@ -148,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClInclude Include="Utility.h" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -155,6 +158,10 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="TriangleRenderer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shaders\FragmentShader.glsl" />
+    <Content Include="Shaders\VertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

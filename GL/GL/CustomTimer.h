@@ -6,10 +6,8 @@
 * Created by Dean Atkinson-Walker 2023
 ***************************************************************************************************************/
 
-
 #pragma once
 
-#include <chrono>
 #include <SDL_timer.h>
 
 class Time
