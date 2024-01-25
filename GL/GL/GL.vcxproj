@@ -160,6 +160,7 @@
     <ClCompile Include="TriangleRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Models\Crate1.obj" />
     <Content Include="Shaders\FragmentShader.glsl" />
     <Content Include="Shaders\VertexShader.glsl" />
   </ItemGroup>

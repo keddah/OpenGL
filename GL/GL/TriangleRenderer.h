@@ -37,7 +37,7 @@ private:
 		.5f, -.5, 0// bottom right
 	};
 
-	GLint vertex_position = -1;
+	GLint vertexPosIndex = -1;
 
 	GLuint vertex_buffer;
 	GLuint index_buffer;

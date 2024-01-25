@@ -6,9 +6,9 @@ bool TriangleRenderer::InitShaders()
 {
 	shader.MakeShader();
 
-	vertex_position = shader.GetAttribute("vertexPos");
+	vertexPosIndex = shader.GetAttribute("vertexPos");
 
-	if (vertex_position == -1)
+	if (vertexPosIndex == -1)
 	{
 		print("couldn't get the attribute")
 		print(glGetError())
@@ -66,17 +66,17 @@ void TriangleRenderer::Render() const
 	const GLint colourID = glGetUniformLocation(shader.GetID(), "colour");
 	glUniform3f(colourID, .7, .2f, .45f);
 
-	glEnableVertexAttribArray(vertex_position);
 
-		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-				glVertexAttribPointer(vertex_position, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+	glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+	glEnableVertexAttribArray(vertexPosIndex);
 	
-				glDrawElements(GL_TRIANGLE_FAN, 3, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLE_FAN, 3, GL_UNSIGNED_INT, NULL);
 	
-				glDisableVertexAttribArray(vertex_position);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
-		glBindBuffer(GL_ARRAY_BUFFER, NULL);
+	glDisableVertexAttribArray(vertexPosIndex);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	
 	glUseProgram(NULL);
 }

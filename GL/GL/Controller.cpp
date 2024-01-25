@@ -33,8 +33,8 @@ void Controller::CheckInputs()
 	const Uint8* keyState = SDL_GetKeyboardState(0);
 
 	// Vertical inputs
-	moveInputs[0] = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_SPACE];
-	moveInputs[1] = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_LCTRL];
+	moveInputs[0] = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP];
+	moveInputs[1] = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN];
 	
 	// Horizontal inputs
 	moveInputs[2] = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT];
