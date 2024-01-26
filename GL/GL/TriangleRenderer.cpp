@@ -69,7 +69,7 @@ void TriangleRenderer::Render() const
 	
 	// glUnifrom used to set values on the GPU
 	const GLint colourID = glGetUniformLocation(shader.GetID(), "colour");
-	glUniform3f(colourID, .7, .2f, .45f);
+	glUniform3f(colourID, .7f, .2f, .45f);
 
 
 	// vBuffer->Bind();

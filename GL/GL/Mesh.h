@@ -9,7 +9,7 @@ class Mesh
 {
 public:
     Mesh() = default;
-    Mesh(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices, Camera& camera);
+    Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& indices, Camera& camera);
 
     void Render() const;
 
@@ -33,7 +33,7 @@ public:
     glm::vec3 GetScale() const { return transform.scale; }
     
 private:
-    void InitVertices(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices);
+    void InitVertices(const std::vector<GLuint>& indices);
     bool InitShaders();
 
     struct 
@@ -46,7 +46,6 @@ private:
     Shader shader;
     std::vector<GLfloat> vertices;
     GLuint vertex_array, vertex_buffer, index_buffer;
-    GLsizei index_count;
 
     GLint vertexPosIndex = -1;
 

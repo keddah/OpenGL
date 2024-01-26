@@ -5,12 +5,46 @@
 
 #include "Rendering/Shader.h"
 
-Mesh::Mesh(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices, Camera& camera) : rCam(camera)
+Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& indices, Camera& camera) : rCam(camera)
 {
-    index_count = indices.size();
+	vertices = _vertices;
     // If shader initialisation was successful, init the vertices.
-    if(InitShaders()) InitVertices(vertices, indices);
+    if(InitShaders()) InitVertices(indices);
 }
+
+void Mesh::InitVertices(const std::vector<GLuint>& indices)
+{
+	// The vertex buffer (positions of all the vertices)
+	glGenBuffers(1, &vertex_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
+
+	// The index buffer (the correlation between the vertices)
+	glGenBuffers(1, &index_buffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+}
+
+bool Mesh::InitShaders()
+{
+	shader.Init();
+
+	vertexPosIndex = shader.GetAttribute("vertexPos");
+
+	if (vertexPosIndex == -1)
+	{
+		print("Couldn't get shader attribute - Vertex Position")
+		print(glGetError())
+		return false;
+	}
+
+	model_matrix_address = glGetUniformLocation(shader.GetID(), "modelMatrix");
+	view_matrix_address = glGetUniformLocation(shader.GetID(), "viewMatrix");
+	projection_matrix_address = glGetUniformLocation(shader.GetID(), "projectionMatrix");
+	
+	return true;
+}
+
 
 void Mesh::Render() const
 {
@@ -46,44 +80,11 @@ void Mesh::Render() const
     glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
     glEnableVertexAttribArray(vertexPosIndex);
 	
-    glDrawElements(GL_TRIANGLE_FAN, 3, GL_UNSIGNED_INT, NULL);
+    glDrawElements(GL_TRIANGLE_FAN, vertices.size(), GL_UNSIGNED_INT, NULL);
 	
     glDisableVertexAttribArray(vertexPosIndex);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
     glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	
     glUseProgram(NULL);
-}
-
-void Mesh::InitVertices(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices)
-{
-    // The vertex buffer (positions of all the vertices)
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, 3 * 2 * sizeof(GLfloat), &vertices, GL_STATIC_DRAW);
-
-    // The index buffer (the correlation between the vertices)
-    glGenBuffers(1, &index_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, index_buffer);
-    glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(GLint), &indices, GL_STATIC_DRAW);
-}
-
-bool Mesh::InitShaders()
-{
-    shader.Init();
-
-    vertexPosIndex = shader.GetAttribute("vertexPos");
-
-    if (vertexPosIndex == -1)
-    {
-        print("Couldn't get shader attribute - Vertex Position")
-        print(glGetError())
-        return false;
-    }
-
-    model_matrix_address = glGetUniformLocation(shader.GetID(), "modelMatrix");
-    view_matrix_address = glGetUniformLocation(shader.GetID(), "viewMatrix");
-    projection_matrix_address = glGetUniformLocation(shader.GetID(), "projectionMatrix");
-	
-    return true;
 }

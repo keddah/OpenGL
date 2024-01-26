@@ -63,20 +63,33 @@ void Game::InitOpenGL()
 
 	std::vector<GLfloat> verts =
 	{
-		0, .5f, 0,// top
-		-.5f, -.5f, 0,// bottom left
-		.5f, -.5, 0, // bottom right
-
-		0, .5f, .5f,// top
-		-.5f, -.5f, .5f,// bottom left
-		.5f, -.5, .5f // bottom right
+		-0.5f, -0.5f, -0.5f,   // Vertex 0
+		 0.5f, -0.5f, -0.5f,   // Vertex 1
+		 0.5f,  0.5f, -0.5f,   // Vertex 2
+		-0.5f,  0.5f, -0.5f,   // Vertex 3
+		-0.5f, -0.5f,  0.5f,   // Vertex 4
+		 0.5f, -0.5f,  0.5f,   // Vertex 5
+		 0.5f,  0.5f,  0.5f,   // Vertex 6
+		-0.5f,  0.5f,  0.5f    // Vertex 7
 	};
 
 	std::vector<GLuint> indices =
 	{
+		0, 1, 2,  // Front face
+		2, 3, 0,
+		4, 5, 6,  // Back face
+		6, 7, 4,
+		0, 3, 7,  // Left face
+		7, 4, 0,
+		1, 5, 6,  // Right face
+		6, 2, 1,
+		3, 2, 6,  // Top face
+		6, 7, 3,
+		0, 1, 5,  // Bottom face
+		5, 4, 0
 	};
 
-	// mesh = new Mesh(verts, indices, cam);
+	mesh = new Mesh(verts, indices, cam);
 }
 
 void Game::Update(float deltaTime)
@@ -94,7 +107,7 @@ void Game::Render() const
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	tri->Render();
+	// tri->Render();
 	if(mesh) mesh->Render();
 	
 	SDL_GL_SwapWindow(window);
