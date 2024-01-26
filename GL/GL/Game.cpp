@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <vector>
 
 void Game::InitSDL()
 {
@@ -59,6 +60,23 @@ void Game::InitOpenGL()
 
 	rRunning = true;
 	tri = new TriangleRenderer(cam);
+
+	std::vector<GLfloat> verts =
+	{
+		0, .5f, 0,// top
+		-.5f, -.5f, 0,// bottom left
+		.5f, -.5, 0, // bottom right
+
+		0, .5f, .5f,// top
+		-.5f, -.5f, .5f,// bottom left
+		.5f, -.5, .5f // bottom right
+	};
+
+	std::vector<GLuint> indices =
+	{
+	};
+
+	// mesh = new Mesh(verts, indices, cam);
 }
 
 void Game::Update(float deltaTime)
@@ -77,6 +95,7 @@ void Game::Render() const
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	tri->Render();
-
+	if(mesh) mesh->Render();
+	
 	SDL_GL_SwapWindow(window);
 }

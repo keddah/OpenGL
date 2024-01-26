@@ -2,9 +2,11 @@
 
 #include <random>
 
+#include "Rendering/Buffers.h"
+
 bool TriangleRenderer::InitShaders()
 {
-	shader.MakeShader();
+	shader.Init();
 
 	vertexPosIndex = shader.GetAttribute("vertexPos");
 
@@ -29,13 +31,16 @@ void TriangleRenderer::InitVertices()
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 	glBufferData(GL_ARRAY_BUFFER, 3 * 2 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 
-	constexpr GLint indices[] = { 0, 1, 2 };
+	// vBuffer = new VertexBuffer(vertices, 3 * 2 * sizeof(GLfloat));
+
+	GLuint indices[] = { 0, 1, 2 };
 
 	// The index buffer (the correlation between the vertices)
 	glGenBuffers(1, &index_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, index_buffer);
 	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(GLint), indices, GL_STATIC_DRAW);
 
+	// iBuffer = new IndexBuffer(indices, 3 * sizeof(GLint));
 }
 
 void TriangleRenderer::Render() const
@@ -67,6 +72,8 @@ void TriangleRenderer::Render() const
 	glUniform3f(colourID, .7, .2f, .45f);
 
 
+	// vBuffer->Bind();
+	// iBuffer->Bind();
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
 	glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
@@ -77,6 +84,7 @@ void TriangleRenderer::Render() const
 	glDisableVertexAttribArray(vertexPosIndex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, NULL);
-	
+	// vBuffer->Unbind();
+	// iBuffer->Unbind();
 	glUseProgram(NULL);
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "Camera.h"
-#include "Shader.h"
+#include "Rendering/Shader.h"
 
 #include <SDL_opengl.h>
 #include <stdio.h>
@@ -39,6 +39,9 @@ private:
 
 	GLint vertexPosIndex = -1;
 
+	// VertexBuffer* vBuffer;
+	// IndexBuffer* iBuffer;
+	
 	GLuint vertex_buffer;
 	GLuint index_buffer;
 

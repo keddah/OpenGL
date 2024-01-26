@@ -3,8 +3,8 @@
 #include <iostream>
 
 #include "Controller.h"
-
 #include "TriangleRenderer.h"
+#include "Mesh.h"
 
 #define print(x) { std::cout << x << std::endl; }
 
@@ -32,7 +32,8 @@ private:
 	SDL_GLContext openGL_context;
 
 	TriangleRenderer* tri;
-
+	Mesh* mesh;
+	
 	Controller controller { rRunning };
 	Camera cam { controller };
 };

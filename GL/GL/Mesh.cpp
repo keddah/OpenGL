@@ -1,72 +1,82 @@
 #include "Mesh.h"
 
-#include "Shader.h"
+#include <random>
+#include <gtc/type_ptr.hpp>
 
-Mesh::Mesh(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices)
+#include "Rendering/Shader.h"
+
+Mesh::Mesh(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices, Camera& camera) : rCam(camera)
 {
-    // glGenVertexArrays(1, &vertex_array);
-    // glGenBuffers(1, &vertex_buffer);
-    // glGenBuffers(1, &element_buffer);
-    //
-    // glBindVertexArray(vertex_array);
-    //
-    // // Buffers
-    // glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    // glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-    //
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-    //
-    // // Set vertex attribute pointers
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    // glEnableVertexAttribArray(0);
-    //
-    // // Unbind VAO
-    // glBindVertexArray(0);
-    //
-    // Shader shader = Shader();
-    // shader.MakeShader();
-
-    InitShaders();
-    InitVertices();
+    index_count = indices.size();
+    // If shader initialisation was successful, init the vertices.
+    if(InitShaders()) InitVertices(vertices, indices);
 }
 
 void Mesh::Render() const
 {
-    // Bind VAO
-    glBindVertexArray(vertex_array);
+    glUseProgram(shader.GetID());
 
-    // Draw the mesh using indices
-    glDrawElements(GL_TRIANGLES, vertex_count, GL_UNSIGNED_INT, 0);
+    constexpr glm::vec3 translation = {};
+    constexpr glm::vec3 rotation = {90, 0, 0};
+    constexpr glm::vec3 scale = {1, 1, 1};
 
-    // Unbind VAO
-    glBindVertexArray(0);
+	
+    glm::mat4 modelMatrix = glm::mat4(1);
+    modelMatrix = rotate(modelMatrix, static_cast<float>(rotation.x * 180 / std::_Pi), {1,0,0});
+    modelMatrix = rotate(modelMatrix, static_cast<float>(rotation.y * 180 / std::_Pi), {0,1,0});
+    modelMatrix = rotate(modelMatrix, static_cast<float>(rotation.z * 180 / std::_Pi), {0,0,1});
+	
+    modelMatrix = translate(modelMatrix, translation);
+	
+    modelMatrix = glm::scale(modelMatrix, scale);
+
+    rCam.UpdateViewMatrix();
+
+    glUniformMatrix4fv(model_matrix_address, 1, GL_FALSE, value_ptr(modelMatrix));
+    glUniformMatrix4fv(view_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetViewMatrix()));
+    glUniformMatrix4fv(projection_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetProjectionMatrix()));
+	
+    // glUnifrom used to set values on the GPU
+    const GLint colourID = glGetUniformLocation(shader.GetID(), "colour");
+    glUniform3f(colourID, .7, .2f, .45f);
+
+
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+    glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+    glEnableVertexAttribArray(vertexPosIndex);
+	
+    glDrawElements(GL_TRIANGLE_FAN, 3, GL_UNSIGNED_INT, NULL);
+	
+    glDisableVertexAttribArray(vertexPosIndex);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
+    glBindBuffer(GL_ARRAY_BUFFER, NULL);
+	
+    glUseProgram(NULL);
 }
 
-void Mesh::InitVertices()
+void Mesh::InitVertices(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices)
 {
     // The vertex buffer (positions of all the vertices)
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glBufferData(GL_ARRAY_BUFFER, 3 * 2 * sizeof(GLfloat), &vertices, GL_STATIC_DRAW);
 
-    constexpr GLint indices[] = { 0, 1, 2 };
-
     // The index buffer (the correlation between the vertices)
     glGenBuffers(1, &index_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, index_buffer);
-    glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(GLint), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(GLint), &indices, GL_STATIC_DRAW);
 }
 
-void Mesh::InitShaders()
+bool Mesh::InitShaders()
 {
-    shader.MakeShader();
+    shader.Init();
 
     vertexPosIndex = shader.GetAttribute("vertexPos");
 
     if (vertexPosIndex == -1)
     {
-        print("couldn't get the attribute")
+        print("Couldn't get shader attribute - Vertex Position")
         print(glGetError())
         return false;
     }
