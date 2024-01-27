@@ -66,3 +66,45 @@ void Shader::Init()
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 }
+
+void Shader::SetFloatAttrib(const GLchar* attribName, const float newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glUniform1f(id, newValue);
+}
+
+void Shader::SetVec3Attrib(const GLchar* attribName, const glm::vec3 newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glUniform3f(id, newValue.x, newValue.y,newValue.z);
+}
+
+void Shader::SetVec3Attrib(const GLchar* attribName, const float x, const float y, const float z) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glUniform3f(id, x, y,z);
+}
+
+void Shader::SetVec4Attrib(const GLchar* attribName, const glm::vec4 newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glUniform4f(id, newValue.x, newValue.y,newValue.z, newValue.w);
+}
+
+void Shader::SetVec4Attrib(const GLchar* attribName, const float x, const float y, const float z, const float w) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glUniform4f(id, x, y,z, w);
+}
+
+void Shader::SetUintAttrib(const GLchar* attribName, const unsigned int newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glUniform1ui(id, newValue);
+}
+
+void Shader::SetIntAttrib(const GLchar* attribName, const int newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glUniform1i(id, newValue);
+}

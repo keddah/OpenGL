@@ -13,8 +13,13 @@ void Camera::Move()
 {
     constexpr float moveSpeed = .001f;
     const bool* inputs = control.GetMoveInputs();
+
+    // Not using else ifs so that multiple inputs can happen at the same time
     if(inputs[0]) position.z += moveSpeed;
-    else if(inputs[1]) position.z -= moveSpeed;
-    else if(inputs[2]) position.x -= moveSpeed;
-    else if(inputs[3]) position.x += moveSpeed;
+    if(inputs[1]) position.z -= moveSpeed;
+    if(inputs[2]) position.x -= moveSpeed;
+    if(inputs[3]) position.x += moveSpeed;
+
+    if(control.JumpBtnDown()) position.y -= moveSpeed;
+    if(control.CrouchBtnDown()) position.y += moveSpeed;
 }

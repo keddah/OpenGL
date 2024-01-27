@@ -61,6 +61,8 @@ void Game::InitOpenGL()
 	rRunning = true;
 	tri = new TriangleRenderer(cam);
 
+	//________ A cube ________\\
+
 	std::vector<GLfloat> verts =
 	{
 		-0.5f, -0.5f, -0.5f,   // Vertex 0
@@ -88,7 +90,6 @@ void Game::InitOpenGL()
 		0, 1, 5,  // Bottom face
 		5, 4, 0
 	};
-
 	mesh = new Mesh(verts, indices, cam);
 }
 
@@ -107,7 +108,7 @@ void Game::Render() const
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// tri->Render();
+	tri->Render();
 	if(mesh) mesh->Render();
 	
 	SDL_GL_SwapWindow(window);

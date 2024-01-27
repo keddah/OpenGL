@@ -39,7 +39,9 @@ void Controller::CheckInputs()
 	// Horizontal inputs
 	moveInputs[2] = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT];
 	moveInputs[3] = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT];
-	
+
+	jump = keyState[SDL_SCANCODE_SPACE];
+	crouch = keyState[SDL_SCANCODE_LCTRL];
 	
 	int mouse_x, mouse_y;
 	SDL_GetMouseState(&mouse_x, &mouse_y);

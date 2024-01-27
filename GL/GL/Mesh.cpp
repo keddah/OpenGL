@@ -1,10 +1,5 @@
 #include "Mesh.h"
 
-#include <random>
-#include <gtc/type_ptr.hpp>
-
-#include "Rendering/Shader.h"
-
 Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& indices, Camera& camera) : rCam(camera)
 {
 	vertices = _vertices;
@@ -45,9 +40,18 @@ bool Mesh::InitShaders()
 	return true;
 }
 
+void Mesh::UpdateVertices()
+{
+	shader.SetVec3Attrib("vertexPos", transform.position);
+
+	vertexPosIndex = shader.GetAttribute("vertexPos");
+}
+
 
 void Mesh::Render() const
 {
+	if(!visible) return;
+	
     glUseProgram(shader.GetID());
 
     constexpr glm::vec3 translation = {};

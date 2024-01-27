@@ -14,6 +14,8 @@ public:
     void Update();
 
     bool* GetMoveInputs() { return moveInputs; }
+    bool JumpBtnDown() const { return jump; }
+    bool CrouchBtnDown() const { return crouch; }
     
 private:
     void CheckInputs();
@@ -25,4 +27,6 @@ private:
     glm::vec2 mousePos;
 
     bool lmb, rmb;
+
+    bool jump, crouch;
 };

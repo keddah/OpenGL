@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec4 vertexPos;
+uniform in vec4 vertexPos;
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
