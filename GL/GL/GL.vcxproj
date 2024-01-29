@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Buffer_Array.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomTimer.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="TriangleRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Buffer_Array.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Game.cpp" />

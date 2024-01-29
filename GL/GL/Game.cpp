@@ -63,7 +63,7 @@ void Game::InitOpenGL()
 
 	//________ A cube ________\\
 
-	std::vector<GLfloat> verts =
+	GLfloat verts[] =
 	{
 		-0.5f, -0.5f, -0.5f,   // Vertex 0
 		 0.5f, -0.5f, -0.5f,   // Vertex 1
@@ -75,7 +75,7 @@ void Game::InitOpenGL()
 		-0.5f,  0.5f,  0.5f    // Vertex 7
 	};
 
-	std::vector<GLuint> indices =
+	GLuint indices[] =
 	{
 		0, 1, 2,  // Front face
 		2, 3, 0,
@@ -108,7 +108,7 @@ void Game::Render() const
 {
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	
 	tri->Render();
 	if(mesh) mesh->Render();
 	

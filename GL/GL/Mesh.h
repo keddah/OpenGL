@@ -7,14 +7,17 @@
 #include "Camera.h"
 #include "Rendering/Shader.h"
 
+#include "Buffer_Array.h"
+
+
 class Mesh
 {
 public:
     Mesh() = default;
-    Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera);
-    ~Mesh() { glDeleteBuffers(1, &vertex_buffer); glDeleteBuffers(1, &index_buffer); }
+    Mesh(GLfloat _vertices[], GLuint _indices[], Camera& camera);
+    ~Mesh() { delete vBuffer; delete iBuffer; }
     
-    void Render() const;
+    void Render();
     void Update(float deltaTime);
 
     void SetPosition(const glm::vec3 newVal) { transform.position = newVal; UpdateVertices(); }
@@ -56,9 +59,13 @@ private:
     } transform;
     
     Shader shader;
-    std::vector<GLfloat> vertices;
-    std::vector<GLuint> indices;
-    GLuint vertex_array, vertex_buffer, index_buffer;
+    GLfloat* vertices;
+    GLuint* indices;
+    
+    VArrayBuffer vArray;
+    VertexBuffer* vBuffer;
+    IndexBuffer* iBuffer;
+    // GLuint vertex_array, vertex_buffer, index_buffer;
 
     GLint vertexPosIndex = -1;
 

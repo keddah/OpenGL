@@ -1,33 +1,28 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera) : rCam(camera)
+
+
+Mesh::Mesh(GLfloat _vertices[], GLuint _indices[], Camera& camera) : rCam(camera)
 {
 	vertices = _vertices;
 	indices = _indices;
-	
+
     // If shader initialisation was successful, init the vertices.
     if(InitShaders()) InitVertices();
 }
 
 void Mesh::InitVertices()
 {
+	vArray.Bind();
+	
 	// The vertex buffer (positions of all the vertices)
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
+	vBuffer = new VertexBuffer(vertices, sizeof(vertices));
 
 	// The index buffer (the correlation between the vertices)
-	glGenBuffers(1, &index_buffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
-
-	glGenVertexArrays(1, &vertex_array);
-	glBindVertexArray(vertex_array);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, NULL);
-	glBindVertexArray(0);
+	iBuffer = new IndexBuffer(indices, sizeof(indices));
+	
+	// Links VBO to VAO
+	vArray.LinkBuffers(*vBuffer, vertexPosIndex);
 }
 
 bool Mesh::InitShaders()
@@ -57,7 +52,7 @@ void Mesh::Update(float deltaTime)
 	// transform.position.y += .00001f;
 }
 
-void Mesh::Render() const
+void Mesh::Render()
 {
 	if(!visible) return;
 	
@@ -78,24 +73,23 @@ void Mesh::Render() const
     glUniformMatrix4fv(view_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetViewMatrix()));
     glUniformMatrix4fv(projection_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetProjectionMatrix()));
 	
-    // glUnifrom used to set values on the GPU
-    const GLint colourID = glGetUniformLocation(shader.GetID(), "colour");
-    glUniform3f(colourID, .7, .2f, .45f);
+	shader.SetVec4Attrib("colour", .7, .2f, .45f, 1);
+
+	glEnableVertexAttribArray(vertexPosIndex);
+	
+	vBuffer->Bind();
+	iBuffer->Bind();
+	vArray.LinkBuffers(*vBuffer, vertexPosIndex);
+	
+	glDrawElements(GL_TRIANGLE_FAN, sizeof(indices) / sizeof(indices[0]), GL_UNSIGNED_INT, nullptr);
+	
+	glDisableVertexAttribArray(vertexPosIndex);
+	iBuffer->Unbind();  // Unbind index buffer after drawing
+	vBuffer->Unbind();  // Unbind vertex buffer after drawing
+	vArray.Unbind();    // Unbind vertex array object last
 
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-    glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
-    glEnableVertexAttribArray(vertexPosIndex);
-	
-    glDrawElements(GL_TRIANGLE_FAN, vertices.size(), GL_UNSIGNED_INT, NULL);
-	
-    glDisableVertexAttribArray(vertexPosIndex);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
-    glBindBuffer(GL_ARRAY_BUFFER, NULL);
-	glBindVertexArray(0);
-	
-    glUseProgram(NULL);
+	glUseProgram(NULL);
 }
 
 void Mesh::UpdateVertices()
