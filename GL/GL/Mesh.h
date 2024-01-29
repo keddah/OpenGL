@@ -56,7 +56,17 @@ private:
     } transform;
     
     Shader shader;
+
+    struct Vertex
+    {
+        glm::vec3 position;        
+        glm::vec4 colour;        
+    };
+    
     std::vector<GLfloat> vertices;
+
+    std::vector<Vertex> vertexes;
+    
     std::vector<GLuint> indices;
     GLuint vertex_array, vertex_buffer, index_buffer;
 

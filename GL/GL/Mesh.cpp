@@ -4,6 +4,21 @@ Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _in
 {
 	vertices = _vertices;
 	indices = _indices;
+	std::vector<glm::vec4> colours = {{0, .2f, .6f, 1}};
+	
+	float x, y, z;
+	for(int i = 0; i < vertices.size(); i++)
+	{
+		if(i % 1 == 0) x = vertices[i];
+		else if(i % 2 == 0) y = vertices[i];
+		else if(i % 3 == 0) z = vertices[i];
+		
+		else
+		{
+			Vertex v = {{x, y, z}, colours[i]};
+			vertexes.emplace_back(v);
+		}
+	}
 	
     // If shader initialisation was successful, init the vertices.
     if(InitShaders()) InitVertices();
@@ -23,7 +38,8 @@ void Mesh::InitVertices()
 
 	glGenVertexArrays(1, &vertex_array);
 	glBindVertexArray(vertex_array);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(vertex_array, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(vertex_array, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, NULL);
@@ -79,8 +95,7 @@ void Mesh::Render() const
     glUniformMatrix4fv(projection_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetProjectionMatrix()));
 	
     // glUnifrom used to set values on the GPU
-    const GLint colourID = glGetUniformLocation(shader.GetID(), "colour");
-    glUniform3f(colourID, .7, .2f, .45f);
+	shader.SetVec4Attrib("fragColour", 0, .2f, .45f, 1);
 
 
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);

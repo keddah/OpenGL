@@ -20,6 +20,12 @@ public:
 	void Render() const;
 	void Clean() const { delete tri; SDL_DestroyWindow(window); SDL_Quit(); }
 
+	struct Vertex
+	{
+		glm::vec3 position;
+		glm::vec4 colour;
+	};
+	
 private:
 	// Need to initialise SDL before OpenGL
 	void Init() { InitSDL(); InitOpenGL(); }
