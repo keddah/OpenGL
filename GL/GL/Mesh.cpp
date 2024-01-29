@@ -13,16 +13,13 @@ Mesh::Mesh(GLfloat _vertices[], GLuint _indices[], Camera& camera) : rCam(camera
 
 void Mesh::InitVertices()
 {
-	vArray.Bind();
+	v_buffer = VertexBuffer(vertices);
+	i_buffer = IndexBuffer(indices);
+	v_array = new VertexArray();
 	
-	// The vertex buffer (positions of all the vertices)
-	vBuffer = new VertexBuffer(vertices, sizeof(vertices));
-
-	// The index buffer (the correlation between the vertices)
-	iBuffer = new IndexBuffer(indices, sizeof(indices));
-	
-	// Links VBO to VAO
-	vArray.LinkBuffers(*vBuffer, vertexPosIndex);
+	v_buffer.Unbind();
+	i_buffer.Unbind();
+	v_array->Unbind();
 }
 
 bool Mesh::InitShaders()
@@ -73,28 +70,29 @@ void Mesh::Render()
     glUniformMatrix4fv(view_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetViewMatrix()));
     glUniformMatrix4fv(projection_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetProjectionMatrix()));
 	
-	shader.SetVec4Attrib("colour", .7, .2f, .45f, 1);
+    // glUnifrom used to set values on the GPU
+	shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 
-	glEnableVertexAttribArray(vertexPosIndex);
+
+	v_buffer.Bind();
+	i_buffer.Bind();
+	v_array->LinkBuffer(vertexPosIndex);
 	
-	vBuffer->Bind();
-	iBuffer->Bind();
-	vArray.LinkBuffers(*vBuffer, vertexPosIndex);
+	GLsizei len;
+	GLchar error[100];
+
+	glGetProgramInfoLog(v_array->GetID(), 1500, &len, error);
+	print("Program Linking Log:\n\n" << error);
 	
-	glDrawElements(GL_TRIANGLE_FAN, sizeof(indices) / sizeof(indices[0]), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLE_FAN, indices.size(), GL_UNSIGNED_INT, &indices);
+
+
+	// glDeleteProgram(v_buffer.GetID());  // Delete the program to avoid using a partially linked program
 	
-	glDisableVertexAttribArray(vertexPosIndex);
-	iBuffer->Unbind();  // Unbind index buffer after drawing
-	vBuffer->Unbind();  // Unbind vertex buffer after drawing
-	vArray.Unbind();    // Unbind vertex array object last
-
-
-	glUseProgram(NULL);
-}
-
-void Mesh::UpdateVertices()
-{
-	shader.SetVec3Attrib("vertexPos", transform.position);
-
-	vertexPosIndex = shader.GetAttribute("vertexPos");
+    glDisableVertexAttribArray(vertexPosIndex);
+	v_buffer.Unbind();
+	i_buffer.Unbind();
+	v_array->Unbind();
+	
+    glUseProgram(NULL);
 }

@@ -1,30 +1,32 @@
 #pragma once
 #include <glew.h>
 #include <vector>
+#include <iostream>
 #include <gtc/type_ptr.hpp>
 #include <random>
 
 #include "Camera.h"
+#include "Rendering/Buffers_Array.h"
 #include "Rendering/Shader.h"
 
-#include "Buffer_Array.h"
+#define print(x) { std::cerr << x << std::endl; }
 
 
 class Mesh
 {
 public:
     Mesh() = default;
-    Mesh(GLfloat _vertices[], GLuint _indices[], Camera& camera);
-    ~Mesh() { delete vBuffer; delete iBuffer; }
+    Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera);
+    ~Mesh() { delete v_array; }
     
     void Render();
     void Update(float deltaTime);
 
-    void SetPosition(const glm::vec3 newVal) { transform.position = newVal; UpdateVertices(); }
-    void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; UpdateVertices(); }
+    void SetPosition(const glm::vec3 newVal) { transform.position = newVal; }
+    void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; }
 
-    void SetRelativePosition(const glm::vec3 newVal) { transform.position += newVal; UpdateVertices(); }
-    void SetRelativePosition(const float x, const float y, const float z) { transform.position += glm::vec3(x,y,z); UpdateVertices(); }
+    void SetRelativePosition(const glm::vec3 newVal) { transform.position += newVal; }
+    void SetRelativePosition(const float x, const float y, const float z) { transform.position += glm::vec3(x,y,z); }
     
     void SetRotation(const glm::vec3 newVal) { transform.rotation = newVal; }
     void SetRotation(float x, float y, float z) { transform.rotation = {x,y,z}; }
@@ -47,9 +49,6 @@ private:
     void InitVertices();
     bool InitShaders();
 
-    // Mainly the position
-    void UpdateVertices();
-
     glm::mat4 modelMatrix {1};
     struct 
     {
@@ -59,14 +58,14 @@ private:
     } transform;
     
     Shader shader;
-    GLfloat* vertices;
-    GLuint* indices;
-    
-    VArrayBuffer vArray;
-    VertexBuffer* vBuffer;
-    IndexBuffer* iBuffer;
+    std::vector<GLfloat> vertices;
+    std::vector<GLuint> indices;
     // GLuint vertex_array, vertex_buffer, index_buffer;
 
+    VertexBuffer v_buffer;
+    IndexBuffer i_buffer;
+    VertexArray* v_array;
+    
     GLint vertexPosIndex = -1;
 
     Camera& rCam;
