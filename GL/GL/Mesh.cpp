@@ -1,13 +1,15 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& indices, Camera& camera) : rCam(camera)
+Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera) : rCam(camera)
 {
 	vertices = _vertices;
+	indices = _indices;
+	
     // If shader initialisation was successful, init the vertices.
-    if(InitShaders()) InitVertices(indices);
+    if(InitShaders()) InitVertices();
 }
 
-void Mesh::InitVertices(const std::vector<GLuint>& indices)
+void Mesh::InitVertices()
 {
 	// The vertex buffer (positions of all the vertices)
 	glGenBuffers(1, &vertex_buffer);
@@ -18,6 +20,14 @@ void Mesh::InitVertices(const std::vector<GLuint>& indices)
 	glGenBuffers(1, &index_buffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+
+	glGenVertexArrays(1, &vertex_array);
+	glBindVertexArray(vertex_array);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, NULL);
+	glBindVertexArray(0);
 }
 
 bool Mesh::InitShaders()
@@ -40,13 +50,12 @@ bool Mesh::InitShaders()
 	return true;
 }
 
-void Mesh::UpdateVertices()
+void Mesh::Update(float deltaTime)
 {
-	shader.SetVec3Attrib("vertexPos", transform.position);
-
-	vertexPosIndex = shader.GetAttribute("vertexPos");
+	transform.rotation.x += .000001f;
+	transform.rotation.z += .000001f;
+	// transform.position.y += .00001f;
 }
-
 
 void Mesh::Render() const
 {
@@ -54,19 +63,14 @@ void Mesh::Render() const
 	
     glUseProgram(shader.GetID());
 
-    constexpr glm::vec3 translation = {};
-    constexpr glm::vec3 rotation = {90, 0, 0};
-    constexpr glm::vec3 scale = {1, 1, 1};
-
-	
     glm::mat4 modelMatrix = glm::mat4(1);
-    modelMatrix = rotate(modelMatrix, static_cast<float>(rotation.x * 180 / std::_Pi), {1,0,0});
-    modelMatrix = rotate(modelMatrix, static_cast<float>(rotation.y * 180 / std::_Pi), {0,1,0});
-    modelMatrix = rotate(modelMatrix, static_cast<float>(rotation.z * 180 / std::_Pi), {0,0,1});
+    modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.x * 180 / std::_Pi), {1,0,0});
+    modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.y * 180 / std::_Pi), {0,1,0});
+    modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.z * 180 / std::_Pi), {0,0,1});
 	
-    modelMatrix = translate(modelMatrix, translation);
+	modelMatrix = translate(modelMatrix, transform.position);
 	
-    modelMatrix = glm::scale(modelMatrix, scale);
+    modelMatrix = scale(modelMatrix, transform.scale);
 
     rCam.UpdateViewMatrix();
 
@@ -89,6 +93,14 @@ void Mesh::Render() const
     glDisableVertexAttribArray(vertexPosIndex);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
     glBindBuffer(GL_ARRAY_BUFFER, NULL);
+	glBindVertexArray(0);
 	
     glUseProgram(NULL);
+}
+
+void Mesh::UpdateVertices()
+{
+	shader.SetVec3Attrib("vertexPos", transform.position);
+
+	vertexPosIndex = shader.GetAttribute("vertexPos");
 }

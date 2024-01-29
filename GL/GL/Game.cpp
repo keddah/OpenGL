@@ -95,8 +95,9 @@ void Game::InitOpenGL()
 
 void Game::Update(float deltaTime)
 {
-	cam.Update();
+	mesh->Update(deltaTime);
 	controller.Update();
+	cam.Update();
 }
 
 void Game::FixedUpdate(float deltaTime)
