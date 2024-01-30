@@ -16,37 +16,15 @@ Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _in
 		else
 		{
 			Vertex v = {{x, y, z}, colours[i]};
-			vertexes.emplace_back(v);
+			// vertexes.emplace_back(v);
 		}
 	}
 	
     // If shader initialisation was successful, init the vertices.
-    if(InitShaders()) InitVertices();
+    InitShaders();
 }
 
-void Mesh::InitVertices()
-{
-	// The vertex buffer (positions of all the vertices)
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
-
-	// The index buffer (the correlation between the vertices)
-	glGenBuffers(1, &index_buffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
-
-	glGenVertexArrays(1, &vertex_array);
-	glBindVertexArray(vertex_array);
-	glVertexAttribPointer(vertex_array, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
-	glVertexAttribPointer(vertex_array, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, NULL);
-	glBindVertexArray(0);
-}
-
-bool Mesh::InitShaders()
+void Mesh::InitShaders()
 {
 	shader.Init();
 
@@ -56,14 +34,15 @@ bool Mesh::InitShaders()
 	{
 		print("Couldn't get shader attribute - Vertex Position")
 		print(glGetError())
-		return false;
+		return;
 	}
 
 	model_matrix_address = glGetUniformLocation(shader.GetID(), "modelMatrix");
 	view_matrix_address = glGetUniformLocation(shader.GetID(), "viewMatrix");
 	projection_matrix_address = glGetUniformLocation(shader.GetID(), "projectionMatrix");
-	
-	return true;
+
+	// Initialise the vertices after the shaders.
+	baManager = new BufferArrayManager(vertices, indices);
 }
 
 void Mesh::Update(float deltaTime)
@@ -98,17 +77,15 @@ void Mesh::Render() const
 	shader.SetVec4Attrib("fragColour", 0, .2f, .45f, 1);
 
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+	baManager->BindVBuffer();
+	baManager->BindIBuffer();
     glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
     glEnableVertexAttribArray(vertexPosIndex);
 	
     glDrawElements(GL_TRIANGLE_FAN, vertices.size(), GL_UNSIGNED_INT, NULL);
 	
     glDisableVertexAttribArray(vertexPosIndex);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
-    glBindBuffer(GL_ARRAY_BUFFER, NULL);
-	glBindVertexArray(0);
+	baManager->UnbindAll();
 	
     glUseProgram(NULL);
 }

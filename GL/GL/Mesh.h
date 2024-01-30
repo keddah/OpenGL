@@ -5,6 +5,7 @@
 #include <random>
 
 #include "Camera.h"
+#include "Rendering/BufferArrayManager.h"
 #include "Rendering/Shader.h"
 
 class Mesh
@@ -12,7 +13,7 @@ class Mesh
 public:
     Mesh() = default;
     Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera);
-    ~Mesh() { glDeleteBuffers(1, &vertex_buffer); glDeleteBuffers(1, &index_buffer); }
+    ~Mesh() { delete baManager; }
     
     void Render() const;
     void Update(float deltaTime);
@@ -41,8 +42,7 @@ public:
     void SetCollision (const bool newVal) { collisions_enabled = newVal; }
     
 private:
-    void InitVertices();
-    bool InitShaders();
+    void InitShaders();
 
     // Mainly the position
     void UpdateVertices();
@@ -65,10 +65,11 @@ private:
     
     std::vector<GLfloat> vertices;
 
-    std::vector<Vertex> vertexes;
+    BufferArrayManager* baManager;
+    
+    // std::vector<Vertex> vertexes;
     
     std::vector<GLuint> indices;
-    GLuint vertex_array, vertex_buffer, index_buffer;
 
     GLint vertexPosIndex = -1;
 

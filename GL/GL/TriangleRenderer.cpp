@@ -2,7 +2,7 @@
 
 #include <random>
 
-#include "Rendering/Buffers.h"
+#include "Rendering\BufferArrayManager.h"
 
 bool TriangleRenderer::InitShaders()
 {
