@@ -4,21 +4,20 @@ Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _in
 {
 	vertices = _vertices;
 	indices = _indices;
-	std::vector<glm::vec4> colours = {{0, .2f, .6f, 1}};
 	
-	float x, y, z;
-	for(int i = 0; i < vertices.size(); i++)
-	{
-		if(i % 1 == 0) x = vertices[i];
-		else if(i % 2 == 0) y = vertices[i];
-		else if(i % 3 == 0) z = vertices[i];
-		
-		else
-		{
-			Vertex v = {{x, y, z}, colours[i]};
-			// vertexes.emplace_back(v);
-		}
-	}
+	// float x, y, z;
+	// for(int i = 0; i < vertices.size(); i++)
+	// {
+	// 	if(i % 1 == 0) x = vertices[i];
+	// 	else if(i % 2 == 0) y = vertices[i];
+	// 	else if(i % 3 == 0) z = vertices[i];
+	// 	
+	// 	else
+	// 	{
+	// 		Vertex v = {{x, y, z}};
+	// 		vertexes.emplace_back(v);
+	// 	}
+	// }
 	
     // If shader initialisation was successful, init the vertices.
     InitShaders();
@@ -58,7 +57,7 @@ void Mesh::Render() const
 	
     glUseProgram(shader.GetID());
 
-    glm::mat4 modelMatrix = glm::mat4(1);
+    glm::mat4 modelMatrix {1};
     modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.x * 180 / std::_Pi), {1,0,0});
     modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.y * 180 / std::_Pi), {0,1,0});
     modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.z * 180 / std::_Pi), {0,0,1});
@@ -74,13 +73,15 @@ void Mesh::Render() const
     glUniformMatrix4fv(projection_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetProjectionMatrix()));
 	
     // glUnifrom used to set values on the GPU
-	shader.SetVec4Attrib("fragColour", 0, .2f, .45f, 1);
+	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 
 
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();
-    glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
-    glEnableVertexAttribArray(vertexPosIndex);
+	baManager->SetArrayAttrib(0, 3, GL_FLOAT, 7 * sizeof(GLfloat), nullptr);
+	baManager->SetArrayAttrib(1, 4, GL_FLOAT, 7 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+    // glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+    // glEnableVertexAttribArray(vertexPosIndex);
 	
     glDrawElements(GL_TRIANGLE_FAN, vertices.size(), GL_UNSIGNED_INT, NULL);
 	

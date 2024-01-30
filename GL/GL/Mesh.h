@@ -47,7 +47,6 @@ private:
     // Mainly the position
     void UpdateVertices();
 
-    glm::mat4 modelMatrix {1};
     struct 
     {
         glm::vec3 position = {};        
@@ -59,7 +58,7 @@ private:
 
     struct Vertex
     {
-        glm::vec3 position;        
+        std::vector<GLfloat> position;        
         glm::vec4 colour;        
     };
     
@@ -67,7 +66,7 @@ private:
 
     BufferArrayManager* baManager;
     
-    // std::vector<Vertex> vertexes;
+    std::vector<Vertex> vertexes;
     
     std::vector<GLuint> indices;
 

@@ -59,20 +59,20 @@ void Game::InitOpenGL()
 	}
 
 	rRunning = true;
-	tri = new TriangleRenderer(cam);
+	// tri = new TriangleRenderer(cam);
 
 	//________ A cube ________\\
 
 	std::vector<GLfloat> verts =
 	{
-		-0.5f, -0.5f, -0.5f,   // Vertex 0
-		 0.5f, -0.5f, -0.5f,   // Vertex 1
-		 0.5f,  0.5f, -0.5f,   // Vertex 2
-		-0.5f,  0.5f, -0.5f,   // Vertex 3
-		-0.5f, -0.5f,  0.5f,   // Vertex 4
-		 0.5f, -0.5f,  0.5f,   // Vertex 5
-		 0.5f,  0.5f,  0.5f,   // Vertex 6
-		-0.5f,  0.5f,  0.5f    // Vertex 7
+		-0.5f, -0.5f, -0.5f,   /* Vertex 0 */    /* Colour */ .4f, .1f, .3f, 1,
+		 0.5f, -0.5f, -0.5f,   /* Vertex 1 */    /* Colour */ .4f, .2f, .3f, 1,
+		 0.5f,  0.5f, -0.5f,   /* Vertex 2 */    /* Colour */ .4f, .3f, .3f, 1,
+		-0.5f,  0.5f, -0.5f,   /* Vertex 3 */    /* Colour */ .4f, .4f, .3f, 1,
+		-0.5f, -0.5f,  0.5f,   /* Vertex 4 */    /* Colour */ .4f, .1f, .5f, 1,
+		 0.5f, -0.5f,  0.5f,   /* Vertex 5 */    /* Colour */ .4f, .1f, .6f, 1,
+		 0.5f,  0.5f,  0.5f,   /* Vertex 6 */    /* Colour */ .5f, .1f, .3f, 1,
+		-0.5f,  0.5f,  0.5f,   /* Vertex 7 */    /* Colour */ .6f, .1f, .3f, 1
 	};
 
 	std::vector<GLuint> indices =
@@ -90,6 +90,23 @@ void Game::InitOpenGL()
 		0, 1, 5,  // Bottom face
 		5, 4, 0
 	};
+
+	// std::vector<GLuint> indices =
+	// {
+	// 	0, 1, 2,  // Front face
+	// 	2, 7, 0,
+	// 	8, 9, 10,  // Back face
+	// 	10, 11, 8,
+	// 	0, 7, 11,  // Left face
+	// 	11, 8, 0,
+	// 	1, 9, 10,  // Right face
+	// 	10, 2, 1,
+	// 	7, 2, 10,  // Top face
+	// 	10, 11, 7,
+	// 	0, 1, 9,  // Bottom face
+	// 	9, 10, 0
+	// };
+	
 	mesh = new Mesh(verts, indices, cam);
 }
 
@@ -109,7 +126,7 @@ void Game::Render() const
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	tri->Render();
+	if(tri) tri->Render();
 	if(mesh) mesh->Render();
 	
 	SDL_GL_SwapWindow(window);
