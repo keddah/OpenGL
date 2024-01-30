@@ -40,6 +40,12 @@ void Mesh::InitShaders()
 	view_matrix_address = glGetUniformLocation(shader.GetID(), "viewMatrix");
 	projection_matrix_address = glGetUniformLocation(shader.GetID(), "projectionMatrix");
 
+	if(model_matrix_address == -1 || view_matrix_address == -1 || projection_matrix_address == -1)
+	{
+		print("One or more of the matrix uniforms weren't found...")
+		return;
+	}
+
 	// Initialise the vertices after the shaders.
 	baManager = new BufferArrayManager(vertices, indices);
 	mat = new Material(shader);
@@ -88,7 +94,7 @@ void Mesh::Render() const
 	compCount = baManager->SetArrayAttrib(1, 4, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(compCount * sizeof(GLfloat))) + compCount;		// Colour
 	baManager->SetArrayAttrib(2, 2, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(compCount * sizeof(GLfloat)));		// Tex Coordinates
 
-    glDrawElements(GL_TRIANGLE_FAN, vertices.size(), GL_UNSIGNED_INT, NULL);
+    glDrawElements(GL_TRIANGLE_FAN, indices.size(), GL_UNSIGNED_INT, NULL);
 	
     glDisableVertexAttribArray(vertexPosIndex);
 	baManager->UnbindAll();

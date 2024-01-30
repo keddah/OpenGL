@@ -18,7 +18,7 @@ public:
 	void FixedUpdate(float deltaTime);
 
 	void Render() const;
-	void Clean() const { delete tri; SDL_DestroyWindow(window); SDL_Quit(); }
+	void Clean() const { delete tri; delete mesh; SDL_DestroyWindow(window); SDL_Quit(); }
 
 	struct Vertex
 	{

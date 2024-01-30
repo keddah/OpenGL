@@ -10,6 +10,11 @@ void Material::NewTexture(std::string filePath)
 {
     // image_bytes = stbi_load(filePath &tex_width, &tex_height, &channelCount, 0);
     image_bytes = stbi_load("Images/download.png", &tex_width, &tex_height, &channelCount, 0);
+    if(!image_bytes)
+    {
+        print("Unable to load image - possible bad filePath")
+        return;
+    }
     
     glGenTextures(1, &colour_texture);
     glActiveTexture(GL_TEXTURE0);
@@ -26,6 +31,5 @@ void Material::NewTexture(std::string filePath)
     stbi_image_free(image_bytes);
     UnbindTexture();
 
-    shader.Activate();
     shader.SetIntAttrib("tex0", 0);
 }

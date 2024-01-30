@@ -14,7 +14,7 @@ class Mesh
 public:
     Mesh() = default;
     Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera);
-    ~Mesh() { delete baManager; }
+    ~Mesh() { delete baManager; delete mat; }
     
     void Render() const;
     void Update(float deltaTime);
