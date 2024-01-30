@@ -29,7 +29,7 @@ private:
 	const float cameraHeight = 2;
 
 	const float fov = 80;
-	const float aspectRatio = 640 / 480;
+	const float aspectRatio = 1920 / 1080;
 	const float nearClip = .1f;
 	const float farClip = 600;
 

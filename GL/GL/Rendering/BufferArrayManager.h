@@ -8,7 +8,8 @@ public:
     BufferArrayManager(const std::vector<GLfloat>& verts, const std::vector<GLuint>& indices);
     ~BufferArrayManager() { DeleteAll(); }
 
-    void SetArrayAttrib(GLuint index, GLuint componentCount, GLenum type, GLsizei stride, const void* offset) const;
+    // Returns the component count so that the offset can be calculated automatically
+    GLuint SetArrayAttrib(GLuint index, GLuint componentCount, GLenum type, GLsizei stride, const void* offset) const;
     
     void BindAll() const { BindVBuffer(); BindIBuffer(); BindArray(); }
     void BindVBuffer() const { glBindBuffer(GL_ARRAY_BUFFER, vBuffer); }

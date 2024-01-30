@@ -65,14 +65,14 @@ void Game::InitOpenGL()
 
 	std::vector<GLfloat> verts =
 	{
-		-0.5f, -0.5f, -0.5f,   /* Vertex 0 */    /* Colour */ .4f, .1f, .3f, 1,
-		 0.5f, -0.5f, -0.5f,   /* Vertex 1 */    /* Colour */ .4f, .2f, .3f, 1,
-		 0.5f,  0.5f, -0.5f,   /* Vertex 2 */    /* Colour */ .4f, .3f, .3f, 1,
-		-0.5f,  0.5f, -0.5f,   /* Vertex 3 */    /* Colour */ .4f, .4f, .3f, 1,
-		-0.5f, -0.5f,  0.5f,   /* Vertex 4 */    /* Colour */ .4f, .1f, .5f, 1,
-		 0.5f, -0.5f,  0.5f,   /* Vertex 5 */    /* Colour */ .4f, .1f, .6f, 1,
-		 0.5f,  0.5f,  0.5f,   /* Vertex 6 */    /* Colour */ .5f, .1f, .3f, 1,
-		-0.5f,  0.5f,  0.5f,   /* Vertex 7 */    /* Colour */ .6f, .1f, .3f, 1
+		-0.5f, -0.5f, -0.5f,   /* Vertex 0 */    /* Colour */ .4f, .1f, .3f, 1,    /* TexCoord */  0,0,
+		 0.5f, -0.5f, -0.5f,   /* Vertex 1 */    /* Colour */ .4f, .2f, .3f, 1,    /* TexCoord */  1,0,
+		 0.5f,  0.5f, -0.5f,   /* Vertex 2 */    /* Colour */ .4f, .3f, .3f, 1,    /* TexCoord */  1,1,
+		-0.5f,  0.5f, -0.5f,   /* Vertex 3 */    /* Colour */ .4f, .4f, .3f, 1,    /* TexCoord */  0,1,
+		-0.5f, -0.5f,  0.5f,   /* Vertex 4 */    /* Colour */ .4f, .1f, .5f, 1,    /* TexCoord */  0,0,
+		 0.5f, -0.5f,  0.5f,   /* Vertex 5 */    /* Colour */ .4f, .1f, .6f, 1,    /* TexCoord */  1,0,
+		 0.5f,  0.5f,  0.5f,   /* Vertex 6 */    /* Colour */ .5f, .1f, .3f, 1,    /* TexCoord */  1,1,
+		-0.5f,  0.5f,  0.5f,   /* Vertex 7 */    /* Colour */ .6f, .1f, .3f, 1,    /* TexCoord */  0,1
 	};
 
 	std::vector<GLuint> indices =

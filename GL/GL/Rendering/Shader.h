@@ -15,6 +15,8 @@ public:
     
     void Init();
 
+    void Activate() const { glUseProgram(program_id); }
+    void Deactivate() const { glUseProgram(0); }
     
     void SetFloatAttrib(const GLchar* attribName, float newValue) const;
     

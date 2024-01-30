@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)externals/SDL2/include;$(ProjectDir)externals/glm;$(ProjectDir)externals/glew-2.1.0/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)externals/SDL2/include;$(ProjectDir)externals/glm;$(ProjectDir)externals/glew-2.1.0/include;$(ProjectDir)externals/stb;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)externals/SDL2/lib/x64;$(ProjectDir)externals/glew-2.1.0/lib/Release/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)externals/SDL2/include;$(ProjectDir)externals/glm;$(ProjectDir)externals/glew-2.1.0/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)externals/SDL2/include;$(ProjectDir)externals/glm;$(ProjectDir)externals/glew-2.1.0/include;$(ProjectDir)externals/stb;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)externals/SDL2/lib/x64;$(ProjectDir)externals/glew-2.1.0/lib/Release/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -140,8 +140,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomTimer.h" />
+    <ClInclude Include="externals\stb\stb_image.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rendering\BufferArrayManager.h" />
@@ -155,6 +157,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rendering\BufferArrayManager.cpp" />
@@ -232,9 +235,12 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="stb.cpp" />
     <ClCompile Include="TriangleRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\download.png" />
+    <Content Include="Images\Test.png" />
     <Content Include="Models\Cube.obj" />
     <Content Include="Rendering\Shaders\FragmentShader.glsl" />
     <Content Include="Rendering\Shaders\VertexShader.glsl" />

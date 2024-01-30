@@ -42,20 +42,22 @@ void Mesh::InitShaders()
 
 	// Initialise the vertices after the shaders.
 	baManager = new BufferArrayManager(vertices, indices);
+	mat = new Material(shader);
+	for(int i = 0; i < 5; i++) mat->NewTexture("df");
 }
 
 void Mesh::Update(float deltaTime)
 {
-	transform.rotation.x += .000001f;
-	transform.rotation.z += .000001f;
+	transform.rotation.x += .005f * deltaTime;
+	transform.rotation.z += .005f * deltaTime;
 	// transform.position.y += .00001f;
 }
 
 void Mesh::Render() const
 {
 	if(!visible) return;
-	
-    glUseProgram(shader.GetID());
+
+	shader.Activate();
 
     glm::mat4 modelMatrix {1};
     modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.x * 180 / std::_Pi), {1,0,0});
@@ -76,19 +78,23 @@ void Mesh::Render() const
 	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 
 
+	mat->BindTexture();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();
-	baManager->SetArrayAttrib(0, 3, GL_FLOAT, 7 * sizeof(GLfloat), nullptr);
-	baManager->SetArrayAttrib(1, 4, GL_FLOAT, 7 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
-    // glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
-    // glEnableVertexAttribArray(vertexPosIndex);
-	
+
+	// Stride = all the compCounts added together
+	// Returns the component count so that the offset can be calculated automatically
+	GLuint compCount = baManager->SetArrayAttrib(0, 3, GL_FLOAT, 9 * sizeof(GLfloat), nullptr);		// Position
+	compCount = baManager->SetArrayAttrib(1, 4, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(compCount * sizeof(GLfloat))) + compCount;		// Colour
+	baManager->SetArrayAttrib(2, 2, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(compCount * sizeof(GLfloat)));		// Tex Coordinates
+
     glDrawElements(GL_TRIANGLE_FAN, vertices.size(), GL_UNSIGNED_INT, NULL);
 	
     glDisableVertexAttribArray(vertexPosIndex);
 	baManager->UnbindAll();
+	mat->UnbindTexture();
 	
-    glUseProgram(NULL);
+	shader.Deactivate();
 }
 
 void Mesh::UpdateVertices()

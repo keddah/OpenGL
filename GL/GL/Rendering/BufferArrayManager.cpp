@@ -16,18 +16,22 @@ BufferArrayManager::BufferArrayManager(const std::vector<GLfloat>& verts, const 
     glBindVertexArray(vArray);
 
     // Sets up the vertices so that the GPU knows that its position is a vector 3.
-    SetArrayAttrib(0, 3, GL_FLOAT, 7 * sizeof(GLfloat), nullptr);
-    SetArrayAttrib(1, 4, GL_FLOAT, 7 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+    SetArrayAttrib(0, 3, GL_FLOAT, 9 * sizeof(GLfloat), nullptr);
+    SetArrayAttrib(1, 4, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+    SetArrayAttrib(2, 2, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(7 * sizeof(GLfloat)));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
     glBindBuffer(GL_ARRAY_BUFFER, NULL);
     glBindVertexArray(0);
 }
 
-void BufferArrayManager::SetArrayAttrib(const GLuint index, GLuint componentCount, const GLenum type, GLsizei stride, const void* offset) const
+GLuint BufferArrayManager::SetArrayAttrib(const GLuint index, GLuint componentCount, const GLenum type, GLsizei stride, const void* offset) const
 {
     BindVBuffer();
     glVertexAttribPointer(index, componentCount, type, GL_FALSE, stride, offset);
     glEnableVertexAttribArray(index);
     UnbindVBuffer();
+
+    // Returns the component count so that the offset can be calculated automatically
+    return componentCount;
 }

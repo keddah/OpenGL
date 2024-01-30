@@ -5,6 +5,7 @@
 #include <random>
 
 #include "Camera.h"
+#include "Material.h"
 #include "Rendering/BufferArrayManager.h"
 #include "Rendering/Shader.h"
 
@@ -55,7 +56,8 @@ private:
     } transform;
     
     Shader shader;
-
+    Material* mat;
+    
     struct Vertex
     {
         std::vector<GLfloat> position;        
