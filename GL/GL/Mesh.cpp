@@ -49,7 +49,6 @@ void Mesh::InitShaders()
 	// Initialise the vertices after the shaders.
 	baManager = new BufferArrayManager(vertices, indices);
 	mat = new Material(shader);
-	for(int i = 0; i < 5; i++) mat->NewTexture("df");
 }
 
 void Mesh::Update(float deltaTime)
@@ -80,13 +79,11 @@ void Mesh::Render() const
     glUniformMatrix4fv(view_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetViewMatrix()));
     glUniformMatrix4fv(projection_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetProjectionMatrix()));
 	
-    // glUnifrom used to set values on the GPU
 	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 
-
-	mat->BindTexture();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();
+	mat->BindTexture();
 
 	// Stride = all the compCounts added together
 	// Returns the component count so that the offset can be calculated automatically
