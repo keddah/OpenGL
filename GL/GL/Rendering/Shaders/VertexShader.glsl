@@ -1,6 +1,6 @@
 #version 330 core
 
-layout (location = 0) in vec4 vertexPos;
+layout (location = 0) in vec3 vertexPos;
 layout (location = 1) in vec4 vColour;
 layout (location = 2) in vec2 vTex;
 
@@ -13,7 +13,7 @@ uniform mat4 projectionMatrix;
 
 void main() 
 { 
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vertexPos; 
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPos, 1); 
     colour = vColour;
     texCoords = vTex;
 }

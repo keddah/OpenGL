@@ -5,6 +5,7 @@
 #include "Controller.h"
 #include "TriangleRenderer.h"
 #include "Mesh.h"
+#include "Model.h"
 
 #define print(x) { std::cout << x << std::endl; }
 
@@ -39,6 +40,7 @@ private:
 
 	TriangleRenderer* tri;
 	Mesh* mesh;
+	Model* model;
 	
 	Controller controller { rRunning };
 	Camera cam { controller };

@@ -10,7 +10,8 @@ Material::Material(Shader& _shader) : shader(_shader)
 void Material::NewTexture(std::string filePath)
 {
     // image_bytes = stbi_load(filePath &tex_width, &tex_height, &channelCount, 0);
-    image_bytes = stbi_load("Images/download.png", &tex_width, &tex_height, &channelCount, 0);
+
+    image_bytes = stbi_load("Images/Barrel_d.png", &tex_width, &tex_height, &channelCount, 4);
     if(!image_bytes)
     {
         print("Unable to load image - possible bad filePath")
@@ -30,8 +31,13 @@ void Material::NewTexture(std::string filePath)
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
+    const bool opacity = channelCount > 3;
+
     // Upload texture data
-    glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex_width, tex_height, 0, GL_RGBA8, GL_UNSIGNED_BYTE, image_bytes));
+    //glCall(glTexImage2D(GL_TEXTURE_2D, 0, opacity ? GL_RGBA8 : GL_RGB8, tex_width, tex_height, 0, opacity ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, image_bytes));
+    glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, tex_width, tex_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, image_bytes));
+    //unsigned char pixel[] { 255, 0, 255 };
+    //glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, pixel));
     glCall(glGenerateMipmap(GL_TEXTURE_2D));
 
     // Clean up

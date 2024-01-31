@@ -10,8 +10,8 @@ void Shader::Init()
 	const string fragText = Util::ReadFile("Rendering/Shaders/FragmentShader.glsl");
 	const GLchar* fShaderSource = fragText.c_str();
 	
-	print(vShaderSource)
-	print(fShaderSource)
+	//print(vShaderSource)
+	//print(fShaderSource)
 	
 	// Create the program
 	program_id = glCreateProgram();
@@ -66,6 +66,7 @@ void Shader::Init()
 	// Since the shaders are already on the program, you don't need the actual shaders anymore
 	glCall(glDeleteShader(vertexShader));
 	glCall(glDeleteShader(fragmentShader));
+
 }
 
 void Shader::SetFloatAttrib(const GLchar* attribName, const float newValue) const

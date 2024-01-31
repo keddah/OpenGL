@@ -5,7 +5,7 @@
 
 
 #define print(x) { std::cout << x << std::endl; }
-#define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("Error during texture setup: " << gluErrorString(error)); } }
+#define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("error code: " << error << "\n" << gluErrorString(error)); __debugbreak(); } }
 #define glCall(theFunction) { theFunction; GetError(); }
 
 class BufferArrayManager
@@ -14,8 +14,7 @@ public:
     BufferArrayManager(const std::vector<GLfloat>& verts, const std::vector<GLuint>& indices);
     ~BufferArrayManager() { DeleteAll(); }
 
-    // Returns the component count so that the offset can be calculated automatically
-    GLuint SetArrayAttrib(GLuint index, GLuint componentCount, GLenum type, GLsizei stride, const void* offset) const;
+    void SetArrayAttrib(GLuint index, GLuint componentCount, GLenum type, GLsizei stride, const void* offset) const;
     
     void BindAll() const { BindVBuffer(); BindIBuffer(); BindArray(); }
     void BindVBuffer() const { glCall(glBindBuffer(GL_ARRAY_BUFFER, vBuffer)); }

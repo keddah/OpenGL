@@ -27,8 +27,8 @@ void Game::InitSDL()
 void Game::InitOpenGL()
 {
 	// Make the OpenGL stuff
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	if (!window)
@@ -91,28 +91,18 @@ void Game::InitOpenGL()
 		5, 4, 0
 	};
 
-	// std::vector<GLuint> indices =
-	// {
-	// 	0, 1, 2,  // Front face
-	// 	2, 7, 0,
-	// 	8, 9, 10,  // Back face
-	// 	10, 11, 8,
-	// 	0, 7, 11,  // Left face
-	// 	11, 8, 0,
-	// 	1, 9, 10,  // Right face
-	// 	10, 2, 1,
-	// 	7, 2, 10,  // Top face
-	// 	10, 11, 7,
-	// 	0, 1, 9,  // Bottom face
-	// 	9, 10, 0
-	// };
-	
-	mesh = new Mesh(verts, indices, cam);
+	//mesh = new Mesh(verts, indices, cam);
+	model = new Model(cam);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
 }
 
 void Game::Update(float deltaTime)
 {
-	mesh->Update(deltaTime);
+	if(mesh) mesh->Update(deltaTime);
+	if(model) model->Update(deltaTime);
 	controller.Update();
 	cam.Update(deltaTime);
 }
@@ -123,11 +113,14 @@ void Game::FixedUpdate(float deltaTime)
 
 void Game::Render() const
 {
-	glClearColor(.04f, .01f, .1f, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
 
-	if(tri) tri->Render();
-	if(mesh) mesh->Render();
+	glClearColor(.04f, .01f, .1f, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	//if(tri) tri->Render();
+	//if(mesh) mesh->Render();
+	if(model) model->Render();
 	
 	SDL_GL_SwapWindow(window);
 }

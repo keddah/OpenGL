@@ -71,15 +71,22 @@ void Mesh::Render() const
 	
 	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 
+	baManager->BindArray();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();
 	mat->BindTexture();
 
 	// Stride = all the compCounts added together
-	// Returns the component count so that the offset can be calculated automatically
-	GLuint compCount = baManager->SetArrayAttrib(0, 3, GL_FLOAT, 9 * sizeof(GLfloat), nullptr);		// Position
-	compCount = baManager->SetArrayAttrib(1, 4, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(compCount * sizeof(GLfloat))) + compCount;		// Colour
-	baManager->SetArrayAttrib(2, 2, GL_FLOAT, 9 * sizeof(GLfloat), reinterpret_cast<void*>(compCount * sizeof(GLfloat)));		// Tex Coordinates
+	constexpr GLuint posSize = 3;
+	constexpr GLuint colourSize = 4;
+	constexpr GLuint textureSize = 2;
+
+	// The total component count so that the offset and stride can be calculated automatically
+	constexpr GLuint compCount = posSize + textureSize;
+	
+	baManager->SetArrayAttrib(0, posSize, GL_FLOAT, compCount * sizeof(GLfloat), nullptr);	// Position
+	//baManager->SetArrayAttrib(1, colourSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>(posSize * sizeof(GLfloat)));	// Colour
+	baManager->SetArrayAttrib(2, textureSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>((posSize + colourSize) * sizeof(GLfloat)));	// TexCoords
 
     glCall(glDrawElements(GL_TRIANGLE_FAN, indices.size(), GL_UNSIGNED_INT, NULL));
 	
