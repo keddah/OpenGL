@@ -11,6 +11,19 @@ Camera::Camera(Controller& roller) : control(roller)
 
 void Camera::Controls(float deltaTime)
 {
+    // Handle mouse look
+    glm::vec2 mouseDelta = control.GetMouseDelta();
+    const float sensitivity = .2f * deltaTime;
+    mouseDelta *= sensitivity;
+    
+    // Update lookAt based on mouse movement
+    lookAt = rotate(glm::mat4(1.0f), mouseDelta.x, glm::vec3(0, 1, 0)) * glm::vec4(lookAt, 0.0f);
+    const glm::vec3 right = normalize(glm::cross(lookAt, glm::vec3(0.0f, 1.0f, 0.0f)));
+    lookAt = rotate(glm::mat4(1.0f), mouseDelta.y, right) * glm::vec4(lookAt, 0.0f);
+
+    // Normalize lookAt vector
+    lookAt = normalize(lookAt);
+    
     const float moveSpeed = 2 * deltaTime;
     const bool* inputs = control.GetMoveInputs();
 

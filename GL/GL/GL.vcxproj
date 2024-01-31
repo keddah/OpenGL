@@ -242,9 +242,16 @@
     <ClCompile Include="TriangleRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\Barrel_d.png" />
     <Content Include="Images\download.png" />
     <Content Include="Images\Test.png" />
-    <Content Include="Models\Cube.obj" />
+    <Content Include="Images\Test1.png" />
+    <Content Include="ModelAssets\Barrel.obj" />
+    <Content Include="ModelAssets\Barrel_d.png" />
+    <Content Include="ModelAssets\Cube.obj" />
+    <Content Include="ModelAssets\monkey.obj" />
+    <Content Include="ModelAssets\test.mtl" />
+    <Content Include="ModelAssets\test.obj" />
     <Content Include="Rendering\Shaders\FragmentShader.glsl" />
     <Content Include="Rendering\Shaders\VertexShader.glsl" />
   </ItemGroup>

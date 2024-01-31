@@ -42,6 +42,6 @@ private:
 	Mesh* mesh;
 	Model* model;
 	
-	Controller controller { rRunning };
-	Camera cam { controller };
+	Controller* controller;
+	Camera* cam;
 };

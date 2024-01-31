@@ -22,11 +22,22 @@
 * Created by Dean Atkinson-Walker 2023
 ***************************************************************************************************************/
 
-void Controller::Update()
+Controller::Controller(bool& running) : rRunning(running)
 {
-	CheckInputs();
+	// Get the display mode of the primary monitor
+	SDL_DisplayMode current;
+	if (SDL_GetCurrentDisplayMode(0, &current) == 0)
+	{
+		screenWidth = current.w;
+		screenHeight = current.h;
+	}
+	
+	else
+	{
+		// Handle error
+		SDL_Log("SDL_GetCurrentDisplayMode failed: %s", SDL_GetError());
+	}
 }
-
 
 void Controller::CheckInputs()
 {
@@ -44,9 +55,7 @@ void Controller::CheckInputs()
 	crouch = keyState[SDL_SCANCODE_LCTRL];
 	
 	int mouse_x, mouse_y;
-	SDL_GetMouseState(&mouse_x, &mouse_y);
-	mousePos.x = mouse_x;
-	mousePos.y = mouse_y;
+	
 	
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
@@ -64,8 +73,21 @@ void Controller::CheckInputs()
 			break;
 	
 		case SDL_MOUSEMOTION:
-			if(e.button.button == SDL_BUTTON_LEFT) lmb = true;
-			if(e.button.button == SDL_BUTTON_RIGHT) rmb = true;
+			SDL_GetMouseState(&mouse_x, &mouse_y);
+			mouseDelta = glm::vec2(mouse_x, mouse_y) - mousePos;
+			
+			mousePos.x = mouse_x;
+			mousePos.y = mouse_y;
+
+			// Check if the mouse is about to go off the screen
+			if (mouse_x < 5 || mouse_x > screenWidth - 5 ||
+				mouse_y < 5 || mouse_y > screenHeight - 5)
+			{
+				// Reset the mouse position to the center of the screen
+				SDL_WarpMouseInWindow(nullptr, screenWidth / 2, screenHeight / 2);
+				mousePos = {screenWidth / 2, screenHeight / 2};
+			}
+			else mousePos = {mouse_x, mouse_y};
 			break;
 			
 			// When alt + F4 is pressed.
@@ -84,6 +106,8 @@ void Controller::CheckInputs()
 
 void Controller::ClearInputs()
 {
+	// Reset the mouse delta every frame
+	mouseDelta = {0,0};
 	// wheelUp = false;
 	// wheelDown = false;
 	//

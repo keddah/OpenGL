@@ -59,6 +59,8 @@ void Game::InitOpenGL()
 	}
 
 	rRunning = true;
+	controller = new Controller(rRunning);
+	cam = new Camera(*controller);
 	// tri = new TriangleRenderer(cam);
 
 	//________ A cube ________\\
@@ -92,7 +94,7 @@ void Game::InitOpenGL()
 	};
 
 	//mesh = new Mesh(verts, indices, cam);
-	model = new Model(cam);
+	model = new Model(*cam);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -103,8 +105,8 @@ void Game::Update(float deltaTime)
 {
 	if(mesh) mesh->Update(deltaTime);
 	if(model) model->Update(deltaTime);
-	controller.Update();
-	cam.Update(deltaTime);
+	controller->Update();
+	cam->Update(deltaTime);
 }
 
 void Game::FixedUpdate(float deltaTime)
