@@ -37,7 +37,7 @@ private:
 		.5f, -.5, 0// bottom right
 	};
 
-	GLint vertexPosIndex = -1;
+	GLint vertArrayIndex = -1;
 
 	// VertexBuffer* vBuffer;
 	// IndexBuffer* iBuffer;

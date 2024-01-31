@@ -1,6 +1,12 @@
 #pragma once
 #include <glew.h>
 #include <vector>
+#include <iostream>
+
+
+#define print(x) { std::cout << x << std::endl; }
+#define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("Error during texture setup: " << gluErrorString(error)); } }
+#define glCall(theFunction) { theFunction; GetError(); }
 
 class BufferArrayManager
 {
@@ -12,15 +18,15 @@ public:
     GLuint SetArrayAttrib(GLuint index, GLuint componentCount, GLenum type, GLsizei stride, const void* offset) const;
     
     void BindAll() const { BindVBuffer(); BindIBuffer(); BindArray(); }
-    void BindVBuffer() const { glBindBuffer(GL_ARRAY_BUFFER, vBuffer); }
-    void BindIBuffer() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBuffer); }
-    void BindArray() const { glBindVertexArray(vArray); }
+    void BindVBuffer() const { glCall(glBindBuffer(GL_ARRAY_BUFFER, vBuffer)); }
+    void BindIBuffer() const { glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBuffer)); }
+    void BindArray() const { glCall(glBindVertexArray(vArray)); }
 
     void UnbindAll() const { UnbindVArray(); UnbindIBuffer(); UnbindVArray(); }
-    void UnbindVBuffer() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
-    void UnbindIBuffer() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
-    void UnbindVArray() const { glBindVertexArray(0); }
-    void DeleteAll() const { glDeleteBuffers(1, &vBuffer); glDeleteBuffers(1, &iBuffer); glDeleteVertexArrays(1, &vArray); }
+    void UnbindVBuffer() const { glCall(glBindBuffer(GL_ARRAY_BUFFER, 0)); }
+    void UnbindIBuffer() const { glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)); }
+    void UnbindVArray() const { glCall(glBindVertexArray(0)); }
+    void DeleteAll() const { glCall(glDeleteBuffers(1, &vBuffer)); glCall(glDeleteBuffers(1, &iBuffer)); glCall(glDeleteVertexArrays(1, &vArray)); }
 
     GLuint VBufferID() const { return vBuffer; }
     GLuint IBufferID() const { return iBuffer; }

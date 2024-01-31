@@ -9,16 +9,19 @@ Camera::Camera(Controller& roller) : control(roller)
     UpdateViewMatrix();
 }
 
-void Camera::Move()
+void Camera::Controls(float deltaTime)
 {
-    constexpr float moveSpeed = .001f;
+    const float moveSpeed = 2 * deltaTime;
     const bool* inputs = control.GetMoveInputs();
 
     // Not using else ifs so that multiple inputs can happen at the same time
-    if(inputs[0]) position.z += moveSpeed;
-    if(inputs[1]) position.z -= moveSpeed;
-    if(inputs[2]) position.x -= moveSpeed;
-    if(inputs[3]) position.x += moveSpeed;
+    // Forward/Backward
+    if(inputs[0]) position += moveSpeed * lookAt;
+    if(inputs[1]) position -= moveSpeed * lookAt;
+
+    // Strafing
+    if (inputs[2]) position += glm::normalize(glm::cross(lookAt, glm::vec3(0.0f, 1.0f, 0.0f))) * moveSpeed;  // Strafe left
+    if (inputs[3]) position -= glm::normalize(glm::cross(lookAt, glm::vec3(0.0f, 1.0f, 0.0f))) * moveSpeed;  // Strafe right
 
     if(control.JumpBtnDown()) position.y -= moveSpeed;
     if(control.CrouchBtnDown()) position.y += moveSpeed;

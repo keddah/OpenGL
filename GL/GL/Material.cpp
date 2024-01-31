@@ -18,28 +18,21 @@ void Material::NewTexture(std::string filePath)
     }
 
     // Generate texture ID
-    glGenTextures(1, &colour_texture);
+    glCall(glGenTextures(1, &colour_texture));
 
     // Activate texture unit and bind texture
-    glActiveTexture(GL_TEXTURE0);
+    glCall(glActiveTexture(GL_TEXTURE0));
     BindTexture();
 
     // Set texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+    glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
     // Upload texture data
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8_ALPHA8, tex_width, tex_height, 0, GL_RGBA8, GL_UNSIGNED_BYTE, image_bytes);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    // Check for errors
-    GLenum error = glGetError();
-    if (error != GL_NO_ERROR) {
-        print("Error during texture setup: " << gluErrorString(error));
-        // Handle or log the error accordingly
-    }
+    glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex_width, tex_height, 0, GL_RGBA8, GL_UNSIGNED_BYTE, image_bytes));
+    glCall(glGenerateMipmap(GL_TEXTURE_2D));
 
     // Clean up
     stbi_image_free(image_bytes);

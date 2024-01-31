@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include "Utilities.h"
+#include <gtc/type_ptr.hpp>
 
 void Shader::Init()
 {
@@ -19,8 +20,8 @@ void Shader::Init()
 	const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
 	// Assign the vertex shader its code then compile it.
-	glShaderSource(vertexShader, 1, &vShaderSource, NULL);
-	glCompileShader(vertexShader);
+	glCall(glShaderSource(vertexShader, 1, &vShaderSource, NULL));
+	glCall(glCompileShader(vertexShader));
 
 	GLint successful = GL_FALSE;
 
@@ -37,8 +38,8 @@ void Shader::Init()
 	const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	// Giving the created shader its shader code then compiles it.
-	glShaderSource(fragmentShader, 1, &fShaderSource, NULL);
-	glCompileShader(fragmentShader);
+	glCall(glShaderSource(fragmentShader, 1, &fShaderSource, NULL));
+	glCall(glCompileShader(fragmentShader));
 
 	// Check if the shader was successfully compiled
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &successful);
@@ -50,9 +51,9 @@ void Shader::Init()
 	}
 
 	// Attach the Vertex and Fragment shader to the program (connect the shaders to one thing)
-	glAttachShader(program_id, vertexShader);
-	glAttachShader(program_id, fragmentShader);
-	glLinkProgram(program_id);
+	glCall(glAttachShader(program_id, vertexShader));
+	glCall(glAttachShader(program_id, fragmentShader));
+	glCall(glLinkProgram(program_id));
 
 	// Check if the program successfully linked the fragment and vertex shaders
 	glGetProgramiv(program_id, GL_LINK_STATUS, &successful);
@@ -63,48 +64,54 @@ void Shader::Init()
 	}
 
 	// Since the shaders are already on the program, you don't need the actual shaders anymore
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	glCall(glDeleteShader(vertexShader));
+	glCall(glDeleteShader(fragmentShader));
 }
 
 void Shader::SetFloatAttrib(const GLchar* attribName, const float newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName);
-	glUniform1f(id, newValue);
+	glCall(glUniform1f(id, newValue));
 }
 
 void Shader::SetVec3Attrib(const GLchar* attribName, const glm::vec3 newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName);
-	glUniform3f(id, newValue.x, newValue.y,newValue.z);
+	glCall(glUniform3f(id, newValue.x, newValue.y, newValue.z));
 }
 
 void Shader::SetVec3Attrib(const GLchar* attribName, const float x, const float y, const float z) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName);
-	glUniform3f(id, x, y,z);
+	glCall(glUniform3f(id, x, y, z));
 }
 
 void Shader::SetVec4Attrib(const GLchar* attribName, const glm::vec4 newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName);
-	glUniform4f(id, newValue.x, newValue.y,newValue.z, newValue.w);
+	glCall(glUniform4f(id, newValue.x, newValue.y, newValue.z, newValue.w));
 }
 
 void Shader::SetVec4Attrib(const GLchar* attribName, const float x, const float y, const float z, const float w) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName);
-	glUniform4f(id, x, y,z, w);
+	glCall(glUniform4f(id, x, y, z, w));
+}
+
+void Shader::SetMat4Attrib(const GLchar* attribName, glm::mat4 newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName);
+	glCall(glUniformMatrix4fv(id, 1, GL_FALSE, value_ptr(newValue)));
 }
 
 void Shader::SetUintAttrib(const GLchar* attribName, const unsigned int newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName);
-	glUniform1ui(id, newValue);
+	glCall(glUniform1ui(id, newValue));
 }
 
 void Shader::SetIntAttrib(const GLchar* attribName, const int newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName);
-	glUniform1i(id, newValue);
+	glCall(glUniform1i(id, newValue));
 }

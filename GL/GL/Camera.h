@@ -9,8 +9,8 @@ class Camera
 public:
 	Camera(Controller& roller); 
 
-	void Update() { Move(); }
-	void UpdateViewMatrix() { viewMatrix = glm::lookAt(position, lookAt, glm::vec3(0,1,0)); }
+	void Update(float deltaTime) { Controls(deltaTime); }
+	void UpdateViewMatrix() { viewMatrix = glm::lookAt(position, lookAt + position, glm::vec3(0,1,0)); }
 
 	glm::mat4 GetProjectionMatrix() const { return projectionMatrix; }
 	glm::mat4 GetViewMatrix() const { return viewMatrix; }
@@ -24,7 +24,7 @@ public:
 	glm::vec3 GetLookAt() const { return position; }
 	
 private:
-	void Move();
+	void Controls(float deltaTime);
 	
 	const float cameraHeight = 2;
 

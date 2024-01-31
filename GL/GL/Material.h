@@ -12,8 +12,8 @@ public:
     ~Material(){ glDeleteTextures(1, &colour_texture); };
 
     void NewTexture(std::string filePath);
-    void BindTexture() const { glBindTexture(GL_TEXTURE_2D, colour_texture); }
-    void UnbindTexture() const { glBindTexture(GL_TEXTURE_2D, 0); }
+    void BindTexture() const { glCall(glBindTexture(GL_TEXTURE_2D, colour_texture)); }
+    void UnbindTexture() const { glCall(glBindTexture(GL_TEXTURE_2D, 0)); }
     
     void SetTint(glm::vec4 colour);
 

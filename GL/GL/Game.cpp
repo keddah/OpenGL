@@ -114,7 +114,7 @@ void Game::Update(float deltaTime)
 {
 	mesh->Update(deltaTime);
 	controller.Update();
-	cam.Update();
+	cam.Update(deltaTime);
 }
 
 void Game::FixedUpdate(float deltaTime)

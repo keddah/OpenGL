@@ -8,9 +8,9 @@ bool TriangleRenderer::InitShaders()
 {
 	shader.Init();
 
-	vertexPosIndex = shader.GetAttribute("vertexPos");
+	vertArrayIndex = shader.GetAttribute("vertexPos");
 
-	if (vertexPosIndex == -1)
+	if (vertArrayIndex == -1)
 	{
 		print("couldn't get the attribute")
 		print(glGetError())
@@ -76,12 +76,12 @@ void TriangleRenderer::Render() const
 	// iBuffer->Bind();
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-	glVertexAttribPointer(vertexPosIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
-	glEnableVertexAttribArray(vertexPosIndex);
+	glVertexAttribPointer(vertArrayIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+	glEnableVertexAttribArray(vertArrayIndex);
 	
 	glDrawElements(GL_TRIANGLE_FAN, 3, GL_UNSIGNED_INT, NULL);
 	
-	glDisableVertexAttribArray(vertexPosIndex);
+	glDisableVertexAttribArray(vertArrayIndex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	// vBuffer->Unbind();

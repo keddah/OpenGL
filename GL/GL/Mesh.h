@@ -9,6 +9,7 @@
 #include "Rendering/BufferArrayManager.h"
 #include "Rendering/Shader.h"
 
+
 class Mesh
 {
 public:
@@ -19,11 +20,11 @@ public:
     void Render() const;
     void Update(float deltaTime);
 
-    void SetPosition(const glm::vec3 newVal) { transform.position = newVal; UpdateVertices(); }
-    void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; UpdateVertices(); }
+    void SetPosition(const glm::vec3 newVal) { transform.position = newVal; }
+    void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; }
 
-    void SetRelativePosition(const glm::vec3 newVal) { transform.position += newVal; UpdateVertices(); }
-    void SetRelativePosition(const float x, const float y, const float z) { transform.position += glm::vec3(x,y,z); UpdateVertices(); }
+    void SetRelativePosition(const glm::vec3 newVal) { transform.position += newVal; }
+    void SetRelativePosition(const float x, const float y, const float z) { transform.position += glm::vec3(x,y,z); }
     
     void SetRotation(const glm::vec3 newVal) { transform.rotation = newVal; }
     void SetRotation(float x, float y, float z) { transform.rotation = {x,y,z}; }
@@ -45,8 +46,6 @@ public:
 private:
     void InitShaders();
 
-    // Mainly the position
-    void UpdateVertices();
 
     struct 
     {
@@ -64,22 +63,17 @@ private:
         glm::vec4 colour;        
     };
     
-    std::vector<GLfloat> vertices;
 
     BufferArrayManager* baManager;
     
+    std::vector<GLfloat> vertices;
     std::vector<Vertex> vertexes;
-    
     std::vector<GLuint> indices;
 
-    GLint vertexPosIndex = -1;
+    GLint vertArrayIndex = -1;
 
     Camera& rCam;
     
-    GLint model_matrix_address = -1;
-    GLint view_matrix_address = -1;
-    GLint projection_matrix_address = -1;
-
     bool visible = true;
     bool collisions_enabled = true;
 };
