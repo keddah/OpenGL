@@ -43,8 +43,7 @@ void Mesh::InitShaders()
 
 void Mesh::Update(float deltaTime)
 {
-	transform.rotation.x += .005f * deltaTime;
-	transform.rotation.z += .005f * deltaTime;
+	transform.rotation.y += .005f * deltaTime;
 	// transform.position.y += .00001f;
 }
 
@@ -83,10 +82,11 @@ void Mesh::Render() const
 
 	// The total component count so that the offset and stride can be calculated automatically
 	// constexpr GLuint compCount = posSize + textureSize;
-	constexpr GLuint compCount = posSize + colourSize + textureSize;
+	// constexpr GLuint compCount = posSize + colourSize + textureSize;
+	constexpr GLuint compCount = posSize + textureSize;
 	
 	baManager->SetArrayAttrib(0, posSize, GL_FLOAT, compCount * sizeof(GLfloat), nullptr);	// Position
-	baManager->SetArrayAttrib(1, colourSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>(posSize * sizeof(GLfloat)));	// Colour
+	// baManager->SetArrayAttrib(1, colourSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>(posSize * sizeof(GLfloat)));	// Colour
 	baManager->SetArrayAttrib(2, textureSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>((posSize + colourSize) * sizeof(GLfloat)));	// TexCoords
 
     glCall(glDrawElements(GL_TRIANGLE_FAN, indices.size(), GL_UNSIGNED_INT, NULL));

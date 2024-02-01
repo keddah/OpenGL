@@ -1,7 +1,5 @@
 #include "Material.h"
 
-
-
 Material::Material(Shader& _shader) : shader(_shader)
 {
     NewTexture("sdf");
@@ -28,11 +26,15 @@ void Material::NewTexture(std::string filePath)
     // Set texture parameters
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-    glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     const bool opacity = channelCount > 3;
 
+    // Activate shader and set texture unit
+    shader.Activate();
+    shader.SetIntAttrib("tex0", 0);
+    
     // Upload texture data
     //glCall(glTexImage2D(GL_TEXTURE_2D, 0, opacity ? GL_RGBA8 : GL_RGB8, tex_width, tex_height, 0, opacity ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, image_bytes));
     glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, tex_width, tex_height, 0,GL_RGBA, GL_UNSIGNED_BYTE, image_bytes));
@@ -44,7 +46,4 @@ void Material::NewTexture(std::string filePath)
     stbi_image_free(image_bytes);
     UnbindTexture();
 
-    // Activate shader and set texture unit
-    shader.Activate();
-    shader.SetIntAttrib("tex0", 0);
 }

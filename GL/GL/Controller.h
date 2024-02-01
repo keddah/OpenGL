@@ -13,9 +13,10 @@ public:
     Controller(bool& running);
     ~Controller() = default;
 
-    void Update() { CheckInputs(); }
+    void Update() { ClearMouseDelta(); CheckInputs(); }
     
     glm::vec2 GetMouseDelta() const { return mouseDelta; }
+    void ClearMouseDelta() { mouseDelta = glm::vec2(); }
     
     bool* GetMoveInputs() { return moveInputs; }
     bool JumpBtnDown() const { return jump; }

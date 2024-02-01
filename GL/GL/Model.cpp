@@ -10,8 +10,8 @@ Model::Model(Camera& cam)
 		aiProcess_CalcTangentSpace | 
 		aiProcess_Triangulate | 
 		aiProcess_JoinIdenticalVertices | 
-		aiProcess_SortByPType
-		//aiProcess_FlipUVs
+		aiProcess_SortByPType |
+		aiProcess_FlipUVs
 	);
 
 	if (!scene)
@@ -35,17 +35,20 @@ Model::Model(Camera& cam)
 			vertices.push_back(pos->z);
 
 			// Pushing the colour
-			vertices.push_back(.4f + j * .001f);
-			vertices.push_back(.1f + j * .001f);
-			vertices.push_back(.3f + j * .001f);
-			vertices.push_back(1);
+			// vertices.push_back(.4f + j * .001f);
+			// vertices.push_back(.1f + j * .001f);
+			// vertices.push_back(.3f + j * .001f);
+			// vertices.push_back(1);
 
 			// Pushing the tex coords
 			// Check if there are any present
 			if (!mesh->HasTextureCoords(0)) continue;
 
-			vertices.push_back(mesh->mTextureCoords[0][i].x); 
-			vertices.push_back(mesh->mTextureCoords[0][i].y);
+			const aiFace* f = &mesh->mFaces[j];
+			
+			vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].x);
+			vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].y);
+			
 		}
 
 		for (int j = 0; j < mesh->mNumFaces; j++) {

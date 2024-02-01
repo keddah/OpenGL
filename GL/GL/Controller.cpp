@@ -56,7 +56,6 @@ void Controller::CheckInputs()
 	
 	int mouse_x, mouse_y;
 	
-	
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
