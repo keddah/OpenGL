@@ -10,7 +10,6 @@ public:
     glm::vec3 GetVelocity() const { return velocity; }
     bool IsGrounded() const { return grounded; }
     void SetGrounded(const bool newValue) { grounded = newValue; }
-    void SetCollided(const bool collided) { if(collided) velocity = {}; }
     
 protected:
     void ApplyGravity();
@@ -19,7 +18,8 @@ protected:
     const glm::vec3 terminalVelocity {100, 1000, 100};
     bool grounded = false;
     
-    const float acceleration = .04f;
+    const float walkAccel = .04f;
+    const float sprintAccel = walkAccel * 3.5f;
 
     // Lateral (side-to-side) acceleration
     const float latAcceleration = .06f;

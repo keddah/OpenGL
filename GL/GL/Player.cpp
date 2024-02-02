@@ -23,8 +23,11 @@ void Player::FixedUpdate(float deltaTime)
 
     Accelerate(deltaTime);
     Decelerate(deltaTime);
-    cam->SetPosition(position);
+
+    if(!canMove) return;
+    
     position += velocity;
+    cam->SetPosition(position);
 }
 
 void Player::Accelerate(float deltaTime)
@@ -33,30 +36,36 @@ void Player::Accelerate(float deltaTime)
     
     // Is sprinting?
     const bool sprinting = controller.ShiftBtnDown();
-    moveSpeed = sprinting? sprintSpeed: walkSpeed;
-    const float accel = sprinting? acceleration * 3.5f : acceleration;
+    const float accel = sprinting? sprintAccel : walkAccel;
     
-    const bool forwards = inputs[0];
-    const bool backwards = inputs[1];
-
-    glm::vec3 straightAcceleration;
-    if(forwards) straightAcceleration = velocity + moveSpeed * cam->GetLookAt();
-    if(backwards) straightAcceleration = velocity - walkSpeed * cam->GetLookAt();
-    
-    // Is the new velocity trying to go in the opposite direction...
-    const bool opposite = glm::dot(glm::normalize(velocity), glm::normalize(straightAcceleration)) < 0;
-
     // If trying to go in the opposite forward direction... use a multiplier
-    constexpr float turnMultiplier = 2.2f;
+    constexpr float turnMultiplier = 2.5f;
     
-    /////// Forwards/Backward
-    if(inputs[0]) velocity = mix(velocity, straightAcceleration, opposite? accel * turnMultiplier : accel);
-    if(inputs[1]) velocity = mix(velocity, straightAcceleration, opposite? acceleration * turnMultiplier : acceleration);   // Can't sprint backwards
+    /////// Forwards
+    if(inputs[0])
+    {
+        const glm::vec3 straightAcceleration = velocity + (sprinting? sprintSpeed: walkSpeed) * cam->GetLookAt();
+        
+        // Is the new velocity trying to go in the opposite direction...
+        const bool opposite = dot(normalize(velocity), normalize(straightAcceleration)) < 0;
+        velocity = mix(velocity, straightAcceleration, opposite? accel * turnMultiplier : accel);
+    }
+
+    /////// Backwards
+    if(inputs[1])
+    {
+        const glm::vec3 straightAcceleration = velocity - walkSpeed * cam->GetLookAt();
+
+        // Is the new velocity trying to go in the opposite direction...
+        const bool opposite = dot(normalize(velocity), normalize(straightAcceleration)) < 0;
+        velocity = mix(velocity, straightAcceleration, opposite? walkAccel * turnMultiplier : walkAccel);   // Can't sprint backwards
+    }
 
     /////// Strafing
     const glm::vec3 strafe = normalize(cross(cam->GetLookAt(), glm::vec3(0.0f, 1.0f, 0.0f))) * walkSpeed;   // Can't increase strafe speed by sprinting
 
-    const float strafeAcceleration = forwards || backwards? latAcceleration * .4f : latAcceleration;
+    // If moving forwards/backwards ... decrease lateral accerlation
+    const float strafeAcceleration = inputs[0] || inputs[1]? latAcceleration * .4f : latAcceleration;
     
     // Strafe Left
     if (inputs[2]) velocity = mix(velocity, strafe, strafeAcceleration);
@@ -73,18 +82,19 @@ void Player::Accelerate(float deltaTime)
 void Player::Decelerate(float deltaTime)
 {
     if(accelerating) return;
-    
+
+    // Interpolate towards 0 velocity whilst the player isn't accelerating
     velocity = mix(velocity, {}, drag);
 }
 
 void Player::Jump()
 {
-    position.y -= moveSpeed;
+    position.y -= sprintSpeed;
 }
 
 void Player::Crouch()
 {
-    position.y += moveSpeed;
+    position.y += sprintSpeed;
 }
 
 void Player::Collisions()

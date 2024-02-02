@@ -59,18 +59,27 @@ BoundingBox Mesh::CalculateAABoundingBox() const
 	glm::vec3 minBounds = glm::vec3(std::numeric_limits<float>::max());
 	glm::vec3 maxBounds = glm::vec3(std::numeric_limits<float>::lowest());
 
-	for (int i = 0; i < vertices.size(); i++)
-	{
-		glm::vec3 vert = {};
-		if(i % 1 == 0) vert.x = vertices[i];
-		if(i % 2 == 0) vert.y = vertices[i];
-		if(i % 3 == 0) vert.z = vertices[i];
-		
+	// Convert Euler angles to quaternion
+	const glm::quat rotationQuat = glm::quat(transform.rotation);
+
+	for (int i = 0; i < vertices.size(); i += 3) {
+		glm::vec3 vert(vertices[i], vertices[i + 1], vertices[i + 2]);
+
+		// Apply rotation to each vertex using quaternion
+		vert = rotationQuat * vert;
+
+		// Apply scale to each vertex
+		vert *= transform.scale;
+
+		// Apply translation to each vertex
+		vert += transform.position;
+
+		// Update minBounds and maxBounds
 		minBounds = min(minBounds, vert);
 		maxBounds = max(maxBounds, vert);
 	}
-											// Center of the Bounding box
-	return {minBounds, maxBounds,  (minBounds + maxBounds) * 0.5f};
+
+	return { minBounds, maxBounds, (minBounds + maxBounds) * 0.5f };
 }
 
 void Mesh::Update(float deltaTime)
