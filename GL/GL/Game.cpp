@@ -96,12 +96,12 @@ void Game::InitOpenGL()
 
 	player = new Player(rRunning);
 	
-	left = new Mesh(verts, indices, player->GetCamera());
-	right = new Mesh(verts, indices, player->GetCamera());
-	back = new Mesh(verts, indices, player->GetCamera());
-	floor = new Mesh(verts, indices, player->GetCamera());
+	left = new Mesh(verts, indices, *player);
+	right = new Mesh(verts, indices,*player);
+	back = new Mesh(verts, indices, *player);
+	floor = new Mesh(verts, indices,*player);
 	
-	model = new Model(player->GetCamera());
+	model = new Model(player);
 
 	left->SetScale(.2f, 5, 5);
 	left->AddPosition(-2.5f, 0,0);
@@ -115,7 +115,7 @@ void Game::InitOpenGL()
 	floor->AddPosition(0, 2.5f, 0);
 	floor->SetScale(5, .2f, 5);
 
-	model = new Model(player->GetCamera());
+	model = new Model(player);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -125,7 +125,17 @@ void Game::Update(float deltaTime) const
 {
 	player->Update(deltaTime);
 	
-	if(model) model->Update(deltaTime);
+	if(left) left->Update(deltaTime);
+	if(right) right->Update(deltaTime);
+	if(back) back->Update(deltaTime);
+	if(floor) floor->Update(deltaTime);
+	
+	if(model)
+	{
+		model->AddRotation(0, .005f * deltaTime, 0);
+		model->Update(deltaTime);
+	}
+
 }
 
 void Game::FixedUpdate(float deltaTime)

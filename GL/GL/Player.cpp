@@ -3,6 +3,8 @@
 Player::Player(bool running) : controller(running)
 {
     cam = new Camera(controller);
+
+    playerBounds.center = (playerBounds.min + playerBounds.max) * .5f;
 }
 
 void Player::Update(float deltaTime)
@@ -19,6 +21,7 @@ void Player::FixedUpdate(float deltaTime)
 
     Move(deltaTime);
     cam->SetPosition(position);
+    position += velocity;
 }
 
 void Player::Move(float deltaTime)

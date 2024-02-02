@@ -6,21 +6,15 @@
 
 #include "Camera.h"
 #include "Material.h"
+#include "Player.h"
 #include "Rendering/BufferArrayManager.h"
 #include "Rendering/Shader.h"
-
-struct BoundingBox
-{
-    glm::vec3 min;    
-    glm::vec3 max;    
-    glm::vec3 center;    
-};
 
 class Mesh
 {
 public:
     Mesh() = default;
-    Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera);
+    Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Player& player);
     ~Mesh() { delete baManager; delete mat; }
     
     void Render() const;
@@ -46,13 +40,14 @@ public:
     glm::vec3 GetScale() const { return transform.scale; }
 
 
-    void SetVibility(const bool newVal) { visible = newVal; }
+    void SetVisibility(const bool newVal) { visible = newVal; }
     void SetCollision (const bool newVal) { collisions_enabled = newVal; }
     
 private:
     void InitShaders();
+    void Collisions();
     
-    BoundingBox CalculateAABoundingBox(const std::vector<GLfloat>& vertices) const;
+    BoundingBox CalculateAABoundingBox() const;
 
     struct 
     {
@@ -80,6 +75,7 @@ private:
     GLint vertArrayIndex = -1;
 
     Camera& rCam;
+    Player& rPlayer;
     
     bool visible = true;
     bool collisions_enabled = true;

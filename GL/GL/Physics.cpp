@@ -2,6 +2,8 @@
 
 void Physics::ApplyGravity()
 {
+    if(grounded) return;
+    
     velocity += glm::vec3(0, 1, 0) * gravity;
 
     if(abs(velocity.y) > maxFallSpeed) velocity.y = maxFallSpeed;

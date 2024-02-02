@@ -23,8 +23,8 @@ void Camera::Look(glm::vec2 mouseDelta, float deltaTime)
     // Normalize lookAt vector
     lookAt = normalize(lookAt);
 
-    print("Mouse delta: " << mouseDelta.x << ", " << mouseDelta.y)
-    print("LookAt: " << lookAt.x << ", " << lookAt.y << ", " << lookAt.z)
+    // print("Mouse delta: " << mouseDelta.x << ", " << mouseDelta.y)
+    // print("LookAt: " << lookAt.x << ", " << lookAt.y << ", " << lookAt.z)
     
     // const float moveSpeed = 2 * deltaTime;
     // const bool* inputs = control.GetMoveInputs();

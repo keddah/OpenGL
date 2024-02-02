@@ -16,12 +16,29 @@ using namespace std;
 class Model
 {
 public:
-	Model(Camera& cam);
+	Model(Player* player);
 	~Model() { delete gameMesh; }
 
 	void Render() const { if (gameMesh) gameMesh->Render(); }
-	void Update(float deltaTime) { if (gameMesh) gameMesh->Update(deltaTime); }
+	void Update(float deltaTime) const { if (gameMesh) gameMesh->Update(deltaTime); }
 
+
+	void SetPosition(const glm::vec3 newVal) const { gameMesh->SetPosition(newVal); }
+	void SetPosition(const float x, const float y, const float z) const { gameMesh->SetPosition(x,y,z); }
+
+	void AddPosition(const glm::vec3 newVal) const { gameMesh->AddPosition(newVal); }
+	void AddPosition(const float x, const float y, const float z) const { gameMesh->AddPosition(x,y,z); }
+    
+	void SetRotation(const glm::vec3 newVal) const { gameMesh->SetRotation(newVal); }
+	void SetRotation(const float x, const float y, const float z) const { gameMesh->SetRotation(x,y,z); }
+    
+	void AddRotation(const glm::vec3 newVal) const { gameMesh->AddRotation(newVal); }
+	void AddRotation(const float x, const float y, const float z) const { gameMesh->AddRotation(x,y,z); }
+    
+	void SetScale(const glm::vec3 newVal) const { gameMesh->SetScale(newVal); }
+	void SetScale(const float x, const float y, const float z) const { gameMesh->SetScale(x,y,z); }
+	
+	
 private:
 	string filePath = "ModelAssets/Barrel.obj";
 

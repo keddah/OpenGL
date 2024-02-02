@@ -1,10 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Camera& camera) : rCam(camera)
+Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Player& player) : rPlayer(player), rCam(player.GetCamera())
 {
 	vertices = _vertices;
 	indices = _indices;
-	
+
 	// float x, y, z;
 	// for(int i = 0; i < vertices.size(); i++)
 	// {
@@ -41,7 +41,20 @@ void Mesh::InitShaders()
 	mat = new Material(shader);
 }
 
-BoundingBox Mesh::CalculateAABoundingBox(const std::vector<GLfloat>& vertices) const
+void Mesh::Collisions()
+{
+	if(!collisions_enabled) return;
+
+	const BoundingBox thisBounds = CalculateAABoundingBox();
+	const glm::vec3 playerPos = rPlayer.GetPosition() + rPlayer.GetVelocity();
+
+	// Checks for floor collisions
+	// rPlayer.SetGrounded(BoundingBox::IsInsideBounds({0, playerPos.y, 0}, thisBounds.min, thisBounds.max));
+	rPlayer.SetCollided(BoundingBox::IsInsideBounds(playerPos, thisBounds.min, thisBounds.max));
+	rPlayer.SetGrounded(!(playerPos.y >= thisBounds.min.y && playerPos.y <= thisBounds.max.y));
+}
+
+BoundingBox Mesh::CalculateAABoundingBox() const
 {
 	glm::vec3 minBounds = glm::vec3(std::numeric_limits<float>::max());
 	glm::vec3 maxBounds = glm::vec3(std::numeric_limits<float>::lowest());
@@ -62,9 +75,9 @@ BoundingBox Mesh::CalculateAABoundingBox(const std::vector<GLfloat>& vertices) c
 
 void Mesh::Update(float deltaTime)
 {
-	transform.rotation.y += .005f * deltaTime;
-	// transform.position.y += .00001f;
+	Collisions();
 }
+
 
 void Mesh::Render() const
 {

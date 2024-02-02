@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model(Camera& cam)
+Model::Model(Player* player)
 {
 	Assimp::Importer importer;
 	const aiScene* scene = 
@@ -62,7 +62,7 @@ Model::Model(Camera& cam)
 			indices.push_back(f->mIndices[2]);
 		}
 
-		gameMesh = new Mesh(vertices, indices, cam);
+		gameMesh = new Mesh(vertices, indices, *player);
 	}
 
 }
