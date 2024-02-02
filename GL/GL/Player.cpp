@@ -47,3 +47,8 @@ void Player::Crouch()
 {
     position.y += walkSpeed;
 }
+
+void Player::Collisions()
+{
+    
+}

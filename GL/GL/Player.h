@@ -19,6 +19,7 @@ private:
 	void Move(float deltaTime);
 	void Jump();
 	void Crouch();
+	void Collisions();
 	
 	glm::vec3 position;
 
@@ -28,7 +29,12 @@ private:
 	const float walkSpeed = .2f;
 	const float sprintSpeed = .8f;
 
-
+	// 0 = min ... 1 = max
+	const glm::vec3 playerBounds[2] =
+	{
+		{-.25f, -1, -.25f},
+		{.25f, 1, .25f}
+	};
 	
 	class WeaponController
 	{

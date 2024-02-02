@@ -22,6 +22,9 @@ void Game::InitSDL()
 		print("could not initialise window!")
 		print(SDL_GetError())
 	}
+
+	// Hide the mouse cursor
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 void Game::InitOpenGL()

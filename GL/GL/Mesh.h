@@ -9,6 +9,12 @@
 #include "Rendering/BufferArrayManager.h"
 #include "Rendering/Shader.h"
 
+struct BoundingBox
+{
+    glm::vec3 min;    
+    glm::vec3 max;    
+    glm::vec3 center;    
+};
 
 class Mesh
 {
@@ -45,7 +51,8 @@ public:
     
 private:
     void InitShaders();
-
+    
+    BoundingBox CalculateAABoundingBox(const std::vector<GLfloat>& vertices) const;
 
     struct 
     {
