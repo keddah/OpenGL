@@ -19,18 +19,21 @@ public:
 	BoundingBox GetBounds() const { return playerBounds; }
 	
 private:
-	void Move(float deltaTime);
+	void Accelerate(float deltaTime);
+	void Decelerate(float deltaTime);
 	void Jump();
 	void Crouch();
 	void Collisions();
-	
+
+	bool accelerating;
 	glm::vec3 position = { 0, -5, 0};
 
 	Controller controller;
 	Camera* cam;
 	
 	const float walkSpeed = .2f;
-	const float sprintSpeed = .8f;
+	const float sprintSpeed = 2;
+	float moveSpeed = walkSpeed;
 
 	BoundingBox playerBounds =
 	{

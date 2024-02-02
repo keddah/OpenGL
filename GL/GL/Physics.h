@@ -16,13 +16,15 @@ protected:
     void ApplyGravity();
     
     glm::vec3 velocity = {};
+    const glm::vec3 terminalVelocity {100, 1000, 100};
     bool grounded = false;
+    
+    const float acceleration = .04f;
+
+    // Lateral (side-to-side) acceleration
+    const float latAcceleration = .06f;
+    const float drag = .08f;
     
 private:
     const float gravity = 9.8f;
-    const float acceleration = 2.0f;
-    const float drag = 1.0f;
-
-    const float maxFallSpeed = 3000;
-    const float maxSpeed = 400;
 };

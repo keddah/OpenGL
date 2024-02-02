@@ -28,8 +28,8 @@ public:
 	void SetPosition(const float x, const float y, const float z) { position = glm::vec3(x, y, z); }
 	glm::vec3 GetPosition() const { return position; }
 
-	void SetLookAt(const glm::vec3 newLook) { lookAt = newLook; }
-	void SetLookAt(const float x, const float y, const float z) { lookAt = glm::vec3(x,y,z); }
+	// void SetLookAt(const glm::vec3 newLook) { lookAt = newLook; }
+	// void SetLookAt(const float x, const float y, const float z) { lookAt = glm::vec3(x,y,z); }
 	glm::vec3 GetLookAt() const { return lookAt; }
 	
 private:
