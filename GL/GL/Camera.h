@@ -4,6 +4,14 @@
 
 #include "Controller.h"
 
+struct AngleConversion
+{
+	static glm::vec3 eulerToQuaternion(const float pitch, const float yaw, const float roll)
+	{
+		return {glm::radians(pitch), glm::radians(yaw), glm::radians(roll)};
+	}
+};
+
 class Camera
 {
 public:

@@ -27,13 +27,13 @@ public:
     void AddPosition(const float x, const float y, const float z) { transform.position += glm::vec3(x,y,z); }
     
     void SetRotation(const glm::vec3 newVal) { transform.rotation = newVal; }
-    void SetRotation(float x, float y, float z) { transform.rotation = {x,y,z}; }
+    void SetRotation(const float x, const float y, const float z) { transform.rotation = {x,y,z}; }
     
     void AddRotation(const glm::vec3 newVal) { transform.rotation += newVal; }
     void AddRotation(const float x, const float y, const float z) { transform.rotation += glm::vec3(x,y,z); }
     
     void SetScale(const glm::vec3 newVal) { transform.scale = newVal; }
-    void SetScale(const float x, const float y, const float z) { transform.position = {x,y,z}; }
+    void SetScale(const float x, const float y, const float z) { transform.scale = {x,y,z}; }
 
     glm::vec3 GetPosition() const { return transform.position; }
     glm::vec3 GetRotation() const { return transform.rotation; }

@@ -38,7 +38,7 @@ void Mesh::InitShaders()
 
 	// Initialise the vertices after the shaders.
 	baManager = new BufferArrayManager(vertices, indices);
-	// mat = new Material(shader);
+	mat = new Material(shader);
 }
 
 void Mesh::Update(float deltaTime)
@@ -68,7 +68,7 @@ void Mesh::Render() const
 	shader.SetMat4Attrib("viewMatrix", rCam.GetViewMatrix());
 	shader.SetMat4Attrib("projectionMatrix", rCam.GetProjectionMatrix());
 	
-	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
+	shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 
 	baManager->BindArray();
 	baManager->BindVBuffer();
@@ -82,11 +82,11 @@ void Mesh::Render() const
 
 	// The total component count so that the offset and stride can be calculated automatically
 	// constexpr GLuint compCount = posSize + textureSize;
-	// constexpr GLuint compCount = posSize + colourSize + textureSize;
-	constexpr GLuint compCount = posSize + textureSize;
+	constexpr GLuint compCount = posSize + colourSize + textureSize;
+	// constexpr GLuint compCount = posSize + textureSize;
 	
 	baManager->SetArrayAttrib(0, posSize, GL_FLOAT, compCount * sizeof(GLfloat), nullptr);	// Position
-	// baManager->SetArrayAttrib(1, colourSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>(posSize * sizeof(GLfloat)));	// Colour
+	baManager->SetArrayAttrib(1, colourSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>(posSize * sizeof(GLfloat)));	// Colour
 	baManager->SetArrayAttrib(2, textureSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>((posSize + colourSize) * sizeof(GLfloat)));	// TexCoords
 
     glCall(glDrawElements(GL_TRIANGLE_FAN, indices.size(), GL_UNSIGNED_INT, NULL));

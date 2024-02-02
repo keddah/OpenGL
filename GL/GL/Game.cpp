@@ -100,22 +100,22 @@ void Game::InitOpenGL()
 	
 	model = new Model(player->GetCamera());
 
-	left->SetScale(5, .2f, 5);
-	left->SetRotation(0,0, 90);
+	left->SetScale(.2f, 5, 5);
+	left->AddPosition(-2.5f, 0,0);
 
-	right->SetScale(5, .2f, 5);
-	right->SetRotation(0,0, -90);
-
-	back->SetScale(5, .2f, 5);
-	back->SetRotation(90,0, 0);
+	right->SetScale(.2f, 5, 5);
+	right->AddPosition(2.5f, 0,0);
 	
+	back->SetScale(5, 5, .2f);
+	back->AddPosition(0, 0, 2.5f);
+	
+	floor->AddPosition(0, 2.5f, 0);
 	floor->SetScale(5, .2f, 5);
 
 	model = new Model(player->GetCamera());
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-
 }
 
 void Game::Update(float deltaTime) const
