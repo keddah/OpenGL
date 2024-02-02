@@ -38,7 +38,7 @@ void Mesh::InitShaders()
 
 	// Initialise the vertices after the shaders.
 	baManager = new BufferArrayManager(vertices, indices);
-	mat = new Material(shader);
+	// mat = new Material(shader);
 }
 
 void Mesh::Update(float deltaTime)
@@ -73,7 +73,7 @@ void Mesh::Render() const
 	baManager->BindArray();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();
-	mat->BindTexture();
+	if(mat) mat->BindTexture();
 
 	// Stride = all the compCounts added together
 	constexpr GLuint posSize = 3;
@@ -93,7 +93,7 @@ void Mesh::Render() const
 	
 	glCall(glDisableVertexAttribArray(vertArrayIndex));
 	baManager->UnbindAll();
-	mat->UnbindTexture();
+	if(mat) mat->UnbindTexture();
 	
 	shader.Deactivate();
 }

@@ -59,13 +59,11 @@ void Game::InitOpenGL()
 	}
 
 	rRunning = true;
-	controller = new Controller(rRunning);
-	cam = new Camera(*controller);
 	// tri = new TriangleRenderer(cam);
 
 	//________ A cube ________\\
 
-	std::vector<GLfloat> verts =
+	const std::vector<GLfloat> verts =
 	{
 		-0.5f, -0.5f, -0.5f,   /* Vertex 0 */    /* Colour */ .4f, .1f, .3f, 1,    /* TexCoord */  0,0,
 		 0.5f, -0.5f, -0.5f,   /* Vertex 1 */    /* Colour */ .4f, .2f, .3f, 1,    /* TexCoord */  1,0,
@@ -77,7 +75,7 @@ void Game::InitOpenGL()
 		-0.5f,  0.5f,  0.5f,   /* Vertex 7 */    /* Colour */ .6f, .1f, .3f, 1,    /* TexCoord */  0,1
 	};
 
-	std::vector<GLuint> indices =
+	const std::vector<GLuint> indices =
 	{
 		0, 1, 2,  // Front face
 		2, 3, 0,
@@ -93,24 +91,43 @@ void Game::InitOpenGL()
 		5, 4, 0
 	};
 
-	//mesh = new Mesh(verts, indices, cam);
-	model = new Model(*cam);
+	player = new Player(rRunning);
+	
+	left = new Mesh(verts, indices, player->GetCamera());
+	right = new Mesh(verts, indices, player->GetCamera());
+	back = new Mesh(verts, indices, player->GetCamera());
+	floor = new Mesh(verts, indices, player->GetCamera());
+	
+	model = new Model(player->GetCamera());
+
+	left->SetScale(5, .2f, 5);
+	left->SetRotation(0,0, 90);
+
+	right->SetScale(5, .2f, 5);
+	right->SetRotation(0,0, -90);
+
+	back->SetScale(5, .2f, 5);
+	back->SetRotation(90,0, 0);
+	
+	floor->SetScale(5, .2f, 5);
+
+	model = new Model(player->GetCamera());
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
 }
 
-void Game::Update(float deltaTime)
+void Game::Update(float deltaTime) const
 {
-	if(mesh) mesh->Update(deltaTime);
+	player->Update(deltaTime);
+	
 	if(model) model->Update(deltaTime);
-	controller->Update();
-	cam->Update(deltaTime);
 }
 
 void Game::FixedUpdate(float deltaTime)
 {
+	player->FixedUpdate(deltaTime);
 }
 
 void Game::Render() const
@@ -122,6 +139,11 @@ void Game::Render() const
 
 	//if(tri) tri->Render();
 	//if(mesh) mesh->Render();
+	if(left) left->Render();
+	if(right) right->Render();
+	if(back) back->Render();
+	if(floor) floor->Render();
+	
 	if(model) model->Render();
 	
 	SDL_GL_SwapWindow(window);

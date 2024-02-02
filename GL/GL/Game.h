@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "Controller.h"
 #include "TriangleRenderer.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "Player.h"
 
 #define print(x) { std::cout << x << std::endl; }
 
@@ -15,11 +15,11 @@ public:
 	Game(bool& running) : rRunning(running) { Init(); }
 	~Game() { Clean(); }
 
-	void Update(float deltaTime);
+	void Update(float deltaTime) const;
 	void FixedUpdate(float deltaTime);
 
 	void Render() const;
-	void Clean() const { delete tri; delete mesh; SDL_DestroyWindow(window); SDL_Quit(); }
+	void Clean() const { delete tri; delete left; SDL_DestroyWindow(window); SDL_Quit(); }
 
 	struct Vertex
 	{
@@ -39,9 +39,12 @@ private:
 	SDL_GLContext openGL_context;
 
 	TriangleRenderer* tri;
-	Mesh* mesh;
-	Model* model;
+	Mesh* left;
+	Mesh* right;
+	Mesh* back;
+	Mesh* floor;
 	
-	Controller* controller;
-	Camera* cam;
+	Model* model;
+
+	Player* player;
 };
