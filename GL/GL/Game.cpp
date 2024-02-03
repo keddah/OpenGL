@@ -141,11 +141,16 @@ void Game::Update(float deltaTime) const
 void Game::FixedUpdate(float deltaTime)
 {
 	player->FixedUpdate(deltaTime);
+	if(left) left->FixedUpdate(deltaTime);
+	if(right) right->FixedUpdate(deltaTime);
+	if(back) back->FixedUpdate(deltaTime);
+	if(floor) floor->FixedUpdate(deltaTime);
+	if(model) model->FixedUpdate(deltaTime);
+
 }
 
 void Game::Render() const
 {
-
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

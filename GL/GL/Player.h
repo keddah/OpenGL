@@ -12,13 +12,26 @@ public:
 	void FixedUpdate(float deltaTime);
 
 	// Stop the player from moving and remove velocity
-	void SetCollided(const bool collided) { canMove = !collided; if(!canMove) velocity = {}; }
+	void SetCollided(const bool collided)
+	{
+		if(collided)
+		{
+			canMove = false;
+			velocity = glm::vec3(0, velocity.y, 0);
+		}
+
+		else
+		{
+			canMove = true;
+		}
+	}
 
 	void Render() { wc.Render(); }
 
 	Camera& GetCamera() const { if(!cam) print("unable to get Cam") return *cam; }
 
 	glm::vec3 GetPosition() const { return position; }
+	float GetPlayerHeight() const { return playerHeight; }
 	BoundingBox GetBounds() const { return playerBounds; }
 	
 private:
@@ -30,11 +43,12 @@ private:
 
 	bool accelerating;
 	bool canMove = true;
-	glm::vec3 position = { 0, -5, 0};
+	glm::vec3 position = { 0, -5, 1.5f};
 
 	Controller controller;
 	Camera* cam;
-	
+
+	const float playerHeight = 2;
 	const float walkSpeed = .2f;
 	const float sprintSpeed = 2;
 

@@ -2,6 +2,7 @@
 #include <glew.h>
 #include <vector>
 #include <gtc/type_ptr.hpp>
+#include <gtc/quaternion.hpp>
 #include <random>
 
 #include "Camera.h"
@@ -19,6 +20,7 @@ public:
     
     void Render() const;
     void Update(float deltaTime);
+    void FixedUpdate(float deltaTime) { Collisions(); }
 
     void SetPosition(const glm::vec3 newVal) { transform.position = newVal; }
     void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; }

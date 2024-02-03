@@ -19,19 +19,23 @@ void Player::Update(float deltaTime)
 
 void Player::FixedUpdate(float deltaTime)
 {
-    // ApplyGravity();
+    ApplyGravity();
 
     Accelerate(deltaTime);
     Decelerate(deltaTime);
 
-    if(!canMove) return;
-    
     position += velocity;
     cam->SetPosition(position);
 }
 
 void Player::Accelerate(float deltaTime)
 {
+    if(!canMove)
+    {
+        velocity.x = 0;
+        velocity.z = 0;
+        return;
+    }
     const bool* inputs = controller.GetMoveInputs();
     
     // Is sprinting?
@@ -48,7 +52,15 @@ void Player::Accelerate(float deltaTime)
         
         // Is the new velocity trying to go in the opposite direction...
         const bool opposite = dot(normalize(velocity), normalize(straightAcceleration)) < 0;
-        velocity = mix(velocity, straightAcceleration, opposite? accel * turnMultiplier : accel);
+
+        // velocity = mix(velocity, straightAcceleration, opposite? accel * turnMultiplier : accel);
+        if(canMove)
+        {
+            // Only operating on the horizontal axis
+            velocity.x = mix(velocity, straightAcceleration, opposite? accel * turnMultiplier : accel).x;
+            velocity.z = mix(velocity, straightAcceleration, opposite? accel * turnMultiplier : accel).z;
+        }
+
     }
 
     /////// Backwards
@@ -58,7 +70,15 @@ void Player::Accelerate(float deltaTime)
 
         // Is the new velocity trying to go in the opposite direction...
         const bool opposite = dot(normalize(velocity), normalize(straightAcceleration)) < 0;
-        velocity = mix(velocity, straightAcceleration, opposite? walkAccel * turnMultiplier : walkAccel);   // Can't sprint backwards
+
+        // velocity = mix(velocity, straightAcceleration, opposite? walkAccel * turnMultiplier : walkAccel);   // Can't sprint backwards
+
+        if(canMove)
+        {
+            // Only operating on the horizontal axis
+            velocity.x = mix(velocity, straightAcceleration, opposite? walkAccel * turnMultiplier : walkAccel).x;   // Can't sprint backwards
+            velocity.z = mix(velocity, straightAcceleration, opposite? walkAccel * turnMultiplier : walkAccel).z;  
+        }
     }
 
     /////// Strafing
@@ -89,12 +109,12 @@ void Player::Decelerate(float deltaTime)
 
 void Player::Jump()
 {
-    position.y -= sprintSpeed;
+    AddForce({0,-1,0}, walkSpeed);
 }
 
 void Player::Crouch()
 {
-    position.y += sprintSpeed;
+    AddForce({0,1,0}, walkSpeed);
 }
 
 void Player::Collisions()

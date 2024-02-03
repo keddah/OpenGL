@@ -33,9 +33,6 @@ public:
 	glm::vec3 GetLookAt() const { return lookAt; }
 	
 private:
-	
-	const float cameraHeight = 2;
-
 	const float fov = 80;
 	const float aspectRatio = 1920 / 1080;
 	const float nearClip = .1f;

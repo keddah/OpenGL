@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include <gtx/quaternion.hpp>
 
 Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Player& player) : rPlayer(player), rCam(player.GetCamera())
 {
@@ -43,15 +44,24 @@ void Mesh::InitShaders()
 
 void Mesh::Collisions()
 {
-	if(!collisions_enabled) return;
-
+	if (!collisions_enabled) return;
+	
 	const BoundingBox thisBounds = CalculateAABoundingBox();
 	const glm::vec3 playerPos = rPlayer.GetPosition() + rPlayer.GetVelocity();
+	const glm::vec3 playerPos_wall = {playerPos.x, 0, playerPos.z};
+	const glm::vec3 playerPos_floor = {0, playerPos.y, 0};
 
-	// Checks for floor collisions
-	// rPlayer.SetGrounded(BoundingBox::IsInsideBounds({0, playerPos.y, 0}, thisBounds.min, thisBounds.max));
-	rPlayer.SetCollided(BoundingBox::IsInsideBounds(playerPos, thisBounds.min, thisBounds.max));
-	rPlayer.SetGrounded(!(playerPos.y >= thisBounds.min.y && playerPos.y <= thisBounds.max.y));
+	// Handle wall collisions
+	const bool hitWall = BoundingBox::IsInsideBounds(playerPos_wall, thisBounds.min, thisBounds.max);
+	rPlayer.SetCollided(hitWall);
+
+	
+	
+	// Check for floor
+	if(Raycast::RayCollision(playerPos, {0,-1,0}, rPlayer.GetPlayerHeight(), thisBounds)) rPlayer.SetGrounded(true);
+	// else rPlayer.SetGrounded(false);
+	// const bool grounded = BoundingBox::IsInsideBounds(playerPos_floor, thisBounds.min, thisBounds.max);
+	// rPlayer.SetGrounded(grounded);
 }
 
 BoundingBox Mesh::CalculateAABoundingBox() const
@@ -84,7 +94,7 @@ BoundingBox Mesh::CalculateAABoundingBox() const
 
 void Mesh::Update(float deltaTime)
 {
-	Collisions();
+	// Collisions();
 }
 
 
