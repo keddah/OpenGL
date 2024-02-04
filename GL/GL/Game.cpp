@@ -112,8 +112,8 @@ void Game::InitOpenGL()
 	back->SetScale(15, 15, .2f);
 	back->AddPosition(0, 0, 7.5f);
 	
-	floor->AddPosition(0, 7.5f, 0);
-	floor->SetScale(15, .2f, 15);
+	floor->AddPosition(0, 8, 0);
+	floor->SetScale(15, 1, 15);
 
 	model = new Model(player->GetCamera());
 
@@ -132,28 +132,13 @@ void Game::Update(float deltaTime) const
 {
 	player->Update(deltaTime);
 	
-	if(left) left->Update(deltaTime);
-	if(right) right->Update(deltaTime);
-	if(back) back->Update(deltaTime);
-	if(floor) floor->Update(deltaTime);
-	
-	if(model)
-	{
-		model->AddRotation(0, .005f * deltaTime, 0);
-		model->Update(deltaTime);
-	}
+	if(model) model->AddRotation(0, .005f * deltaTime, 0);
 
 }
 
 void Game::FixedUpdate(float deltaTime)
 {
 	player->FixedUpdate(deltaTime);
-	if(left) left->FixedUpdate(deltaTime);
-	if(right) right->FixedUpdate(deltaTime);
-	if(back) back->FixedUpdate(deltaTime);
-	if(floor) floor->FixedUpdate(deltaTime);
-	if(model) model->FixedUpdate(deltaTime);
-
 }
 
 void Game::Render() const
@@ -162,8 +147,6 @@ void Game::Render() const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	//if(tri) tri->Render();
-	//if(mesh) mesh->Render();
 	if(left) left->Render(player->GetCamera());
 	if(right) right->Render(player->GetCamera());
 	if(back) back->Render(player->GetCamera());

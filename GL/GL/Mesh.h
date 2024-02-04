@@ -19,8 +19,6 @@ public:
     ~Mesh() { }//delete baManager; delete mat; }
     
     void Render(Camera& cam) const;
-    void Update(float deltaTime);
-    void FixedUpdate(float deltaTime) { }
 
     void SetPosition(const glm::vec3 newVal) { transform.position = newVal;  CalculateAABoundingBox(); }
     void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; CalculateAABoundingBox(); }

@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include <gtx/quaternion.hpp>
+#include <gtx/string_cast.hpp>
 
 Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices)
 {
@@ -55,14 +56,15 @@ void Mesh::CalculateAABoundingBox()
 	for (int i = 0; i < vertices.size(); i += 3) {
 		glm::vec3 vert(vertices[i], vertices[i + 1], vertices[i + 2]);
 
+		// Apply scale to each vertex
+		vert *= transform.scale;
+		
+		// Apply translation to each vertex
+		vert += transform.position;
+		
 		// Apply rotation to each vertex using quaternion
 		vert = rotationQuat * vert;
 
-		// Apply scale to each vertex
-		vert *= transform.scale;
-
-		// Apply translation to each vertex
-		vert += transform.position;
 
 		// Update minBounds and maxBounds
 		minBounds = min(minBounds, vert);
@@ -70,11 +72,6 @@ void Mesh::CalculateAABoundingBox()
 	}
 
 	boundingBox = { minBounds, maxBounds, (minBounds + maxBounds) * 0.5f };
-}
-
-void Mesh::Update(float deltaTime)
-{
-	// Collisions();
 }
 
 

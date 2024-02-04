@@ -20,8 +20,6 @@ public:
 	~Model() { delete gameMesh; }
 
 	void Render(Camera& cam) const { if (gameMesh) gameMesh->Render(cam); }
-	void Update(float deltaTime) const { if (gameMesh) gameMesh->Update(deltaTime); }
-	void FixedUpdate(float deltaTime) const { if (gameMesh) gameMesh->FixedUpdate(deltaTime); }
 
 
 	void SetPosition(const glm::vec3 newVal) const { gameMesh->SetPosition(newVal); }

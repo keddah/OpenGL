@@ -39,7 +39,7 @@ private:
 
 	std::vector<Mesh*> meshes; 
 	
-	const float playerHeight = 2;
+	const float playerHeight = 3;
 	const float walkSpeed = .2f;
 	const float sprintSpeed = 2;
 

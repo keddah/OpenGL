@@ -122,17 +122,17 @@ void Player::Collisions()
     for(const auto& mesh : meshes)
     {
         if (!mesh->IsCollisions()) continue;
-
+    
         const BoundingBox meshBox = mesh->GetBoundingBox();
-        const glm::vec3 predictedPos = position + velocity + playerHeight;
+        const glm::vec3 predictedPos = glm::vec3(position.x , position.y + playerHeight, position.z) + velocity;
         const glm::vec3 wallPos = { predictedPos.x, 0, predictedPos.z };
         const glm::vec3 floorPos = { 0, predictedPos.y, 0 };
-
+    
         const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
         
         // Handle wall collisions
         const bool hitWall = BoundingBox::PositionInBounds(wallPos, meshBox.min, meshBox.max);
-
+    
         // Check for floor
         const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);
         if(hitFloor && collided)
@@ -144,14 +144,12 @@ void Player::Collisions()
         // If there's any collision at all
         if (hitWall)
         {
-            accelerating = false;
             velocity = glm::vec3(0, velocity.y, 0);
-
+    
             return; // Return early if there's a collision
         }
     }
-
+    
     // If no collision, reset grounded state
     grounded = false;
-
 }
