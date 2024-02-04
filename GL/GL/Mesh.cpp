@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include <gtx/quaternion.hpp>
 
-Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices, Player& player) : rPlayer(player), rCam(player.GetCamera())
+Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices)
 {
 	vertices = _vertices;
 	indices = _indices;
@@ -22,6 +22,8 @@ Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _in
 	
     // If shader initialisation was successful, init the vertices.
     InitShaders();
+
+	CalculateAABoundingBox();
 }
 
 void Mesh::InitShaders()
@@ -42,29 +44,7 @@ void Mesh::InitShaders()
 	mat = new Material(shader);
 }
 
-void Mesh::Collisions()
-{
-	if (!collisions_enabled) return;
-	
-	const BoundingBox thisBounds = CalculateAABoundingBox();
-	const glm::vec3 playerPos = rPlayer.GetPosition() + rPlayer.GetVelocity();
-	const glm::vec3 playerPos_wall = {playerPos.x, 0, playerPos.z};
-	const glm::vec3 playerPos_floor = {0, playerPos.y, 0};
-
-	// Handle wall collisions
-	const bool hitWall = BoundingBox::IsInsideBounds(playerPos_wall, thisBounds.min, thisBounds.max);
-	rPlayer.SetCollided(hitWall);
-
-	
-	
-	// Check for floor
-	if(Raycast::RayCollision(playerPos, {0,-1,0}, rPlayer.GetPlayerHeight(), thisBounds)) rPlayer.SetGrounded(true);
-	// else rPlayer.SetGrounded(false);
-	// const bool grounded = BoundingBox::IsInsideBounds(playerPos_floor, thisBounds.min, thisBounds.max);
-	// rPlayer.SetGrounded(grounded);
-}
-
-BoundingBox Mesh::CalculateAABoundingBox() const
+void Mesh::CalculateAABoundingBox()
 {
 	glm::vec3 minBounds = glm::vec3(std::numeric_limits<float>::max());
 	glm::vec3 maxBounds = glm::vec3(std::numeric_limits<float>::lowest());
@@ -89,7 +69,7 @@ BoundingBox Mesh::CalculateAABoundingBox() const
 		maxBounds = max(maxBounds, vert);
 	}
 
-	return { minBounds, maxBounds, (minBounds + maxBounds) * 0.5f };
+	boundingBox = { minBounds, maxBounds, (minBounds + maxBounds) * 0.5f };
 }
 
 void Mesh::Update(float deltaTime)
@@ -98,7 +78,7 @@ void Mesh::Update(float deltaTime)
 }
 
 
-void Mesh::Render() const
+void Mesh::Render(Camera& cam) const
 {
 	if(!visible) return;
 
@@ -113,11 +93,11 @@ void Mesh::Render() const
 	
     modelMatrix = scale(modelMatrix, transform.scale);
 
-    rCam.UpdateViewMatrix();
+    cam.UpdateViewMatrix();
 
 	shader.SetMat4Attrib("modelMatrix", modelMatrix);
-	shader.SetMat4Attrib("viewMatrix", rCam.GetViewMatrix());
-	shader.SetMat4Attrib("projectionMatrix", rCam.GetProjectionMatrix());
+	shader.SetMat4Attrib("viewMatrix", cam.GetViewMatrix());
+	shader.SetMat4Attrib("projectionMatrix", cam.GetProjectionMatrix());
 	
 	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 

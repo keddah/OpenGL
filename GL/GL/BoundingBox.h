@@ -1,10 +1,12 @@
+#pragma once
+
 struct BoundingBox
 {
     glm::vec3 min;
     glm::vec3 max;
     glm::vec3 center;
 
-    static bool IsInsideBounds(const glm::vec3& position, const glm::vec3& minBounds, const glm::vec3& maxBounds)
+    static bool PositionInBounds(const glm::vec3& position, const glm::vec3& minBounds, const glm::vec3& maxBounds)
     {
         return
         (
@@ -13,6 +15,7 @@ struct BoundingBox
             position.z >= minBounds.z && position.z <= maxBounds.z
         );
     }
+
 };
 
 #include <gtx/component_wise.hpp>

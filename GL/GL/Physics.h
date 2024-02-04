@@ -29,5 +29,5 @@ protected:
     const float drag = .08f;
     
 private:
-    const float gravity = .2f;
+    const float gravity = .05f;
 };

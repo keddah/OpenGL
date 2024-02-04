@@ -20,7 +20,11 @@ void Physics::AddForce(const float x, const float y, const float z, const float 
 
 void Physics::ApplyGravity()
 {
-    if(grounded) return;
+    if(grounded)
+    {
+        velocity.y = 0;
+        return;
+    }
     
     velocity += glm::vec3(0, 1, 0) * gravity;
 

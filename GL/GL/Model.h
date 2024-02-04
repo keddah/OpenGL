@@ -16,10 +16,10 @@ using namespace std;
 class Model
 {
 public:
-	Model(Player* player);
+	Model(Camera& cam);
 	~Model() { delete gameMesh; }
 
-	void Render() const { if (gameMesh) gameMesh->Render(); }
+	void Render(Camera& cam) const { if (gameMesh) gameMesh->Render(cam); }
 	void Update(float deltaTime) const { if (gameMesh) gameMesh->Update(deltaTime); }
 	void FixedUpdate(float deltaTime) const { if (gameMesh) gameMesh->FixedUpdate(deltaTime); }
 
@@ -38,11 +38,14 @@ public:
     
 	void SetScale(const glm::vec3 newVal) const { gameMesh->SetScale(newVal); }
 	void SetScale(const float x, const float y, const float z) const { gameMesh->SetScale(x,y,z); }
-	
+
+
+	Mesh* GetMesh() const { return gameMesh; }
 	
 private:
 	string filePath = "ModelAssets/Barrel.obj";
 
 	Mesh* gameMesh;
+	Camera& camera;
 };
 

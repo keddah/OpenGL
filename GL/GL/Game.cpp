@@ -96,27 +96,34 @@ void Game::InitOpenGL()
 
 	player = new Player(rRunning);
 	
-	left = new Mesh(verts, indices, *player);
-	right = new Mesh(verts, indices,*player);
-	back = new Mesh(verts, indices, *player);
-	floor = new Mesh(verts, indices,*player);
+	left = new Mesh(verts, indices);
+	right = new Mesh(verts, indices);
+	back = new Mesh(verts, indices);
+	floor = new Mesh(verts, indices);
 	
-	model = new Model(player);
+	model = new Model((player->GetCamera()));
 
-	left->SetScale(.2f, 5, 5);
-	left->AddPosition(-2.5f, 0,0);
+	left->SetScale(.2f, 15, 15);
+	left->AddPosition(-7.5f, 0,0);
 
-	right->SetScale(.2f, 5, 5);
-	right->AddPosition(2.5f, 0,0);
+	right->SetScale(.2f, 15, 15);
+	right->AddPosition(7.5f, 0,0);
 	
-	back->SetScale(5, 5, .2f);
-	back->AddPosition(0, 0, 2.5f);
+	back->SetScale(15, 15, .2f);
+	back->AddPosition(0, 0, 7.5f);
 	
-	floor->AddPosition(0, 2.5f, 0);
-	floor->SetScale(5, .2f, 5);
+	floor->AddPosition(0, 7.5f, 0);
+	floor->SetScale(15, .2f, 15);
 
-	model = new Model(player);
+	model = new Model(player->GetCamera());
 
+	const std::vector<Mesh*> meshes =
+	{
+		left, right, back, floor, model->GetMesh()
+	};
+
+	player->SetLevelMeshes(meshes);
+	
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 }
@@ -157,12 +164,12 @@ void Game::Render() const
 
 	//if(tri) tri->Render();
 	//if(mesh) mesh->Render();
-	if(left) left->Render();
-	if(right) right->Render();
-	if(back) back->Render();
-	if(floor) floor->Render();
+	if(left) left->Render(player->GetCamera());
+	if(right) right->Render(player->GetCamera());
+	if(back) back->Render(player->GetCamera());
+	if(floor) floor->Render(player->GetCamera());
 	
-	if(model) model->Render();
+	if(model) model->Render(player->GetCamera());
 	
 	SDL_GL_SwapWindow(window);
 }
