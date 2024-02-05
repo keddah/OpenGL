@@ -16,6 +16,7 @@ public:
     void UnbindTexture() const { glCall(glBindTexture(GL_TEXTURE_2D, 0)); }
     
     void SetTint(glm::vec4 colour);
+    glm::vec4 GetTint() const { return tint; }
 
 private:
     int tex_width, tex_height, channelCount;

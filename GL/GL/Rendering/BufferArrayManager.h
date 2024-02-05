@@ -8,10 +8,21 @@
 #define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("error code: " << error << "\n" << gluErrorString(error)); __debugbreak(); } }
 #define glCall(theFunction) { theFunction; GetError(); }
 
+struct Vertex
+{
+    GLfloat position[3];        
+    GLfloat colour[4];
+    GLfloat texCoords[2];
+
+    static GLuint PositionCount() { return sizeof(position) / sizeof(position[0]); }
+    static GLuint ColourCount() { return sizeof(colour) / sizeof(colour[0]); }
+    static GLuint TexCoordsCount() { return sizeof(texCoords) / sizeof(texCoords[0]); }
+};
+
 class BufferArrayManager
 {
 public:
-    BufferArrayManager(const std::vector<GLfloat>& verts, const std::vector<GLuint>& indices);
+    BufferArrayManager(const std::vector<GLfloat>& vertData, const std::vector<GLuint>& indices);
     ~BufferArrayManager() { DeleteAll(); }
 
     void SetArrayAttrib(GLuint index, GLuint componentCount, GLenum type, GLsizei stride, const void* offset) const;

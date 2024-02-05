@@ -35,10 +35,10 @@ Model::Model(Camera& cam) : camera(cam)
 			vertices.push_back(pos->z);
 
 			// Pushing the colour
-			vertices.push_back(.4f + j * .001f);
-			vertices.push_back(.1f + j * .001f);
-			vertices.push_back(.3f + j * .001f);
-			vertices.push_back(1);
+			// vertices.push_back(.4f + j * .001f);
+			// vertices.push_back(.1f + j * .001f);
+			// vertices.push_back(.3f + j * .001f);
+			// vertices.push_back(1);
 
 			// Pushing the tex coords
 			// Check if there are any present

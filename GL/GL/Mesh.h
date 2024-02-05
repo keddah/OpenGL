@@ -15,8 +15,8 @@ class Mesh
 {
 public:
     Mesh() = default;
-    Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices);
-    ~Mesh() { }//delete baManager; delete mat; }
+    Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices);
+    ~Mesh() { delete baManager; delete mat; }
     
     void Render(Camera& cam) const;
 
@@ -45,10 +45,20 @@ public:
     
     void SetCollision (const bool newVal) { collisions_enabled = newVal; }
     bool IsCollisions() const { return collisions_enabled; }
-    
+
 private:
     void InitShaders();
-    
+    std::vector<GLfloat> GetVertexData() const
+    {
+        std::vector<GLfloat> data;
+        for(auto& vert : vertices)
+        {
+            for(auto& pos : vert.position) data.push_back(pos);
+            for(auto& colour : vert.colour) data.push_back(colour);
+            for(auto& uv : vert.texCoords) data.push_back(uv);
+        }
+        return data;
+    }
     void CalculateAABoundingBox();
 
     struct 
@@ -63,17 +73,11 @@ private:
     Shader shader;
     Material* mat;
     
-    struct Vertex
-    {
-        std::vector<GLfloat> position;        
-        glm::vec4 colour;        
-    };
     
 
     BufferArrayManager* baManager;
     
-    std::vector<GLfloat> vertices;
-    std::vector<Vertex> vertexes;
+    std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
 
     GLint vertArrayIndex = -1;

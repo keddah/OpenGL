@@ -2,28 +2,40 @@
 #include <gtx/quaternion.hpp>
 #include <gtx/string_cast.hpp>
 
-Mesh::Mesh(const std::vector<GLfloat>& _vertices, const std::vector<GLuint>& _indices)
+Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices)
 {
-	vertices = _vertices;
 	indices = _indices;
 
-	// float x, y, z;
-	// for(int i = 0; i < vertices.size(); i++)
-	// {
-	// 	if(i % 1 == 0) x = vertices[i];
-	// 	else if(i % 2 == 0) y = vertices[i];
-	// 	else if(i % 3 == 0) z = vertices[i];
-	// 	
-	// 	else
-	// 	{
-	// 		Vertex v = {{x, y, z}};
-	// 		vertexes.emplace_back(v);
-	// 	}
-	// }
-	
-    // If shader initialisation was successful, init the vertices.
-    InitShaders();
+	float x, y, z;
+	float u, v;
 
+	// Loop through each set of vertex data
+	for (int i = 0; i < vertexData.size(); i += 5)
+	{
+		x = vertexData[i];
+		y = vertexData[i + 1];
+		z = vertexData[i + 2];
+
+		u = vertexData[i + 3];
+		v = vertexData[i + 4];
+
+		Vertex newVertex;
+		newVertex.position[0] = x;
+		newVertex.position[1] = y;
+		newVertex.position[2] = z;
+		
+		newVertex.colour[0] = 1;
+		newVertex.colour[1] = 1;
+		newVertex.colour[2] = 1;
+		newVertex.colour[3] = 1;
+		
+		newVertex.texCoords[0] = u;
+		newVertex.texCoords[1] = v;
+		vertices.emplace_back(newVertex);
+	}
+	
+	InitShaders();
+	
 	CalculateAABoundingBox();
 }
 
@@ -41,7 +53,7 @@ void Mesh::InitShaders()
 	}
 
 	// Initialise the vertices after the shaders.
-	baManager = new BufferArrayManager(vertices, indices);
+	baManager = new BufferArrayManager(GetVertexData(), indices);
 	mat = new Material(shader);
 }
 
@@ -53,22 +65,25 @@ void Mesh::CalculateAABoundingBox()
 	// Convert Euler angles to quaternion
 	const glm::quat rotationQuat = glm::quat(transform.rotation);
 
-	for (int i = 0; i < vertices.size(); i += 3) {
-		glm::vec3 vert(vertices[i], vertices[i + 1], vertices[i + 2]);
+	// For each set of vertex data 
+	for (auto& vert : vertices)
+	{
+		// Create a vector3 of the position of each set of vertex data
+		glm::vec3 vertex(vert.position[0], vert.position[1], vert.position[2]);
 
-		// Apply scale to each vertex
-		vert *= transform.scale;
+		// Apply scale to each vertex position
+		vertex *= transform.scale;
 		
-		// Apply translation to each vertex
-		vert += transform.position;
+		// Apply translation to each vertex position
+		vertex += transform.position;
 		
-		// Apply rotation to each vertex using quaternion
-		vert = rotationQuat * vert;
-
+		// Apply rotation to each vertex position
+		vertex = rotationQuat * vertex;
 
 		// Update minBounds and maxBounds
-		minBounds = min(minBounds, vert);
-		maxBounds = max(maxBounds, vert);
+		minBounds = min(minBounds, vertex);
+		maxBounds = max(maxBounds, vertex);
+
 	}
 
 	boundingBox = { minBounds, maxBounds, (minBounds + maxBounds) * 0.5f };
@@ -104,18 +119,12 @@ void Mesh::Render(Camera& cam) const
 	if(mat) mat->BindTexture();
 
 	// Stride = all the compCounts added together
-	constexpr GLuint posSize = 3;
-	constexpr GLuint colourSize = 4;
-	constexpr GLuint textureSize = 2;
-
-	// The total component count so that the offset and stride can be calculated automatically
-	// constexpr GLuint compCount = posSize + textureSize;
-	constexpr GLuint compCount = posSize + colourSize + textureSize;
-	// constexpr GLuint compCount = posSize + textureSize;
+	constexpr GLsizei stride =  sizeof(Vertex);
 	
-	baManager->SetArrayAttrib(0, posSize, GL_FLOAT, compCount * sizeof(GLfloat), nullptr);	// Position
-	baManager->SetArrayAttrib(1, colourSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>(posSize * sizeof(GLfloat)));	// Colour
-	baManager->SetArrayAttrib(2, textureSize, GL_FLOAT, compCount * sizeof(GLfloat), reinterpret_cast<void*>((posSize + colourSize) * sizeof(GLfloat)));	// TexCoords
+	// Using sizeof(Vertex) produces 96 ... That value is higher than it needs to be
+	baManager->SetArrayAttrib(0, Vertex::PositionCount(), GL_FLOAT, stride, nullptr);	// Position
+	baManager->SetArrayAttrib(1, Vertex::ColourCount(), GL_FLOAT, stride, reinterpret_cast<void*>(sizeof(Vertex::position)));	// Colour
+	baManager->SetArrayAttrib(2, Vertex::TexCoordsCount(), GL_FLOAT, stride, reinterpret_cast<void*>(sizeof(Vertex::colour) + sizeof(Vertex::position)));	// TexCoords
 
     glCall(glDrawElements(GL_TRIANGLE_FAN, indices.size(), GL_UNSIGNED_INT, NULL));
 	

@@ -1,6 +1,6 @@
 #include "BufferArrayManager.h"
 
-BufferArrayManager::BufferArrayManager(const std::vector<GLfloat>& verts, const std::vector<GLuint>& indices)
+BufferArrayManager::BufferArrayManager(const std::vector<GLfloat>& vertData, const std::vector<GLuint>& indices)
 {
     glCall(glGenVertexArrays(1, &vArray));
     glCall(glBindVertexArray(vArray));
@@ -8,7 +8,7 @@ BufferArrayManager::BufferArrayManager(const std::vector<GLfloat>& verts, const 
     // The vertex buffer (positions of all the vertices)
     glCall(glGenBuffers(1, &vBuffer));
     glCall(glBindBuffer(GL_ARRAY_BUFFER, vBuffer));
-    glCall(glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(GLfloat), verts.data(), GL_STATIC_DRAW));
+    glCall(glBufferData(GL_ARRAY_BUFFER, vertData.size() * sizeof(GLfloat), vertData.data(), GL_STATIC_DRAW));
 
     // The index buffer (the correlation between the vertices)
     glCall(glGenBuffers(1, &iBuffer));
