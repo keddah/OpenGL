@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "BoundingBox.h"
-#include "Mesh.h"
+#include "Model.h"
 #include "Physics.h"
 
 class Player : public Physics
@@ -15,9 +15,9 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render() { wc.Render(); }
+	void Render() { wc.Render(cam); }
 
-	Camera& GetCamera() const { if(!cam) print("unable to get Cam") return *cam; }
+	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 
 	glm::vec3 GetPosition() const { return position; }
 	float GetPlayerHeight() const { return playerHeight; }
@@ -50,13 +50,14 @@ private:
 	class WeaponController
 	{
 	public:
-		WeaponController(Player* player) : rPlayer(*player) {}
-		void Update(float deltaTime) { }
+		WeaponController(Player* player);
+		void Update(float deltaTime);
 
-		void Render() { }
+		void Render(Camera* cam) const;
 		
 	private:
 		Player& rPlayer;
+		Model* pistolMesh;
 	};
 
 	WeaponController wc = {this};

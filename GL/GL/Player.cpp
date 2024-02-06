@@ -77,13 +77,13 @@ void Player::Accelerate(float deltaTime)
         velocity.x = mix(velocity2D, moveSpeed, accel).x;
         velocity.z = mix(velocity2D, moveSpeed, accel).y;
     }   
-    print ("2ndLast: " << velocity.x << ", " << velocity.y << ", " << velocity.z)
-    print("")
+    // print ("2ndLast: " << velocity.x << ", " << velocity.y << ", " << velocity.z)
+    // print("")
     // Cap the velocity on the x/z axis to the terminal velocity
     if(abs(velocity.x) >= terminalVelocity.x) velocity.x = velocity.x > 0? terminalVelocity.x : -terminalVelocity.x;
     if(abs(velocity.z) >= terminalVelocity.z) velocity.z = velocity.z > 0? terminalVelocity.z : -terminalVelocity.z;
 
-    print ("Last: " << velocity.x << ", " << velocity.y << ", " << velocity.z)
+    // print ("Last: " << velocity.x << ", " << velocity.y << ", " << velocity.z)
 }
 
 void Player::Decelerate(float deltaTime)

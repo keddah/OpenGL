@@ -153,6 +153,7 @@
     <ClInclude Include="Rendering\BufferArrayManager.h" />
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Rendering\Utilities.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="TriangleRenderer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +244,7 @@
     </ClCompile>
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="TriangleRenderer.cpp" />
+    <ClCompile Include="WeaponController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\Barrel_d.png" />

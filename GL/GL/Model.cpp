@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model(Camera& cam) : camera(cam)
+Model::Model(const string filePath)
 {
 	Assimp::Importer importer;
 	const aiScene* scene = 
@@ -10,8 +10,7 @@ Model::Model(Camera& cam) : camera(cam)
 		aiProcess_CalcTangentSpace | 
 		aiProcess_Triangulate | 
 		aiProcess_JoinIdenticalVertices | 
-		aiProcess_SortByPType |
-		aiProcess_FlipUVs
+		aiProcess_SortByPType
 	);
 
 	if (!scene)

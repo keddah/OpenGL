@@ -133,7 +133,7 @@ void Game::InitOpenGL()
 	floor1->AddPosition(0, 10.5, 0);
 	floor1->SetScale(100, 8, 400);
 
-	model = new Model(player->GetCamera());
+	model = new Model("ModelAssets/Barrel.obj");
 	model->AddPosition(0,5,0);
 
 	floor2->SetScale(30, 30, 30);
@@ -171,7 +171,8 @@ void Game::Render() const
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+	player->Render();
+	
 	for (const auto& mesh : meshes)
 	{
 		if(mesh) mesh->Render(player->GetCamera());

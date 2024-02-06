@@ -5,12 +5,6 @@
 Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices)
 {
 	indices = _indices;
-	for(auto& i : indices)
-	{
-		if(i - 1 == 4294967295) i = indices.front();
-		else i--;
-		print(i)
-	}
 	
 	float x, y, z;
 	float u, v;
@@ -97,7 +91,7 @@ void Mesh::CalculateAABoundingBox()
 }
 
 
-void Mesh::Render(Camera& cam) const
+void Mesh::Render(Camera* cam) const
 {
 	if(!visible) return;
 
@@ -112,11 +106,11 @@ void Mesh::Render(Camera& cam) const
 	
     modelMatrix = scale(modelMatrix, transform.scale);
 
-    cam.UpdateViewMatrix();
+    cam->UpdateViewMatrix();
 
 	shader.SetMat4Attrib("modelMatrix", modelMatrix);
-	shader.SetMat4Attrib("viewMatrix", cam.GetViewMatrix());
-	shader.SetMat4Attrib("projectionMatrix", cam.GetProjectionMatrix());
+	shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
+	shader.SetMat4Attrib("projectionMatrix", cam->GetProjectionMatrix());
 	
 	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 

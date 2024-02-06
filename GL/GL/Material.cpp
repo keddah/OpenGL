@@ -2,14 +2,12 @@
 
 Material::Material(Shader& _shader) : shader(_shader)
 {
-    NewTexture("sdf");
+    NewTexture("Images/Barrel_d.png");
 }
 
 void Material::NewTexture(std::string filePath)
 {
-    // image_bytes = stbi_load(filePath &tex_width, &tex_height, &channelCount, 0);
-
-    image_bytes = stbi_load("Images/Barrel_d.png", &tex_width, &tex_height, &channelCount, 4);
+    image_bytes = stbi_load(filePath.c_str(), &tex_width, &tex_height, &channelCount, 4);
     if(!image_bytes)
     {
         print("Unable to load image - possible bad filePath")
