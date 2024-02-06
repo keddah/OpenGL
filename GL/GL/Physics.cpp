@@ -18,16 +18,20 @@ void Physics::AddForce(const float x, const float y, const float z, const float 
     if(abs(velocity.z) >= terminalVelocity.z) velocity.z = velocity.z > 0? terminalVelocity.z : -terminalVelocity.z;
 }
 
-void Physics::ApplyGravity()
+void Physics::ApplyGravity(float deltaTime)
 {
     if(grounded)
     {
         velocity.y = 0;
+        gravMultiplier = .3f;
         return;
     }
+
+    // Make things falls faster the longer they're in the air....
+    gravMultiplier += deltaTime * floatiness;
+    if(gravMultiplier > 3) gravMultiplier = 3;
     
-    velocity += glm::vec3(0, 1, 0) * gravity;
+    velocity.y += gravity * gravMultiplier;
 
     if(abs(velocity.y) > terminalVelocity.y) velocity.y = terminalVelocity.y;
-    // if(glm::vec2(velocity.x, velocity.z).length() > maxSpeed) velocity.y = maxFallSpeed;
 }

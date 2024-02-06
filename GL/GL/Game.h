@@ -19,7 +19,7 @@ public:
 	void FixedUpdate(float deltaTime);
 
 	void Render() const;
-	void Clean() const { delete tri; delete left; SDL_DestroyWindow(window); SDL_Quit(); }
+	void Clean() const { delete tri; for (const auto& mesh : meshes) delete mesh; SDL_DestroyWindow(window); SDL_Quit(); }
 
 	struct Vertex
 	{
@@ -38,11 +38,9 @@ private:
 	SDL_Window* window;
 	SDL_GLContext openGL_context;
 
+	std::vector<Mesh*> meshes;
+	
 	TriangleRenderer* tri;
-	Mesh* left;
-	Mesh* right;
-	Mesh* back;
-	Mesh* floor;
 	
 	Model* model;
 

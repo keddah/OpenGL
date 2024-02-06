@@ -20,7 +20,7 @@ public:
     
     bool* GetMoveInputs() { return moveInputs; }
     bool JumpBtnDown() const { return jump; }
-    bool ShiftBtnDown() const { return jump; }
+    bool ShiftBtnDown() const { return sprint; }
     bool CrouchBtnDown() const { return crouch; }
     
 private:

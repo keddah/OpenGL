@@ -15,19 +15,23 @@ public:
     void AddForce(float x, float y, float z, float force);
     
 protected:
-    void ApplyGravity();
+    void ApplyGravity(float deltaTime);
     
     glm::vec3 velocity = {};
-    const glm::vec3 terminalVelocity {100, 1000, 100};
+    const glm::vec3 terminalVelocity {10, 1000, 10};
     bool grounded = false;
     
-    const float walkAccel = .04f;
-    const float sprintAccel = walkAccel * 3.5f;
+    const float walkAccel = .075f;
+    const float sprintAccel = walkAccel * .85f;
 
     // Lateral (side-to-side) acceleration
-    const float latAcceleration = .06f;
-    const float drag = .08f;
-    
+    const float latAcceleration = walkAccel * .9f;
+    const float drag = .135f;
+
+    // Lower number = slower falling (positive number)
+    const float floatiness = .01f;
+
 private:
     const float gravity = .3f;
+    float gravMultiplier;
 };

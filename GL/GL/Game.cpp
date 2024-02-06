@@ -68,41 +68,59 @@ void Game::InitOpenGL()
 
 	const std::vector<GLfloat> vertData =
 	{
-		-0.5f, -0.5f, -0.5f,   /* Vertex 0 */    /* TexCoord */  0,0,
-		 0.5f, -0.5f, -0.5f,   /* Vertex 1 */    /* TexCoord */  1,0,
-		 0.5f,  0.5f, -0.5f,   /* Vertex 2 */    /* TexCoord */  1,1,
-		-0.5f,  0.5f, -0.5f,   /* Vertex 3 */    /* TexCoord */  0,1,
-		-0.5f, -0.5f,  0.5f,   /* Vertex 4 */    /* TexCoord */  0,0,
-		 0.5f, -0.5f,  0.5f,   /* Vertex 5 */    /* TexCoord */  1,0,
-		 0.5f,  0.5f,  0.5f,   /* Vertex 6 */    /* TexCoord */  1,1,
-		-0.5f,  0.5f,  0.5f,   /* Vertex 7 */    /* TexCoord */  0,1
+		// Front Face
+		 -0.5f, -0.5f, 0.5f,   /* Vertex 0 */    /* TexCoord */  0,0,
+		 0.5f, -0.5f,  0.5f,   /* Vertex 1 */    /* TexCoord */  1,0,
+		 0.5f,  0.5f,  0.5f,   /* Vertex 2 */    /* TexCoord */  1,1,
+		-0.5f,  0.5f,  0.5f,   /* Vertex 3 */    /* TexCoord */  0,1,
+
+		// Back Face
+		-0.5f, -0.5f, -0.5f,   /* Vertex 4 */    /* TexCoord */  0,0,
+		 0.5f, -0.5f, -0.5f,   /* Vertex 5 */    /* TexCoord */  1,0,
+		 0.5f,  0.5f, -0.5f,   /* Vertex 6 */    /* TexCoord */  1,1,
+		-0.5f,  0.5f, -0.5f,   /* Vertex 7 */    /* TexCoord */  0,1
 	};
 
 	const std::vector<GLuint> indices =
 	{
-		0, 1, 2,  // Front face
+		// Front face
+		0, 1, 2,
 		2, 3, 0,
-		4, 5, 6,  // Back face
+
+		// Back face
+		4, 5, 6,
 		6, 7, 4,
-		0, 3, 7,  // Left face
-		7, 4, 0,
-		1, 5, 6,  // Right face
+
+		// Left face
+		7, 3, 0,
+		0, 4, 7,
+
+		// Right face
 		6, 2, 1,
-		3, 2, 6,  // Top face
-		6, 7, 3,
-		0, 1, 5,  // Bottom face
-		5, 4, 0
+		1, 5, 6,
+
+		// Top face
+		7, 6, 5,
+		5, 4, 7,
+
+		// Bottom face
+		3, 2, 6,
+		6, 7, 3
 	};
 
 	player = new Player(rRunning);
 	
-	left = new Mesh(vertData, indices);
-	right = new Mesh(vertData, indices);
-	back = new Mesh(vertData, indices);
-	floor = new Mesh(vertData, indices);
+	auto left = new Mesh(vertData, indices);
+	auto right = new Mesh(vertData, indices);
+	auto back = new Mesh(vertData, indices);
+	auto floor1 = new Mesh(vertData, indices);
 	
-	model = new Model((player->GetCamera()));
-
+	auto floor2 = new Mesh(vertData, indices);
+	auto box1 = new Mesh(vertData, indices);
+	auto box2 = new Mesh(vertData, indices);
+	auto box3 = new Mesh(vertData, indices);
+	auto box4 = new Mesh(vertData, indices);
+	
 	left->SetScale(.2f, 15, 15);
 	left->AddPosition(-7.5f, 0,0);
 
@@ -112,14 +130,21 @@ void Game::InitOpenGL()
 	back->SetScale(15, 15, .2f);
 	back->AddPosition(0, 0, 7.5f);
 	
-	floor->AddPosition(0, 8, 0);
-	floor->SetScale(15, 1, 15);
+	floor1->AddPosition(0, 10.5, 0);
+	floor1->SetScale(100, 8, 400);
 
 	model = new Model(player->GetCamera());
+	model->AddPosition(0,5,0);
 
-	const std::vector<Mesh*> meshes =
+	floor2->SetScale(30, 30, 30);
+	floor2->AddPosition(0, 22.5f, -22);
+	floor2->AddRotation(0,180,0);
+
+	box1->SetPosition(30,10,30);
+	
+	meshes = 
 	{
-		left, right, back, floor, model->GetMesh()
+		left, right, back, floor1, model->GetMesh(), floor2, box1, box2, box3, box4
 	};
 
 	player->SetLevelMeshes(meshes);
@@ -147,10 +172,10 @@ void Game::Render() const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	if(left) left->Render(player->GetCamera());
-	if(right) right->Render(player->GetCamera());
-	if(back) back->Render(player->GetCamera());
-	if(floor) floor->Render(player->GetCamera());
+	for (const auto& mesh : meshes)
+	{
+		if(mesh) mesh->Render(player->GetCamera());
+	}
 	
 	if(model) model->Render(player->GetCamera());
 	

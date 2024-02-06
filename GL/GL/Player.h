@@ -32,6 +32,7 @@ private:
 	void Collisions();
 
 	bool accelerating;
+	
 	glm::vec3 position = { 0, -5, 1.5f};
 
 	Controller controller;
@@ -40,8 +41,11 @@ private:
 	std::vector<Mesh*> meshes; 
 	
 	const float playerHeight = 3;
-	const float walkSpeed = .2f;
-	const float sprintSpeed = 2;
+	const float walkSpeed = .3f;
+	const float strafeSpeed = walkSpeed * .6f;
+	const float sprintSpeed = walkSpeed * 2.15f;
+	
+	const float jumpForce = 1.25f;
 
 	class WeaponController
 	{

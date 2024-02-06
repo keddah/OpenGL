@@ -5,7 +5,13 @@
 Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices)
 {
 	indices = _indices;
-
+	for(auto& i : indices)
+	{
+		if(i - 1 == 4294967295) i = indices.front();
+		else i--;
+		print(i)
+	}
+	
 	float x, y, z;
 	float u, v;
 
@@ -66,10 +72,13 @@ void Mesh::CalculateAABoundingBox()
 	const glm::quat rotationQuat = glm::quat(transform.rotation);
 
 	// For each set of vertex data 
-	for (auto& vert : vertices)
+	for (const auto& vert : vertices)
 	{
 		// Create a vector3 of the position of each set of vertex data
 		glm::vec3 vertex(vert.position[0], vert.position[1], vert.position[2]);
+
+		// Apply rotation to each vertex position
+		vertex = rotationQuat * vertex;
 
 		// Apply scale to each vertex position
 		vertex *= transform.scale;
@@ -77,8 +86,6 @@ void Mesh::CalculateAABoundingBox()
 		// Apply translation to each vertex position
 		vertex += transform.position;
 		
-		// Apply rotation to each vertex position
-		vertex = rotationQuat * vertex;
 
 		// Update minBounds and maxBounds
 		minBounds = min(minBounds, vertex);
