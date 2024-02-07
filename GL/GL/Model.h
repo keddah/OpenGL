@@ -19,41 +19,44 @@ public:
 	Model(string filePath);
 	~Model() { delete gameMesh; }
 
-	void Render(Camera* cam) const { if (gameMesh) gameMesh->Render(cam); }
+	void Render(Camera* cam) const;
 
-	glm::vec3 GetPosition() const { return gameMesh->GetPosition(); }
+	glm::vec3 GetPosition() const;
+	glm::vec3 GetRotation() const; 
+	glm::vec3 GetScale() const;
 
 	Transform GetTransform() const { return gameMesh->GetTransform(); }
 	void SetTransform(const glm::vec3 pos, const glm::vec3 rot, const glm::vec3 scale) const { gameMesh->SetTransform(pos, rot, scale); }
 	void SetTransform(const float x, const float y, const float z, glm::vec3 rot, const glm::vec3 scale) const { gameMesh->SetTransform({x,y,z}, rot, scale); }
 	void SetTransform(const glm::vec3 pos, const float x, const float y, const float z, const glm::vec3 scale) const { gameMesh->SetTransform(pos, {x,y,z}, scale); }
 	void SetTransform(const glm::vec3 pos, const glm::vec3 rot, const float x, const float y, const float z) const { gameMesh->SetTransform(pos, rot, {x,y,z}); }
-	void SetTransform(const float px, const float py, const float pz, const float rx, const float ry, const float rz, const float sx, const float sy,  const float sz) const
-	{
-		gameMesh->SetTransform({px,py,pz}, {rx,ry,rz}, {sx,sy,sz});
-	}
+	void SetTransform(const float px, const float py, const float pz, const float rx, const float ry, const float rz, const float sx, const float sy, const float sz) const;
 	
-	void SetPosition(const glm::vec3 newVal) const { gameMesh->SetPosition(newVal); }
-	void SetPosition(const float x, const float y, const float z) const { gameMesh->SetPosition(x,y,z); }
+	void SetPosition(const glm::vec3 newVal) const;
+	void SetPosition(const float x, const float y, const float z) const;
 
-	void AddPosition(const glm::vec3 newVal) const { gameMesh->AddPosition(newVal); }
-	void AddPosition(const float x, const float y, const float z) const { gameMesh->AddPosition(x,y,z); }
+	void AddPosition(const glm::vec3 newVal) const;
+	void AddPosition(const float x, const float y, const float z) const;
     
-	void SetRotation(const glm::vec3 newVal) const { gameMesh->SetRotation(newVal); }
-	void SetRotation(const float x, const float y, const float z) const { gameMesh->SetRotation(x,y,z); }
+	void SetRotation(const glm::vec3 newVal) const;
+	void SetRotation(const float x, const float y, const float z) const;
     
-	void AddRotation(const glm::vec3 newVal) const { gameMesh->AddRotation(newVal); }
-	void AddRotation(const float x, const float y, const float z) const { gameMesh->AddRotation(x,y,z); }
-    
-	void SetScale(const glm::vec3 newVal) const { gameMesh->SetScale(newVal); }
-	void SetScale(const float x, const float y, const float z) const { gameMesh->SetScale(x,y,z); }
+	void LookAtRotation(glm::mat4 matrix);
 
-	void SetCollisionsEnabled(const bool value) const { gameMesh->SetCollision(value); }
-	void SetVisibility(const bool value) const { gameMesh->SetVisibility(value); }
+	void AddRotation(const glm::vec3 newVal) const;
+	void AddRotation(const float x, const float y, const float z) const;
+    
+	void SetScale(const glm::vec3 newVal) const;
+	void SetScale(const float x, const float y, const float z) const;
+
+	void SetCollisionsEnabled(bool value) const;
+	void SetVisibility(bool value) const;
 
 	Mesh* GetMesh() const { return gameMesh; }
+	std::vector<Mesh*> GetMeshes() const { return gameMeshes; }
 
 private:
 	Mesh* gameMesh;
+	std::vector<Mesh*> gameMeshes;
 };
 

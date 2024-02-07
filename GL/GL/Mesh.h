@@ -30,6 +30,8 @@ public:
     void SetRotation(const glm::vec3 newVal) { transform.rotation = newVal;  CalculateAABoundingBox(); }
     void SetRotation(const float x, const float y, const float z) { transform.rotation = {x,y,z};  CalculateAABoundingBox(); }
     
+    void LookAtRotation(glm::mat4 matrix);
+
     void AddRotation(const glm::vec3 newVal) { transform.rotation += newVal;  CalculateAABoundingBox(); }
     void AddRotation(const float x, const float y, const float z) { transform.rotation += glm::vec3(x,y,z);  CalculateAABoundingBox(); }
     
@@ -85,6 +87,9 @@ private:
     std::vector<GLuint> indices;
 
     GLint vertArrayIndex = -1;
+
+    bool looking;
+    glm::mat4 rotMatrix = glm::mat4(1);
 
     bool visible = true;
     bool collisions_enabled = true;

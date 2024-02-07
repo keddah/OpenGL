@@ -19,7 +19,7 @@ public:
 
 	// void Update(float deltaTime) { }
 	void Look(glm::vec2 mouseDelta, float deltaTime);
-	void UpdateViewMatrix() { viewMatrix = glm::lookAt(position, lookAt + position, glm::vec3(0,1,0)); }
+	void UpdateViewMatrix() { viewMatrix = glm::lookAt(position, forwardVector + position, glm::vec3(0,1,0)); }
 
 	glm::mat4 GetProjectionMatrix() const { return projectionMatrix; }
 	glm::mat4 GetViewMatrix() const { return viewMatrix; }
@@ -30,7 +30,8 @@ public:
 
 	// void SetLookAt(const glm::vec3 newLook) { lookAt = newLook; }
 	// void SetLookAt(const float x, const float y, const float z) { lookAt = glm::vec3(x,y,z); }
-	glm::vec3 GetLookAt() const { return lookAt; }
+	glm::vec3 GetForwardVector() const { return forwardVector; }
+	glm::vec3 GetRightVector() const { return rightVector; }
 	
 private:
 	const float fov = 80;
@@ -44,8 +45,9 @@ private:
 	// X = left/right
 	// Y = up/down
 	// Z = forwards/backwards
-	glm::vec3 position = glm::vec3(0,0, -3);
-	glm::vec3 lookAt;
+	glm::vec3 position;
+	glm::vec3 forwardVector;
+	glm::vec3 rightVector;
 
 	Controller& control;
 };

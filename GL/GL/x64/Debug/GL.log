@@ -1,2 +1,4 @@
-﻿  Material.cpp
+﻿  WeaponController.cpp
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\BufferArrayManager.h(8,1): warning C4005: 'GetError': macro redefinition
+C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(8,1): message : see previous definition of 'GetError'
   GL.vcxproj -> C:\Users\S22154781\Downloads\Git\OpenGL\GL\x64\Debug\GL.exe

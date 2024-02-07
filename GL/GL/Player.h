@@ -12,6 +12,8 @@ class Player : public Physics
 {
 public:
 	Player(bool running);
+	~Player() { delete cam; DeleteMeshPtr(); }
+
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
@@ -20,7 +22,6 @@ public:
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 
 	glm::vec3 GetPosition() const { return position; }
-	float GetPlayerHeight() const { return playerHeight; }
 
 	void SetLevelMeshes(const std::vector<Mesh*>& newMeshes) { meshes = newMeshes; }
 	
@@ -30,6 +31,8 @@ private:
 	void Jump();
 	void Crouch();
 	void Collisions();
+
+	void DeleteMeshPtr() const { for (const auto& mesh : meshes) delete mesh; }
 
 	bool accelerating;
 	
@@ -51,6 +54,8 @@ private:
 	{
 	public:
 		WeaponController(Player* player);
+		~WeaponController() { delete pistolMesh; }
+
 		void Update(float deltaTime);
 
 		void Render(Camera* cam) const;
@@ -61,7 +66,5 @@ private:
 	};
 
 	WeaponController wc = {this};
-
-
 };
 

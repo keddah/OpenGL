@@ -23,6 +23,7 @@ void Player::FixedUpdate(const float deltaTime)
     Decelerate(deltaTime);
 
     // Collision has to be ran after both gravity and movement so that the velocity can be set to 0 if there's a collision
+    // ....COLLISIONS are unreliable when the player is moving quickly
     Collisions();
 
     
@@ -33,10 +34,10 @@ void Player::FixedUpdate(const float deltaTime)
 void Player::Accelerate(float deltaTime)
 {
     const bool* inputs = controller.GetMoveInputs();
-    const glm::vec2 lookat2D = { cam->GetLookAt().x, cam->GetLookAt().z };
+    const glm::vec2 lookat2D = { cam->GetForwardVector().x, cam->GetForwardVector().z };
     
     /////// Strafing
-    const glm::vec3 strafe = normalize(cross(cam->GetLookAt(), glm::vec3(0.0f, 1.0f, 0.0f))) * strafeSpeed;   // Can't increase strafe speed by sprinting
+    const glm::vec3 strafe = normalize(cross(cam->GetForwardVector(), glm::vec3(0.0f, 1.0f, 0.0f))) * strafeSpeed;   // Can't increase strafe speed by sprinting
 
     // If moving forwards/backwards ... decrease lateral acceleration
     const float strafeAcceleration = inputs[0] || inputs[1]? latAcceleration * .4f : latAcceleration;

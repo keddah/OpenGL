@@ -100,8 +100,8 @@ void Game::InitOpenGL()
 		1, 5, 6,
 
 		// Top face
-		7, 6, 5,
-		5, 4, 7,
+		0, 1, 5,
+		5, 0, 4,
 
 		// Bottom face
 		3, 2, 6,
@@ -115,7 +115,6 @@ void Game::InitOpenGL()
 	auto back = new Mesh(vertData, indices);
 	auto floor1 = new Mesh(vertData, indices);
 	
-	auto floor2 = new Mesh(vertData, indices);
 	auto box1 = new Mesh(vertData, indices);
 	auto box2 = new Mesh(vertData, indices);
 	auto box3 = new Mesh(vertData, indices);
@@ -134,18 +133,16 @@ void Game::InitOpenGL()
 	floor1->SetScale(100, 8, 400);
 
 	model = new Model("ModelAssets/Barrel.obj");
-	model->AddPosition(0,5,0);
-
-	floor2->SetScale(30, 30, 30);
-	floor2->AddPosition(0, 22.5f, -22);
-	floor2->AddRotation(0,180,0);
+	model->AddPosition(0,5,-10);
 
 	box1->SetPosition(30,10,30);
 	
-	meshes = 
+	meshes =
 	{
-		left, right, back, floor1, model->GetMesh(), floor2, box1, box2, box3, box4
+		left, right, back, floor1, box1, box2, box3, box4
 	};
+
+	box2->AddPosition(0, 5, 0);
 
 	player->SetLevelMeshes(meshes);
 	
@@ -157,6 +154,11 @@ void Game::Update(float deltaTime) const
 {
 	player->Update(deltaTime);
 	
+	if (meshes[5])
+	{
+		meshes[5]->AddPosition(.5f * deltaTime, 0,0);
+		meshes[5]->AddRotation(0, .005f * deltaTime, 0);
+	}
 	if(model) model->AddRotation(0, .005f * deltaTime, 0);
 
 }
@@ -170,14 +172,14 @@ void Game::Render() const
 {
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	player->Render();
 	
 	for (const auto& mesh : meshes)
 	{
 		if(mesh) mesh->Render(player->GetCamera());
 	}
-	
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if(model) model->Render(player->GetCamera());
 	
 	SDL_GL_SwapWindow(window);

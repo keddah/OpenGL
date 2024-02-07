@@ -97,18 +97,21 @@ void Mesh::Render(Camera* cam) const
 
 	shader.Activate();
 
-    glm::mat4 modelMatrix {1};
-    modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.x * 180 / std::_Pi), {1,0,0});
-    modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.y * 180 / std::_Pi), {0,1,0});
-    modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.z * 180 / std::_Pi), {0,0,1});
-	
+	glm::mat4 modelMatrix = glm::mat4(1);
 	modelMatrix = translate(modelMatrix, transform.position);
-	
+
+	if (!looking)
+	{
+		modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.x * 180 / std::_Pi), { 1,0,0 });
+		modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.y * 180 / std::_Pi), { 0,1,0 });
+		modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.z * 180 / std::_Pi), { 0,0,1 });
+	}
+
     modelMatrix = scale(modelMatrix, transform.scale);
 
     cam->UpdateViewMatrix();
 
-	shader.SetMat4Attrib("modelMatrix", modelMatrix);
+	shader.SetMat4Attrib("modelMatrix", looking? rotMatrix : modelMatrix);
 	shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
 	shader.SetMat4Attrib("projectionMatrix", cam->GetProjectionMatrix());
 	
@@ -127,11 +130,17 @@ void Mesh::Render(Camera* cam) const
 	baManager->SetArrayAttrib(1, Vertex::ColourCount(), GL_FLOAT, stride, reinterpret_cast<void*>(sizeof(Vertex::position)));	// Colour
 	baManager->SetArrayAttrib(2, Vertex::TexCoordsCount(), GL_FLOAT, stride, reinterpret_cast<void*>(sizeof(Vertex::colour) + sizeof(Vertex::position)));	// TexCoords
 
-    glCall(glDrawElements(GL_TRIANGLE_FAN, indices.size(), GL_UNSIGNED_INT, NULL));
+    glCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL));
 	
 	glCall(glDisableVertexAttribArray(vertArrayIndex));
 	baManager->UnbindAll();
 	if(mat) mat->UnbindTexture();
 	
 	shader.Deactivate();
+}
+
+void Mesh::LookAtRotation(const glm::mat4 matrix)
+{
+	rotMatrix = matrix;
+	looking = true;
 }

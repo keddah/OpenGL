@@ -10,7 +10,8 @@ Model::Model(const string filePath)
 		aiProcess_CalcTangentSpace | 
 		aiProcess_Triangulate | 
 		aiProcess_JoinIdenticalVertices | 
-		aiProcess_SortByPType
+		aiProcess_SortByPType |
+		aiProcess_FlipUVs
 	);
 
 	if (!scene)
@@ -19,12 +20,14 @@ Model::Model(const string filePath)
 		return;
 	}
 
-
-	for (int i = 0; i < scene->mNumMeshes; i++) {
+	for (int i = 0; i < scene->mNumMeshes; i++) 
+	{
 		aiMesh* mesh = scene->mMeshes[i];
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
 
+
+		///// Vertex data
 		for (int j = 0; j < mesh->mNumVertices; j++) {
 
 			// Pushing the position
@@ -47,9 +50,10 @@ Model::Model(const string filePath)
 			
 			vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].x);
 			vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].y);
-			
 		}
 
+
+		///// Inidices
 		for (int j = 0; j < mesh->mNumFaces; j++) {
 			aiFace* f = &mesh->mFaces[j];
 			if (f->mNumIndices != 3) {
@@ -60,8 +64,178 @@ Model::Model(const string filePath)
 			indices.push_back(f->mIndices[1]);
 			indices.push_back(f->mIndices[2]);
 		}
-
-		gameMesh = new Mesh(vertices, indices);
+			
+		if (scene->mNumMeshes == 1) gameMesh = new Mesh(vertices, indices);
+		else
+		{
+			Mesh* newMesh = new Mesh(vertices, indices);
+			gameMeshes.push_back(newMesh);
+		}
 	}
 
+	print(scene->mNumMeshes)
+}
+
+void Model::Render(Camera* cam) const
+{
+	if (gameMesh) gameMesh->Render(cam); 
+	else
+	{
+		for(const auto& mesh : gameMeshes) if(mesh) mesh->Render(cam);
+	}	
+
+}
+
+glm::vec3 Model::GetPosition() const
+{
+	if (gameMesh) return gameMesh->GetPosition();
+	else return gameMeshes[0]->GetPosition();
+}
+
+glm::vec3 Model::GetRotation() const
+{
+	if (gameMesh) return gameMesh->GetRotation();
+	else return gameMeshes[0]->GetRotation();
+}
+
+glm::vec3 Model::GetScale() const
+{
+	if (gameMesh) return gameMesh->GetScale();
+	else return gameMeshes[0]->GetScale();
+}
+
+
+
+
+
+void Model::SetTransform(const float px, const float py, const float pz, const float rx, const float ry, const float rz, const float sx, const float sy, const float sz) const
+{
+	if (gameMesh) gameMesh->SetTransform({ px,py,pz }, { rx,ry,rz }, { sx,sy,sz });
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetTransform({ px,py,pz }, { rx,ry,rz }, { sx,sy,sz });;
+	}
+	
+}
+
+//////////////////////////////////// TRANSFORMS ////////////////////////////////////
+void Model::SetPosition(const glm::vec3 newVal) const
+{
+	if (gameMesh) gameMesh->SetPosition(newVal);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetPosition(newVal);
+	}
+}
+
+void Model::SetPosition(const float x, const float y, const float z) const
+{
+	if (gameMesh) gameMesh->SetPosition(x, y, z);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetPosition(x, y, z);
+	}
+}
+
+void Model::AddPosition(const glm::vec3 newVal) const
+{
+	if (gameMesh) gameMesh->AddPosition(newVal);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->AddPosition(newVal);
+	}
+}
+
+void Model::AddPosition(const float x, const float y, const float z) const
+{
+	if (gameMesh) gameMesh->AddPosition(x, y, z);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->AddPosition(x, y, z);
+	}
+}
+
+void Model::SetRotation(const glm::vec3 newVal) const
+{
+	if (gameMesh) gameMesh->SetRotation(newVal);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetRotation(newVal);
+	}
+}
+
+void Model::SetRotation(const float x, const float y, const float z) const
+{
+	if (gameMesh) gameMesh->SetRotation(x, y, z);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetRotation(x, y, z);
+	}
+}
+
+void Model::LookAtRotation(glm::mat4 matrix)
+{
+	if (gameMesh) gameMesh->LookAtRotation(matrix);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->LookAtRotation(matrix);
+	}
+}
+
+void Model::AddRotation(const glm::vec3 newVal) const
+{
+	if (gameMesh) gameMesh->AddRotation(newVal);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->AddRotation(newVal);
+	}
+}
+
+void Model::AddRotation(const float x, const float y, const float z) const
+{
+	if (gameMesh) gameMesh->AddRotation(x, y, z);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->AddRotation(x, y, z);
+	}
+}
+
+void Model::SetScale(const glm::vec3 newVal) const
+{
+	if (gameMesh) gameMesh->SetScale(newVal);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetScale(newVal);
+	}
+}
+
+void Model::SetScale(const float x, const float y, const float z) const
+{
+	if (gameMesh) gameMesh->SetScale(x, y, z);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetScale(x, y, z);
+	}
+}
+
+
+
+
+
+void Model::SetCollisionsEnabled(const bool value) const
+{
+	if(gameMesh) gameMesh->SetCollision(value);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetCollision(value);
+	}
+}
+
+void Model::SetVisibility(bool value) const
+{
+	if (gameMesh) gameMesh->SetVisibility(value);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetVisibility(value);
+	}
 }
