@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include <gtx/quaternion.hpp>
 
 Camera::Camera(Controller& roller) : control(roller)
 {
@@ -28,7 +29,18 @@ void Camera::Look(glm::vec2 mouseDelta, float deltaTime)
 
     glm::vec3 right = GetRightVector();
 
-    print(right.x << ", " << right.y << ", " << right.z)
+    print(right.x << ", " << right.y << ", " << right.z);
+
+    // Update lookAt based on mouse movement
+    glm::quat rotationX = glm::angleAxis(mouseDelta.x * sensitivity_x, glm::vec3(0, 1, 0));
+    glm::quat rotationY = glm::angleAxis(mouseDelta.y * sensitivity_y, GetRightVector());
+
+    // Combine the rotations
+    glm::quat totalRotation = rotationX * rotationY;
+
+    pitch = glm::eulerAngles(totalRotation).x;
+    yaw = glm::eulerAngles(totalRotation).y;
+
     // print("Mouse delta: " << mouseDelta.x << ", " << mouseDelta.y)
     //print("LookAt: " << lookAt.x << ", " << lookAt.y << ", " << lookAt.z)
 }

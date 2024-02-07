@@ -28,16 +28,18 @@ public:
 	void SetPosition(const float x, const float y, const float z) { position = glm::vec3(x, y, z); }
 	glm::vec3 GetPosition() const { return position; }
 
-	// void SetLookAt(const glm::vec3 newLook) { lookAt = newLook; }
-	// void SetLookAt(const float x, const float y, const float z) { lookAt = glm::vec3(x,y,z); }
 	glm::vec3 GetForwardVector() const { return forwardVector; }
 	glm::vec3 GetRightVector() const { return rightVector; }
+	float GetPitch() const { return pitch; }
 	
 private:
 	const float fov = 80;
 	const float aspectRatio = 1920 / 1080;
 	const float nearClip = .1f;
 	const float farClip = 600;
+	
+	float pitch, yaw;
+	const float maxPitch = 87;
 
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;

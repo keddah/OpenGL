@@ -37,7 +37,7 @@ void Player::Accelerate(float deltaTime)
     const glm::vec2 lookat2D = { cam->GetForwardVector().x, cam->GetForwardVector().z };
     
     /////// Strafing
-    const glm::vec3 strafe = normalize(cross(cam->GetForwardVector(), glm::vec3(0.0f, 1.0f, 0.0f))) * strafeSpeed;   // Can't increase strafe speed by sprinting
+    const glm::vec3 strafe = strafeSpeed * cam->GetRightVector() * (inputs[2] ? 1.0f : -1.0f);
 
     // If moving forwards/backwards ... decrease lateral acceleration
     const float strafeAcceleration = inputs[0] || inputs[1]? latAcceleration * .4f : latAcceleration;
@@ -46,7 +46,7 @@ void Player::Accelerate(float deltaTime)
     if (inputs[2] || inputs[3])
     {
         const float yValue = velocity.y;
-        velocity = mix(velocity, inputs[2]? strafe : -strafe, strafeAcceleration);
+        velocity = mix(velocity, strafe, strafeAcceleration);
 
         // Ensures that the y-value is unaffected
         velocity.y = yValue;
@@ -72,7 +72,6 @@ void Player::Accelerate(float deltaTime)
         const glm::vec2 velocity2D = glm::vec2(velocity.x, velocity.z);                                                                                   // Forwards / Backwards
         const glm::vec2 moveSpeed = (sprinting? sprintSpeed: walkSpeed) * lookat2D * (inputs[0]? 1.0f : -1.0f);
         
-        // velocity = mix(velocity, straightAcceleration, opposite? accel * turnMultiplier : accel);
         // Only operating on the horizontal axis
         // Lerp to the movementSpeed using acceleration as the alpha
         velocity.x = mix(velocity2D, moveSpeed, accel).x;

@@ -67,7 +67,7 @@ private:
         for(auto& vert : vertices)
         {
             for(auto& pos : vert.position) data.push_back(pos);
-            for(auto& colour : vert.colour) data.push_back(colour);
+            for(auto& normal : vert.normals) data.push_back(normal);
             for(auto& uv : vert.texCoords) data.push_back(uv);
         }
         return data;

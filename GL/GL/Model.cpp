@@ -10,8 +10,8 @@ Model::Model(const string filePath)
 		aiProcess_CalcTangentSpace | 
 		aiProcess_Triangulate | 
 		aiProcess_JoinIdenticalVertices | 
-		aiProcess_SortByPType |
-		aiProcess_FlipUVs
+		aiProcess_SortByPType 
+		| aiProcess_FlipUVs
 	);
 
 	if (!scene)
@@ -36,11 +36,16 @@ Model::Model(const string filePath)
 			vertices.push_back(pos->y);
 			vertices.push_back(pos->z);
 
-			// Pushing the colour
-			// vertices.push_back(.4f + j * .001f);
-			// vertices.push_back(.1f + j * .001f);
-			// vertices.push_back(.3f + j * .001f);
-			// vertices.push_back(1);
+			// Pushing the normals
+			if (mesh->HasNormals())
+			{
+				const aiVector3D* n = &mesh->mNormals[j];
+
+				vertices.push_back(n->x);
+				vertices.push_back(n->y);
+				vertices.push_back(n->z);
+			}
+
 
 			// Pushing the tex coords
 			// Check if there are any present
@@ -48,8 +53,11 @@ Model::Model(const string filePath)
 
 			const aiFace* f = &mesh->mFaces[j];
 			
-			vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].x);
-			vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].y);
+			vertices.push_back(mesh->mTextureCoords[0][j].x);
+			vertices.push_back(mesh->mTextureCoords[0][j].y);
+
+			//vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].x);
+			//vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].y);
 		}
 
 

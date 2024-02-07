@@ -69,16 +69,16 @@ void Game::InitOpenGL()
 	const std::vector<GLfloat> vertData =
 	{
 		// Front Face
-		 -0.5f, -0.5f, 0.5f,   /* Vertex 0 */    /* TexCoord */  0,0,
-		 0.5f, -0.5f,  0.5f,   /* Vertex 1 */    /* TexCoord */  1,0,
-		 0.5f,  0.5f,  0.5f,   /* Vertex 2 */    /* TexCoord */  1,1,
-		-0.5f,  0.5f,  0.5f,   /* Vertex 3 */    /* TexCoord */  0,1,
-
+		/* Vertex 0 */ -0.5f, -0.5f, 0.5f,    /* Normals */    0,0,0,   /* TexCoord */  0,0,
+		/* Vertex 0 */ 0.5f, -0.5f,  0.5f,    /* Normals */    0,0,0,   /* TexCoord */  1,0,
+		/* Vertex 0 */ 0.5f,  0.5f,  0.5f,    /* Normals */    0,0,0,   /* TexCoord */  1,1,
+		/* Vertex 0 */-0.5f,  0.5f,  0.5f,    /* Normals */    0,0,0,   /* TexCoord */  0,1,
+		
 		// Back Face
-		-0.5f, -0.5f, -0.5f,   /* Vertex 4 */    /* TexCoord */  0,0,
-		 0.5f, -0.5f, -0.5f,   /* Vertex 5 */    /* TexCoord */  1,0,
-		 0.5f,  0.5f, -0.5f,   /* Vertex 6 */    /* TexCoord */  1,1,
-		-0.5f,  0.5f, -0.5f,   /* Vertex 7 */    /* TexCoord */  0,1
+		/* Vertex 0 */-0.5f, -0.5f, -0.5f,    /* Normals */    0,0,0,    /* TexCoord */  0,0,
+		/* Vertex 0 */ 0.5f, -0.5f, -0.5f,    /* Normals */    0,0,0,    /* TexCoord */  1,0,
+		/* Vertex 0 */ 0.5f,  0.5f, -0.5f,    /* Normals */    0,0,0,    /* TexCoord */  1,1,
+		/* Vertex 0 */-0.5f,  0.5f, -0.5f,    /* Normals */    0,0,0,    /* TexCoord */  0,1
 	};
 
 	const std::vector<GLuint> indices =
@@ -132,8 +132,8 @@ void Game::InitOpenGL()
 	floor1->AddPosition(0, 10.5, 0);
 	floor1->SetScale(100, 8, 400);
 
-	model = new Model("ModelAssets/Barrel.obj");
-	model->AddPosition(0,5,-10);
+	model = new Model("ModelAssets/Barrel2.obj");
+	model->AddPosition(0,2.5f,-10);
 
 	box1->SetPosition(30,10,30);
 	
@@ -159,7 +159,7 @@ void Game::Update(float deltaTime) const
 		meshes[5]->AddPosition(.5f * deltaTime, 0,0);
 		meshes[5]->AddRotation(0, .005f * deltaTime, 0);
 	}
-	if(model) model->AddRotation(0, .005f * deltaTime, 0);
+	//if(model) model->AddRotation(0, .005f * deltaTime, 0);
 
 }
 
