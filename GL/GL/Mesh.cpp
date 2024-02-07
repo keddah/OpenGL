@@ -158,7 +158,7 @@ void Mesh::Render(Camera* cam, Light light)
 
 void Mesh::LookAtRotation(const glm::mat4 matrix)
 {
-	rotMatrix = translate(rotMatrix, transform.position);
+	// rotMatrix = translate(rotMatrix, transform.position);
 	rotMatrix = matrix;
 	rotMatrix = scale(rotMatrix, transform.scale);
 
