@@ -25,9 +25,10 @@ namespace Util
         
         if (logLength > 0)
         {
-            const auto log = new GLchar[logLength];
+            char* log = new char[logLength];
             glGetShaderInfoLog(shader, logLength, NULL, log);
-            print("Shader Log:\n" << log);
+            log[logLength] = 0;
+            printf(log);
             delete[] log;
         }
     }

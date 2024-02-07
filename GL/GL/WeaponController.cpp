@@ -24,7 +24,7 @@ void Player::WeaponController::Update(float deltaTime)
     }
 }
 
-void Player::WeaponController::Render(Camera* cam) const
+void Player::WeaponController::Render(Camera* cam, Light light) const
 {
-    if(pistolMesh) pistolMesh->Render(cam);
+    if(pistolMesh) pistolMesh->Render(cam, light);
 }

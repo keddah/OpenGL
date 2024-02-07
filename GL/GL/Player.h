@@ -17,7 +17,7 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render() { wc.Render(cam); }
+	void Render(Light light) { wc.Render(cam, light); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 
@@ -58,7 +58,7 @@ private:
 
 		void Update(float deltaTime);
 
-		void Render(Camera* cam) const;
+		void Render(Camera* cam, Light light) const;
 		
 	private:
 		Player& rPlayer;

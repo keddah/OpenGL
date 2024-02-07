@@ -45,4 +45,5 @@ private:
 	Model* model;
 
 	Player* player;
+	Light light;
 };

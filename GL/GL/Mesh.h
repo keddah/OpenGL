@@ -11,6 +11,7 @@
 #include "Material.h"
 #include "Rendering/BufferArrayManager.h"
 #include "Rendering/Shader.h"
+#include "Light.h"
 
 class Mesh
 {
@@ -19,7 +20,7 @@ public:
     Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices);
     ~Mesh() { delete baManager; delete mat; }
     
-    void Render(Camera* cam) const;
+    void Render(Camera* cam, Light light);
 
     void SetPosition(const glm::vec3 newVal) { transform.position = newVal;  CalculateAABoundingBox(); }
     void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; CalculateAABoundingBox(); }
@@ -73,6 +74,7 @@ private:
         return data;
     }
     void CalculateAABoundingBox();
+    void Lighting(Camera* cam, Light light);
 
     BoundingBox boundingBox;
     

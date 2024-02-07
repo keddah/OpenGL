@@ -19,7 +19,7 @@ public:
 	Model(string filePath);
 	~Model() { delete gameMesh; }
 
-	void Render(Camera* cam) const;
+	void Render(Camera* cam, Light light) const;
 
 	glm::vec3 GetPosition() const;
 	glm::vec3 GetRotation() const; 

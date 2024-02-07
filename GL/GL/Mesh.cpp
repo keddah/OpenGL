@@ -95,12 +95,23 @@ void Mesh::CalculateAABoundingBox()
 	transform.position = boundingBox.center;
 }
 
+void Mesh::Lighting(Camera* cam, Light light)
+{
+	shader.SetFloatAttrib("intensity", light.GetIntensity());
+	shader.SetVec3Attrib("lightPos", light.GetPosition());
+	shader.SetVec3Attrib("lightColour", light.GetColour());
+	shader.SetVec3Attrib("camPos", cam->GetPosition());
+}
 
-void Mesh::Render(Camera* cam) const
+
+void Mesh::Render(Camera* cam, Light light)
 {
 	if(!visible) return;
 
 	shader.Activate();
+		
+	Lighting(cam, light);
+
 
 	glm::mat4 modelMatrix = glm::mat4(1);
 
@@ -121,9 +132,8 @@ void Mesh::Render(Camera* cam) const
 	shader.SetMat4Attrib("modelMatrix", looking? rotMatrix : modelMatrix);
 	shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
 	shader.SetMat4Attrib("projectionMatrix", cam->GetProjectionMatrix());
-	
-	// shader.SetVec4Attrib("colour", 0, .2f, .45f, 1);
 
+	
 	baManager->BindArray();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();

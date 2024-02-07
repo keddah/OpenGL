@@ -12,6 +12,7 @@ Model::Model(const string filePath)
 		aiProcess_JoinIdenticalVertices | 
 		aiProcess_SortByPType 
 		| aiProcess_FlipUVs
+		| aiProcess_GenNormals
 	);
 
 	if (!scene)
@@ -84,12 +85,12 @@ Model::Model(const string filePath)
 	print(scene->mNumMeshes)
 }
 
-void Model::Render(Camera* cam) const
+void Model::Render(Camera* cam, Light light) const
 {
-	if (gameMesh) gameMesh->Render(cam); 
+	if (gameMesh) gameMesh->Render(cam, light); 
 	else
 	{
-		for(const auto& mesh : gameMeshes) if(mesh) mesh->Render(cam);
+		for(const auto& mesh : gameMeshes) if(mesh) mesh->Render(cam, light);
 	}	
 
 }
