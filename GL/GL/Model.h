@@ -16,7 +16,8 @@ using namespace std;
 class Model
 {
 public:
-	Model(string meshPath, string materialPath = "Images/Barrel_d.png");
+	// Always Base colour  -->  Normal
+	Model(const string& meshPath, string materialPaths[] = new string {"Images/Barrel_d.png"});
 	~Model() { delete gameMesh; }
 
 	void Render(Camera* cam, Light light) const;
@@ -49,13 +50,15 @@ public:
 	void SetScale(const glm::vec3 newVal) const;
 	void SetScale(const float x, const float y, const float z) const;
 
-	void CreateMaterial(const std::string& texturePath) const;
+	void CreateMaterial(const std::string texturePath[]) const;
 	void SetCollisionsEnabled(bool value) const;
 	void SetVisibility(bool value) const;
 
 	Mesh* GetMesh() const { return gameMesh; }
 	std::vector<Mesh*> GetMeshes() const { return gameMeshes; }
 
+	void EnableTextureWrapping() const;
+	
 private:
 	Mesh* gameMesh;
 	std::vector<Mesh*> gameMeshes;

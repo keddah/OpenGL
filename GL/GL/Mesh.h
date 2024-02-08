@@ -17,10 +17,10 @@ class Mesh
 {
 public:
     Mesh() = default;
-    Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::string& materialPath);
+    Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::string materialPath[]);
     ~Mesh() { delete baManager; delete mat; }
     
-    void Render(Camera* cam, Light light);
+    void Render(Camera* cam, const Light& light) const;
 
     void SetPosition(const glm::vec3 newVal) { transform.position = newVal;  CalculateAABoundingBox(); }
     void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; CalculateAABoundingBox(); }
@@ -31,7 +31,7 @@ public:
     void SetRotation(const glm::vec3 newVal) { transform.rotation = newVal;  CalculateAABoundingBox(); }
     void SetRotation(const float x, const float y, const float z) { transform.rotation = {x,y,z};  CalculateAABoundingBox(); }
     
-    void LookAtRotation(glm::mat4 matrix);
+    void LookAtRotation(const glm::mat4& matrix);
 
     void AddRotation(const glm::vec3 newVal) { transform.rotation += newVal;  CalculateAABoundingBox(); }
     void AddRotation(const float x, const float y, const float z) { transform.rotation += glm::vec3(x,y,z);  CalculateAABoundingBox(); }
@@ -44,7 +44,7 @@ public:
     glm::vec3 GetScale() const { return transform.scale; }
     BoundingBox GetBoundingBox() const { return boundingBox; }
 
-    void CreateMaterial(const std::string& texturePath);
+    void CreateMaterial(const std::string texturePath[]);
     void SetVisibility(const bool newVal) { visible = newVal; }
     bool IsVisible() const { return visible; }
     
@@ -60,10 +60,12 @@ public:
     {
         transform.position = {px,py,pz}; transform.rotation = {rx,ry,rz}; transform.scale = {sx,sy,sz};
     }
-    
+
+
+    void EnableTextureWrapping() const { if(mat) mat->EnableTextureWrapping(); }
+
 private:
-    void Init();
-    void InitShaders(const std::string& matPath);
+    void InitShaders(const std::string matPath[]);
     std::vector<GLfloat> GetVertexData() const
     {
         std::vector<GLfloat> data;
@@ -76,7 +78,7 @@ private:
         return data;
     }
     void CalculateAABoundingBox();
-    void Lighting(Camera* cam, Light light);
+    void Lighting(const Camera* cam, const Light& light) const;
 
     BoundingBox boundingBox;
     

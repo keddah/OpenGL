@@ -69,50 +69,50 @@ void Shader::Init()
 
 }
 
-void Shader::SetFloatAttrib(const GLchar* attribName, const float newValue) const
+void Shader::SetFloatAttrib(const std::string& attribName, const float newValue) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform1f(id, newValue));
 }
 
-void Shader::SetVec3Attrib(const GLchar* attribName, const glm::vec3 newValue) const
+void Shader::SetVec3Attrib(const std::string& attribName, const glm::vec3 newValue) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform3f(id, newValue.x, newValue.y, newValue.z));
 }
 
-void Shader::SetVec3Attrib(const GLchar* attribName, const float x, const float y, const float z) const
+void Shader::SetVec3Attrib(const std::string& attribName, const float x, const float y, const float z) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform3f(id, x, y, z));
 }
 
-void Shader::SetVec4Attrib(const GLchar* attribName, const glm::vec4 newValue) const
+void Shader::SetVec4Attrib(const std::string& attribName, const glm::vec4 newValue) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform4f(id, newValue.x, newValue.y, newValue.z, newValue.w));
 }
 
-void Shader::SetVec4Attrib(const GLchar* attribName, const float x, const float y, const float z, const float w) const
+void Shader::SetVec4Attrib(const std::string& attribName, const float x, const float y, const float z, const float w) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform4f(id, x, y, z, w));
 }
 
-void Shader::SetMat4Attrib(const GLchar* attribName, glm::mat4 newValue) const
+void Shader::SetMat4Attrib(const std::string& attribName, glm::mat4 newValue) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniformMatrix4fv(id, 1, GL_FALSE, value_ptr(newValue)));
 }
 
-void Shader::SetUintAttrib(const GLchar* attribName, const unsigned int newValue) const
+void Shader::SetUintAttrib(const std::string& attribName, const unsigned int newValue) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform1ui(id, newValue));
 }
 
-void Shader::SetIntAttrib(const GLchar* attribName, const int newValue) const
+void Shader::SetIntAttrib(const std::string& attribName, const int newValue) const
 {
-	const GLint id = glGetUniformLocation(program_id, attribName);
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform1i(id, newValue));
 }

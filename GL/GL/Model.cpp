@@ -1,6 +1,7 @@
 #include "Model.h"
 
-Model::Model(const string filePath, string materialPath)
+// Always Base colour  -->  Normal
+Model::Model(const string& filePath, string materialPaths[])
 {
 	Assimp::Importer importer;
 	const aiScene* scene = 
@@ -23,7 +24,7 @@ Model::Model(const string filePath, string materialPath)
 
 	for (int i = 0; i < scene->mNumMeshes; i++) 
 	{
-		aiMesh* mesh = scene->mMeshes[i];
+		const aiMesh* mesh = scene->mMeshes[i];
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
 
@@ -56,9 +57,6 @@ Model::Model(const string filePath, string materialPath)
 			
 			vertices.push_back(mesh->mTextureCoords[0][j].x);
 			vertices.push_back(mesh->mTextureCoords[0][j].y);
-
-			//vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].x);
-			//vertices.push_back(mesh->mTextureCoords[0][f->mIndices[0]].y);
 		}
 
 
@@ -74,15 +72,17 @@ Model::Model(const string filePath, string materialPath)
 			indices.push_back(f->mIndices[2]);
 		}
 			
-		if (scene->mNumMeshes == 1) gameMesh = new Mesh(vertices, indices, materialPath);
+		if (scene->mNumMeshes == 1) gameMesh = new Mesh(vertices, indices, materialPaths);
 		else
 		{
-			Mesh* newMesh = new Mesh(vertices, indices, materialPath);
+			Mesh* newMesh = new Mesh(vertices, indices, materialPaths);
 			gameMeshes.push_back(newMesh);
 		}
 	}
-
 	print(scene->mNumMeshes)
+
+	// Once the mesh/meshes have been added, there's no need for the scene.
+	importer.FreeScene();
 }
 
 void Model::Render(Camera* cam, Light light) const
@@ -227,7 +227,7 @@ void Model::SetScale(const float x, const float y, const float z) const
 	}
 }
 
-void Model::CreateMaterial(const std::string& texturePath) const
+void Model::CreateMaterial(const std::string texturePath[]) const
 {
 	if(gameMesh) gameMesh->CreateMaterial(texturePath);
 	else
@@ -252,5 +252,14 @@ void Model::SetVisibility(bool value) const
 	else
 	{
 		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetVisibility(value);
+	}
+}
+
+void Model::EnableTextureWrapping() const
+{
+	if (gameMesh) gameMesh->EnableTextureWrapping();
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->EnableTextureWrapping();
 	}
 }

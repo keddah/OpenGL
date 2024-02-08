@@ -2,7 +2,7 @@
 #include <gtx/quaternion.hpp>
 #include <gtx/string_cast.hpp>
 
-Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::string& materialPath)
+Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::string materialPath[])
 {
 	indices = _indices;
 	
@@ -43,11 +43,7 @@ Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _i
 	CalculateAABoundingBox();
 }
 
-void Mesh::Init()
-{
-}
-
-void Mesh::InitShaders(const std::string& matPath)
+void Mesh::InitShaders(const std::string matPath[])
 {
 	shader.Init();
 
@@ -99,7 +95,7 @@ void Mesh::CalculateAABoundingBox()
 	transform.position = boundingBox.center;
 }
 
-void Mesh::Lighting(Camera* cam, Light light)
+void Mesh::Lighting(const Camera* cam, const Light& light) const
 {
 	shader.SetFloatAttrib("intensity", light.GetIntensity());
 	shader.SetVec3Attrib("lightPos", light.GetPosition());
@@ -108,7 +104,7 @@ void Mesh::Lighting(Camera* cam, Light light)
 }
 
 
-void Mesh::Render(Camera* cam, Light light)
+void Mesh::Render(Camera* cam, const Light& light) const
 {
 	if(!visible) return;
 
@@ -130,7 +126,6 @@ void Mesh::Render(Camera* cam, Light light)
 		modelMatrix = scale(modelMatrix, transform.scale);
 	}
 
-
     cam->UpdateViewMatrix();
 
 	shader.SetMat4Attrib("modelMatrix", looking? rotMatrix : modelMatrix);
@@ -141,7 +136,11 @@ void Mesh::Render(Camera* cam, Light light)
 	baManager->BindArray();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();
-	if(mat) mat->BindTexture();
+	if(mat)
+	{
+		mat->BindTextures(0);
+		mat->BindTextures(1);
+	}
 
 	// Stride = all the compCounts added together
 	constexpr GLsizei stride =  sizeof(Vertex);
@@ -155,12 +154,12 @@ void Mesh::Render(Camera* cam, Light light)
 	
 	glCall(glDisableVertexAttribArray(vertArrayIndex));
 	baManager->UnbindAll();
-	if(mat) mat->UnbindTexture();
+	if(mat) mat->UnbindTextures();
 	
 	shader.Deactivate();
 }
 
-void Mesh::LookAtRotation(const glm::mat4 matrix)
+void Mesh::LookAtRotation(const glm::mat4& matrix)
 {
 	// rotMatrix = translate(rotMatrix, transform.position);
 	rotMatrix = matrix;
@@ -170,9 +169,9 @@ void Mesh::LookAtRotation(const glm::mat4 matrix)
 	looking = true;
 }
 
-void Mesh::CreateMaterial(const std::string& texturePath)
+void Mesh::CreateMaterial(const std::string texturePaths[])
 {
 	delete mat;
 
-	mat = new Material(shader, texturePath);
+	mat = new Material(shader, texturePaths);
 }

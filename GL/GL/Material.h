@@ -8,20 +8,31 @@
 class Material
 {
 public:
-    Material(Shader& _shader, const std::string& matPath);
+    // Always Base colour  -->  Normal
+    Material(Shader& _shader, const std::string matPath[]);
     ~Material(){ glDeleteTextures(1, &colour_texture); };
 
-    void NewTexture(const std::string& filePath);
-    void BindTexture() const { glCall(glBindTexture(GL_TEXTURE_2D, colour_texture)); }
-    void UnbindTexture() const { glCall(glBindTexture(GL_TEXTURE_2D, 0)); }
-    
+    void BindTextures(GLuint texIndex) const;
+    void UnbindTextures() const { glCall(glBindTexture(GL_TEXTURE_2D, 0)); }
+
+    void EnableTextureWrapping() const
+    {
+        BindTextures(0);
+        BindTextures(1);
+        
+        glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+
+        UnbindTextures();
+    }
 
 private:
     int tex_width, tex_height, channelCount;
-    unsigned char* image_bytes;
+
+    float specular = .2f;
     
-    glm::vec4 tint = {1,1,1,1};
+    
     GLuint colour_texture;
+    GLuint normal_texture;
 
     Shader& shader;
 };

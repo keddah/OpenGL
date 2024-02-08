@@ -17,9 +17,7 @@ public:
 
 private:
 	glm::vec3 position = {0, 20, -10};
-	float intensity = 3;
-	float range;
-	float falloff;
+	float intensity = 1.1f;
 
 	glm::vec3 colour = { 1.0f, .9f, .8f };
 };

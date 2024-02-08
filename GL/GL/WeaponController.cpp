@@ -2,8 +2,9 @@
 
 Player::WeaponController::WeaponController(Player* player) : rPlayer(*player)
 {
-    pistolMesh = new Model("ModelAssets/handgun2.obj");
-    pistolMesh->CreateMaterial("Images/PistolBaseColour.png");
+    string texturePaths [] = {"Images/PistolBaseColour.png", "Images/PistolNormal.png"};
+    pistolMesh = new Model("ModelAssets/handgun2.obj", texturePaths);
+    // pistolMesh->CreateMaterial();
     
     pistolMesh->SetScale(.01f,.01f,.01f);
     

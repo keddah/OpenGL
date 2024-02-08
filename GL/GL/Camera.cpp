@@ -27,16 +27,12 @@ void Camera::Look(glm::vec2 mouseDelta, float deltaTime)
     // Use the updated forward vector to get the right vector
     rightVector = normalize(glm::cross(forwardVector, glm::vec3(0.0f, 1.0f, 0.0f)));
 
-    glm::vec3 right = GetRightVector();
-
-    print(right.x << ", " << right.y << ", " << right.z);
-
     // Update lookAt based on mouse movement
-    glm::quat rotationX = glm::angleAxis(mouseDelta.x * sensitivity_x, glm::vec3(0, 1, 0));
-    glm::quat rotationY = glm::angleAxis(mouseDelta.y * sensitivity_y, GetRightVector());
+    const glm::quat rotationX = glm::angleAxis(mouseDelta.x * sensitivity_x, glm::vec3(0, 1, 0));
+    const glm::quat rotationY = glm::angleAxis(mouseDelta.y * sensitivity_y, GetRightVector());
 
     // Combine the rotations
-    glm::quat totalRotation = rotationX * rotationY;
+    const glm::quat totalRotation = rotationX * rotationY;
 
     pitch = glm::eulerAngles(totalRotation).x;
     yaw = glm::eulerAngles(totalRotation).y;

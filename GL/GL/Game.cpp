@@ -67,12 +67,17 @@ void Game::InitOpenGL()
 	//________ A cube ________\\
 
 	player = new Player(rRunning);
+	std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
 	
 	auto left = new Model("ModelAssets/Cube.obj");
 	auto right = new Model("ModelAssets/Cube.obj");
 	auto back = new Model("ModelAssets/Cube.obj");
-	auto floor1 = new Model("ModelAssets/Cube.obj");
-	auto box1 = new Model("ModelAssets/Cube.obj");
+
+	auto floor = new Model("ModelAssets/Cube.obj", floorTex);
+	floor->EnableTextureWrapping();
+	
+	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
+	auto box2 = new Model("ModelAssets/Cube.obj", floorTex);
 
 	left->SetScale(.2f, 7.5f, 7.5f);
 	left->AddPosition(-7.5f, 0,0);
@@ -83,20 +88,23 @@ void Game::InitOpenGL()
 	back->SetScale(7.5f, 7.5f, .2f);
 	back->AddPosition(0, 0, 7.5f);
 	
-	floor1->AddPosition(0, 10.5, 0);
-	floor1->SetScale(100, 8, 400);
+	floor->AddPosition(0, 10.5, 0);
+	floor->SetScale(100, 8, 400);
 
 	model = new Model("ModelAssets/Barrel2.obj");
-	model->AddPosition(0,2.5f,-10);
+	model->AddPosition(0,2.5f,-5);
+	model->SetScale(3,2.5f,3);
 
-	box1->SetPosition(30,10,30);
+	box2->SetPosition(0,5,0);
+	box2->CreateMaterial(floorTex);
+	box2->EnableTextureWrapping();
 	
 	meshes =
 	{
-		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor1->GetMesh(), box1->GetMesh()
+		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh(), box2->GetMesh()
 	};
 
-	box1->AddPosition(0, 5, 0);
+	box2->AddPosition(0, 5, 0);
 
 	player->SetLevelMeshes(meshes);
 	
@@ -108,12 +116,12 @@ void Game::Update(float deltaTime) const
 {
 	player->Update(deltaTime);
 	
-	//if (meshes[5])
-	//{
-	//	meshes[5]->AddPosition(.5f * deltaTime, 0,0);
-	//	meshes[5]->AddRotation(0, .005f * deltaTime, 0);
-	//}
-	if(model) model->AddRotation(0, .005f * deltaTime, 0);
+	if (meshes.back())
+	{
+		// meshes.back()->AddPosition(.5f * deltaTime, 0,0);
+		meshes.back()->AddRotation(0, .005f * deltaTime, 0);
+	}
+	// if(model) model->AddRotation(0, .005f * deltaTime, 0);
 
 }
 
