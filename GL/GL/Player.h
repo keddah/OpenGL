@@ -24,6 +24,7 @@ public:
 	glm::vec3 GetPosition() const { return position; }
 
 	void SetLevelMeshes(const std::vector<Mesh*>& newMeshes) { meshes = newMeshes; }
+	std::vector<Mesh*> GetLevelMeshes() const { return meshes; }
 	
 private:
 	void Accelerate(float deltaTime);
@@ -58,11 +59,28 @@ private:
 
 		void Update(float deltaTime);
 
-		void Render(Camera* cam, Light light) const;
+		void Render(Camera* cam, const Light& light) const;
 		
 	private:
+		void PullTrigger();
+		void Shoot();
+		bool Reload();
+		void ShootTimer(float deltaTime);
+		
 		Player& rPlayer;
 		Model* pistolMesh;
+
+		glm::vec3 shootPos;
+		bool canShoot;
+
+		const float shootDelay = .125f;
+		float currentShootTime;
+
+		const unsigned short maxAmmo = 120;
+		const unsigned short magCapcity = 9;
+
+		unsigned short currentAmmo = maxAmmo;
+		unsigned short currentMag = magCapcity;
 	};
 
 	WeaponController wc = {this};

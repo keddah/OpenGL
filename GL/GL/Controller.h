@@ -23,6 +23,8 @@ public:
     bool ShiftBtnDown() const { return sprint; }
     bool CrouchBtnDown() const { return crouch; }
     
+    bool LmbDown() const { return lmb; }
+    
 private:
     void CheckInputs();
     void ClearInputs();

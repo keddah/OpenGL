@@ -16,6 +16,9 @@ uniform vec3 lightColour;
 uniform vec3 lightPos;
 uniform vec3 camPos;
 
+bool normalPresent;
+int texSize;
+
 out vec4 fragmentColour;
 void main() 
 { 
@@ -23,11 +26,15 @@ void main()
     vec3 normalMapping = texture(tex1, texCoords).rgb;
     normalMapping = normalize(normalMapping * 2 - 1);
     
+    // Check if tex1 is valid by comparing its width and height to -1... if it's valid use the vertex data normal.
+    normalPresent = textureSize(tex1, 0).x != -1 && textureSize(tex1, 0).y != -1;
+    texSize = textureSize(tex1, 0).x;
+    
     // Normal from the vertex data
     vec3 vertexNormal = normalize(normals);             
     
     // If a normal map hasn't been assigned... use the normals from the vertex data
-    vec3 normal = all(equal(normalMapping, vec3(0.0))) ? vertexNormal : normalMapping;
+    vec3 normal = normalPresent ? normalMapping : vertexNormal;
     
     vec3 ambient = intensity * lightColour;
     
@@ -42,7 +49,7 @@ void main()
     vec3 specular = lightColour * specularStrength * spec;
 
     vec3 texColour = texture(tex0, texCoords).rgb;
-
+    
     vec3 output = (ambient + diffusion) * texColour + specular;
 
     fragmentColour = vec4(output, 1); 

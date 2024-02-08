@@ -75,6 +75,15 @@ void Shader::SetFloatAttrib(const std::string& attribName, const float newValue)
 	glCall(glUniform1f(id, newValue));
 }
 
+float Shader::GetFloatAttrib(const std::string& attribName) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
+
+	float value;
+	glCall(glGetUniformfv(program_id, id, &value));
+	return value;
+}
+
 void Shader::SetVec3Attrib(const std::string& attribName, const glm::vec3 newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
@@ -111,8 +120,26 @@ void Shader::SetUintAttrib(const std::string& attribName, const unsigned int new
 	glCall(glUniform1ui(id, newValue));
 }
 
+unsigned Shader::GetUintAttrib(const std::string& attribName) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
+
+	unsigned int value;
+	glCall(glGetUniformuiv(program_id, id, &value));
+	return value;
+}
+
 void Shader::SetIntAttrib(const std::string& attribName, const int newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
 	glCall(glUniform1i(id, newValue));
+}
+
+int Shader::GetIntAttrib(const std::string& attribName) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
+
+	int value;
+	glCall(glGetUniformiv(program_id, id, &value));
+	return value;
 }

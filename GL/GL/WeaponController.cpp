@@ -26,9 +26,62 @@ void Player::WeaponController::Update(float deltaTime)
         pistolMesh->LookAtRotation(lookMatrix);
         pistolMesh->SetPosition(handSocket);
     }
+
+    PullTrigger();
+    ShootTimer(deltaTime);
 }
 
-void Player::WeaponController::Render(Camera* cam, Light light) const
+void Player::WeaponController::Render(Camera* cam, const Light& light) const
 {
     if(pistolMesh) pistolMesh->Render(cam, light);
+}
+
+void Player::WeaponController::PullTrigger()
+{
+    if(!rPlayer.controller.LmbDown()) return;
+
+    Shoot();
+}
+
+void Player::WeaponController::Shoot()
+{
+    if(!canShoot) return;
+
+    const Raycast::Ray bulletRay = Raycast::ShootRaycast(shootPos, rPlayer.cam->GetForwardVector(), 9000);
+
+    for(const auto& mesh : rPlayer.meshes)
+    {
+        const bool hit = Raycast::RayCollision(bulletRay, mesh->GetBoundingBox());
+
+        if(hit)
+        {
+            Model* spawnMesh = new Model("ModelAssets/Cube.obj");
+            spawnMesh->SetScale(.3f,.3f,.3f);
+            spawnMesh->SetPosition(mesh->GetPosition());
+            rPlayer.meshes.push_back(spawnMesh->GetMesh());
+            break;
+        }
+    }
+    
+    currentMag--;
+    if(currentMag <= 0) if(!Reload()) canShoot = false;
+}
+
+bool Player::WeaponController::Reload()
+{
+    currentAmmo -= currentMag + (magCapcity - currentMag);
+    currentMag = currentMag + (magCapcity - currentMag);
+
+    return currentAmmo > 0;
+}
+
+void Player::WeaponController::ShootTimer(float deltaTime)
+{
+    if(canShoot) return;
+
+    currentShootTime += deltaTime;
+    if(currentShootTime < shootDelay) return;
+
+    currentShootTime = 0;
+    canShoot = true;
 }

@@ -77,7 +77,6 @@ void Game::InitOpenGL()
 	floor->EnableTextureWrapping();
 	
 	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
-	auto box2 = new Model("ModelAssets/Cube.obj", floorTex);
 
 	left->SetScale(.2f, 7.5f, 7.5f);
 	left->AddPosition(-7.5f, 0,0);
@@ -95,16 +94,11 @@ void Game::InitOpenGL()
 	model->AddPosition(0,2.5f,-5);
 	model->SetScale(3,2.5f,3);
 
-	box2->SetPosition(0,5,0);
-	box2->CreateMaterial(floorTex);
-	box2->EnableTextureWrapping();
-	
 	meshes =
 	{
-		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh(), box2->GetMesh()
+		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh()
 	};
 
-	box2->AddPosition(0, 5, 0);
 
 	player->SetLevelMeshes(meshes);
 	
@@ -115,11 +109,11 @@ void Game::InitOpenGL()
 void Game::Update(float deltaTime) const
 {
 	player->Update(deltaTime);
-	
-	if (meshes.back())
+
+	if (player->GetLevelMeshes().back())
 	{
 		// meshes.back()->AddPosition(.5f * deltaTime, 0,0);
-		meshes.back()->AddRotation(0, .005f * deltaTime, 0);
+		player->GetLevelMeshes().back()->AddRotation(0, .005f * deltaTime, 0);
 	}
 	// if(model) model->AddRotation(0, .005f * deltaTime, 0);
 
@@ -137,7 +131,7 @@ void Game::Render() const
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	player->Render(light);
 	
-	for (const auto& mesh : meshes)
+	for (const auto& mesh : player->GetLevelMeshes())
 	{
 		if(mesh) mesh->Render(player->GetCamera(), light);
 	}

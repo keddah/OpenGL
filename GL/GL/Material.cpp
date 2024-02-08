@@ -1,6 +1,5 @@
 #include "Material.h"
 
-#include <complex.h>
 #include <string>
 
 // Always Base colour  -->  Normal
@@ -32,12 +31,9 @@ Material::Material(Shader& _shader, const std::string matPath[]) : shader(_shade
         glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
         glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
+        // Activate shader and set texture unit
         BindTextures(i);
         
-        // Activate shader and set texture unit
-        shader.Activate();
-        shader.SetIntAttrib("tex" + std::to_string(i), i);
-
         // Upload texture data
         glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, tex_width, tex_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_bytes));
         glCall(glGenerateMipmap(GL_TEXTURE_2D));

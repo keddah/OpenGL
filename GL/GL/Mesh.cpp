@@ -138,8 +138,8 @@ void Mesh::Render(Camera* cam, const Light& light) const
 	baManager->BindIBuffer();
 	if(mat)
 	{
-		mat->BindTextures(0);
 		mat->BindTextures(1);
+		mat->BindTextures(0);
 	}
 
 	// Stride = all the compCounts added together
