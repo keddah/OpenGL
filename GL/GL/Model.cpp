@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model(const string filePath)
+Model::Model(const string filePath, string materialPath)
 {
 	Assimp::Importer importer;
 	const aiScene* scene = 
@@ -74,10 +74,10 @@ Model::Model(const string filePath)
 			indices.push_back(f->mIndices[2]);
 		}
 			
-		if (scene->mNumMeshes == 1) gameMesh = new Mesh(vertices, indices);
+		if (scene->mNumMeshes == 1) gameMesh = new Mesh(vertices, indices, materialPath);
 		else
 		{
-			Mesh* newMesh = new Mesh(vertices, indices);
+			Mesh* newMesh = new Mesh(vertices, indices, materialPath);
 			gameMeshes.push_back(newMesh);
 		}
 	}
@@ -227,8 +227,14 @@ void Model::SetScale(const float x, const float y, const float z) const
 	}
 }
 
-
-
+void Model::CreateMaterial(const std::string& texturePath) const
+{
+	if(gameMesh) gameMesh->CreateMaterial(texturePath);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->CreateMaterial(texturePath);
+	}
+}
 
 
 void Model::SetCollisionsEnabled(const bool value) const

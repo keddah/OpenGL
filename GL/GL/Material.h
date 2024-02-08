@@ -8,10 +8,10 @@
 class Material
 {
 public:
-    Material(Shader& _shader);
+    Material(Shader& _shader, const std::string& matPath);
     ~Material(){ glDeleteTextures(1, &colour_texture); };
 
-    void NewTexture(std::string filePath);
+    void NewTexture(const std::string& filePath);
     void BindTexture() const { glCall(glBindTexture(GL_TEXTURE_2D, colour_texture)); }
     void UnbindTexture() const { glCall(glBindTexture(GL_TEXTURE_2D, 0)); }
     

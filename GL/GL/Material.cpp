@@ -1,11 +1,11 @@
 #include "Material.h"
 
-Material::Material(Shader& _shader) : shader(_shader)
+Material::Material(Shader& _shader, const std::string& matPath) : shader(_shader)
 {
-    NewTexture("Images/Barrel_d.png");
+    NewTexture(matPath);
 }
 
-void Material::NewTexture(std::string filePath)
+void Material::NewTexture(const std::string& filePath)
 {
     image_bytes = stbi_load(filePath.c_str(), &tex_width, &tex_height, &channelCount, 4);
     if(!image_bytes)

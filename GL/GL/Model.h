@@ -16,7 +16,7 @@ using namespace std;
 class Model
 {
 public:
-	Model(string filePath);
+	Model(string meshPath, string materialPath = "Images/Barrel_d.png");
 	~Model() { delete gameMesh; }
 
 	void Render(Camera* cam, Light light) const;
@@ -49,6 +49,7 @@ public:
 	void SetScale(const glm::vec3 newVal) const;
 	void SetScale(const float x, const float y, const float z) const;
 
+	void CreateMaterial(const std::string& texturePath) const;
 	void SetCollisionsEnabled(bool value) const;
 	void SetVisibility(bool value) const;
 
