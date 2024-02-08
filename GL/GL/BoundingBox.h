@@ -1,5 +1,10 @@
 #pragma once
 
+#include <iostream>
+#define print(x) { std::cout << x << std::endl; }
+#define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("error code: " << error << "\n" << gluErrorString(error)); __debugbreak(); } }
+#define glCall(theFunction) { theFunction; GetError(); }
+
 struct BoundingBox
 {
     glm::vec3 min;
@@ -30,7 +35,8 @@ struct BoundingBox
 
 };
 
-#include <gtx/component_wise.hpp>
+#include <gtc/type_ptr.hpp>
+#include <glew.h>
 
 struct Raycast
 {
@@ -39,14 +45,18 @@ struct Raycast
         glm::vec3 start;
         glm::vec3 end;
         glm::vec3 direction;
+        bool hit;
+        glm::vec3 hitPosition; 
+
+        static bool IsValid(const Ray& ray) { return glm::length(ray.direction) > 0.0f; }
     } ray;
 
     static Ray ShootRaycast(const glm::vec3& rayStart, const glm::vec3& rayDirection, const float rayDistance) 
     {
         return { rayStart, rayStart + rayDirection * rayDistance, rayDirection };
     }
-
-    static bool RayCollision(const glm::vec3& rayStart, const glm::vec3& rayDirection, const float rayDistance, const BoundingBox& bb) 
+    
+    static bool RayCollision(const glm::vec3& rayStart, const glm::vec3& rayDirection, const float rayDistance, const BoundingBox& bb, glm::vec3& hitPosition)
     {
         const Ray ray = ShootRaycast(rayStart, rayDirection, rayDistance);
 
@@ -61,12 +71,15 @@ struct Raycast
 
             if (tEnter > tExit || tExit < 0)
                 return false;
+
+            // Update hit position when a collision occurs
+            hitPosition[i] = ray.start[i] + tEnter * rayDirection[i];
         }
 
         return true;
     }
 
-    static bool RayCollision(const Ray& ray, const BoundingBox& bb) 
+    static bool RayCollision(Ray& ray, const BoundingBox& bb)
     {
         for (int i = 0; i < 3; ++i)
         {
@@ -77,9 +90,27 @@ struct Raycast
             const float tEnter = glm::min(tMin, tMax);
             const float tExit = glm::max(tMin, tMax);
 
-            if (tEnter > tExit || tExit < 0) return false;
+            if (tEnter > tExit || tExit < 0)
+                return false;
+
+            // Update hit position when a collision occurs
+            ray.hitPosition[i] = ray.start[i] + tEnter * ray.direction[i];
         }
 
+        ray.hit = true; // Set hit flag to true
         return true;
+    }
+
+    static void DebugDrawRay(const Ray& ray)
+    {
+        if(!Ray::IsValid(ray)) return;
+        glUseProgram(0);
+
+        glColor3f(1.0f, 0.0f, 0.0f);  // Red color for the ray
+
+        glBegin(GL_LINES);
+        glVertex3fv(glm::value_ptr(ray.start));
+        glVertex3fv(glm::value_ptr(ray.end));
+        glEnd();
     }
 };

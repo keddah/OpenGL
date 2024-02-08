@@ -6,7 +6,7 @@
 #include <string>
 
 #define print(x) { std::cout << x << std::endl; }
-#define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("Error during texture setup: " << gluErrorString(error)); } }
+#define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("Error: " << gluErrorString(error)); } }
 #define glCall(theFunction) { theFunction; GetError(); }
 
 class Shader
@@ -41,7 +41,7 @@ public:
     
     // Gets
     GLuint GetID() const { return program_id; }
-    GLint GetAttribute(const std::string attribName) const { return glGetAttribLocation(program_id, attribName.c_str()); }
+    GLint GetAttribute(const std::string& attribName) const { return glGetAttribLocation(program_id, attribName.c_str()); }
     
 
 private:

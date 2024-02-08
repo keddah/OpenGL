@@ -27,6 +27,8 @@ void Player::WeaponController::Update(float deltaTime)
         pistolMesh->SetPosition(handSocket);
     }
 
+    shootPos = rPlayer.position + forwardVec * .05f;
+        
     PullTrigger();
     ShootTimer(deltaTime);
 }
@@ -47,17 +49,19 @@ void Player::WeaponController::Shoot()
 {
     if(!canShoot) return;
 
-    const Raycast::Ray bulletRay = Raycast::ShootRaycast(shootPos, rPlayer.cam->GetForwardVector(), 9000);
+    ray = Raycast::ShootRaycast(shootPos, rPlayer.cam->GetForwardVector(), 9000);
 
     for(const auto& mesh : rPlayer.meshes)
     {
-        const bool hit = Raycast::RayCollision(bulletRay, mesh->GetBoundingBox());
+        const bool hit = Raycast::RayCollision(ray, mesh->GetBoundingBox());
 
         if(hit)
         {
-            Model* spawnMesh = new Model("ModelAssets/Cube.obj");
+            std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
+
+            Model* spawnMesh = new Model("ModelAssets/Cube.obj", floorTex);
             spawnMesh->SetScale(.3f,.3f,.3f);
-            spawnMesh->SetPosition(mesh->GetPosition());
+            spawnMesh->SetPosition(ray.hitPosition);
             rPlayer.meshes.push_back(spawnMesh->GetMesh());
             break;
         }

@@ -17,7 +17,8 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render(Light light) { wc.Render(cam, light); }
+	void Render(const Light& light) { wc.Render(cam, light); }
+	void Debug() { wc.Debug(); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 
@@ -60,6 +61,7 @@ private:
 		void Update(float deltaTime);
 
 		void Render(Camera* cam, const Light& light) const;
+		void Debug() const { Raycast::DebugDrawRay(ray); }
 		
 	private:
 		void PullTrigger();
@@ -70,6 +72,8 @@ private:
 		Player& rPlayer;
 		Model* pistolMesh;
 
+		Raycast::Ray ray;
+		
 		glm::vec3 shootPos;
 		bool canShoot;
 

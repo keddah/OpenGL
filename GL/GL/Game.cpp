@@ -135,8 +135,13 @@ void Game::Render() const
 	{
 		if(mesh) mesh->Render(player->GetCamera(), light);
 	}
+
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if(model) model->Render(player->GetCamera(), light);
+
+	glUseProgram(0);
+	player->Debug();
 	
+
 	SDL_GL_SwapWindow(window);
 }

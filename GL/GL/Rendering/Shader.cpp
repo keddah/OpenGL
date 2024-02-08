@@ -66,7 +66,6 @@ void Shader::Init()
 	// Since the shaders are already on the program, you don't need the actual shaders anymore
 	glCall(glDeleteShader(vertexShader));
 	glCall(glDeleteShader(fragmentShader));
-
 }
 
 void Shader::SetFloatAttrib(const std::string& attribName, const float newValue) const
