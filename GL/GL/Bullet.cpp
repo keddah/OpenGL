@@ -2,7 +2,7 @@
 #include <gtx/quaternion.hpp>
 
 
-Bullet::Bullet(const glm::vec3 spawnPos, const glm::vec3 direction)
+Bullet::Bullet(const glm::vec3 spawnPos, const glm::vec3 direction, const std::vector<Mesh*>& lvlMeshes) : levelMeshes(lvlMeshes)
 {
     MakeSphere();
     position = spawnPos;
@@ -15,7 +15,8 @@ void Bullet::Update(float deltaTime)
     life += deltaTime;
     if(life >= lifeSpan) dead = true;
     
-    if(mesh) mesh->SetPosition(position);
+    if(bulletMesh) bulletMesh->SetPosition(position);
+    Collisions();
 }
 
 void Bullet::FixedUpdate(float deltaTime)
@@ -27,7 +28,7 @@ void Bullet::FixedUpdate(float deltaTime)
 
 void Bullet::Render(Camera* cam, const Light& light) const
 {
-    if(mesh) mesh->Render(cam, light);
+    if(bulletMesh) bulletMesh->Render(cam, light);
 }
 
 void Bullet::MakeSphere()
@@ -88,6 +89,25 @@ void Bullet::MakeSphere()
     }
 
     const std::string images[] = {"Images/defaultTexture.jpg"};
-    mesh = new Mesh(vertices, indices, images);
-    mesh->SetScale(.1f);
+    bulletMesh = new Mesh(vertices, indices, images);
+    bulletMesh->SetScale(.1f);
+}
+
+void Bullet::Collisions()
+{
+    for(const auto& mesh : levelMeshes)
+    {
+        // Are collisions enabled on the mesh?
+        if(!mesh->IsCollisions()) continue;
+        
+        const BoundingBox& meshBB = mesh->GetBoundingBox(); 
+        const bool collided = BoundingBox::PositionInBounds(position + velocity * .1f, meshBB.min, meshBB.max);
+
+        // If it didn't collide with anything ... cycle through the rest of the meshes 
+        if(!collided) continue;
+        mesh->SetVisibility(false);
+        
+        dead = true;
+        break;
+    }
 }

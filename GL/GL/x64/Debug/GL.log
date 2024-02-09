@@ -1,5 +1,2 @@
-﻿  Mesh.cpp
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\BufferArrayManager.h(8,1): warning C4005: 'GetError': macro redefinition
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(8,1): message : see previous definition of 'GetError'
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Mesh.cpp(150,5): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  GL.vcxproj -> C:\Users\S22154781\Downloads\Git\OpenGL\GL\x64\Debug\GL.exe
+﻿  HeightMap.cpp
+C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\HeightMap.h(3,10): fatal  error C1083: Cannot open include file: 'SDL_image.h': No such file or directory

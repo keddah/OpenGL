@@ -17,7 +17,7 @@ class Model
 {
 public:
 	// Always Base colour  -->  Normal
-	Model(const string& meshPath, string materialPaths[] = new string {"Images/Barrel_d.png"});
+	Model(const string& meshPath, string materialPaths[] = new string {"Images/defaultTexture.jpg"});
 	~Model() { delete gameMesh; }
 
 	void Render(Camera* cam, Light light) const;
@@ -49,6 +49,7 @@ public:
     
 	void SetScale(const glm::vec3 newVal) const;
 	void SetScale(const float x, const float y, const float z) const;
+	void SetScale(const float xyz) const;
 
 	void CreateMaterial(const std::string texturePath[]) const;
 	void SetCollisionsEnabled(bool value) const;
@@ -57,8 +58,8 @@ public:
 	Mesh* GetMesh() const { return gameMesh; }
 	std::vector<Mesh*> GetMeshes() const { return gameMeshes; }
 
-	void SetUvScale(const glm::vec2& scale) const { gameMesh->SetUvScale(scale); } 
-	void SetUvScale(const float x, const float y) const { gameMesh->SetUvScale(x, y); } 
+	void SetUvScale(const glm::vec2& scale) const; 
+	void SetUvScale(float x, float y) const;
 	
 private:
 	Mesh* gameMesh;

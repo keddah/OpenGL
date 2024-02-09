@@ -227,6 +227,15 @@ void Model::SetScale(const float x, const float y, const float z) const
 	}
 }
 
+void Model::SetScale(const float xyz) const
+{
+	if (gameMesh) gameMesh->SetScale(xyz);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetScale(xyz);
+	}
+}
+
 void Model::CreateMaterial(const std::string texturePath[]) const
 {
 	if(gameMesh) gameMesh->CreateMaterial(texturePath);
@@ -252,5 +261,23 @@ void Model::SetVisibility(bool value) const
 	else
 	{
 		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetVisibility(value);
+	}
+}
+
+void Model::SetUvScale(const glm::vec2& scale) const
+{
+	if (gameMesh) gameMesh->SetUvScale(scale);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetUvScale(scale);
+	}
+}
+
+void Model::SetUvScale(const float x, const float y) const
+{
+	if (gameMesh) gameMesh->SetUvScale(x, y);
+	else
+	{
+		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetUvScale(x, y);
 	}
 }

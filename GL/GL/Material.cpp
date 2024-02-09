@@ -15,7 +15,8 @@ Material::Material(Shader& _shader, const std::string matPath[]) : shader(_shade
     
     glCall(glActiveTexture(GL_TEXTURE1));
     glCall(glBindTexture(GL_TEXTURE_2D, normal_texture));
-    
+
+    // Dividing by a byte to get the size of the array
     for(int i = 0; i < sizeof(matPath) / 8; i++)
     {
         unsigned char* image_bytes = stbi_load(matPath[i].c_str(), &tex_width, &tex_height, &channelCount, 4);

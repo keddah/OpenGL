@@ -69,7 +69,7 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
 {
     if(!canShoot) return;
 
-    Bullet* b = new Bullet(shootPos, direction);
+    Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
     rPlayer.AddLevelMesh(b->GetMesh());
     bullets.emplace_back(b);
     

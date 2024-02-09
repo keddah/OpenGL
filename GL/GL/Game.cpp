@@ -89,10 +89,11 @@ void Game::InitOpenGL()
 	floor->AddPosition(0, 10.5, 0);
 	floor->SetScale(100, 8, 400);
 	floor->SetUvScale(200,200);
-	
-	model = new Model("ModelAssets/Barrel2.obj");
-	model->AddPosition(0,2.5f,-5);
-	model->SetScale(3,2.5f,3);
+
+	std::string barrelTex[] = {"Images/Barrel_d.png", "Images/Barrel_n.png"};
+	model = new Model("ModelAssets/Barrel2.obj", barrelTex);
+	model->AddPosition(0,-2.5f,-10);
+	model->SetScale(2.0f);
 
 	meshes =
 	{
