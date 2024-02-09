@@ -95,6 +95,8 @@ void Game::InitOpenGL()
 	model->AddPosition(0,-2.5f,-10);
 	model->SetScale(2.0f);
 
+	skybox = new Skybox("Images/skydome.jpg");
+	
 	meshes =
 	{
 		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh()
@@ -131,6 +133,8 @@ void Game::Render() const
 		if(mesh) mesh->Render(player->GetCamera(), light);
 	}
 
+	if(skybox) skybox->Render(player->GetCamera(), light);
+	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if(model) model->Render(player->GetCamera(), light);
 

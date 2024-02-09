@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Player.h"
+#include "Skybox.h"
 
 #define print(x) { std::cout << x << std::endl; }
 
@@ -43,7 +44,8 @@ private:
 	TriangleRenderer* tri;
 	
 	Model* model;
-
+	Skybox* skybox;
+	
 	Player* player;
 	Light light;
 };

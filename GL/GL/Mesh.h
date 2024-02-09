@@ -63,7 +63,7 @@ public:
     }
 
     void SetUvScale(const glm::vec2& scale) const { if(mat) mat->SetUvScale(scale); } 
-    void SetUvScale(const float x, const float y) const { if(mat) mat->SetUvScale(x, y); } 
+    void SetUvScale(const float x, const float y) const { if(mat) mat->SetUvScale(x, y); }
 
 private:
     void InitShaders(const std::string matPath[]);

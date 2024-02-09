@@ -1,0 +1,78 @@
+#include "Skybox.h"
+
+#include <utility>
+
+Skybox::Skybox(std::string texturePath)
+{
+    CreateDome(std::move(texturePath));
+}
+
+void Skybox::Render(Camera* cam, const Light& light)
+{
+    dome->SetPosition(cam->GetPosition());
+    dome->Render(cam, light);
+}
+
+void Skybox::CreateDome(std::string texturePath)
+{
+    constexpr float radius = 1;
+    constexpr int stacks = 20;
+    constexpr int sectors = 20;
+    
+    std::vector<float> vertices;
+    std::vector<unsigned int> indices;
+    
+    for (int i = 0; i <= stacks; ++i)
+    {
+        const float latitude = M_PI * (-0.5 + static_cast<float>(i) / stacks);
+        float z0 = sin(latitude) * radius;
+        float zr0 = cos(latitude) * radius;
+
+        for (int j = 0; j <= sectors; ++j)
+        {
+            const float longitude = 2 * M_PI * static_cast<float>(j) / sectors;
+            float x = cos(longitude) * radius;
+            float y = sin(longitude) * radius;
+
+            float u = -(static_cast<float>(j) / sectors);
+            float v = -(1.0f - static_cast<float>(i) / stacks);
+
+            // Vertex coordinates
+            vertices.push_back(x * zr0);  // X coordinate
+            vertices.push_back(y * zr0);  // Y coordinate
+            vertices.push_back(z0);       // Z coordinate
+
+            // Normal vector
+            vertices.push_back(x);  // X normal
+            vertices.push_back(y);  // Y normal
+            vertices.push_back(z0); // Z normal
+
+            // UV coordinates
+            vertices.push_back(u); // U coordinate
+            vertices.push_back(v); // V coordinate
+        }
+    }
+
+    for (int i = 0; i < stacks; ++i)
+    {
+        for (int j = 0; j <= sectors; ++j)
+        {
+            int nextRow = i + 1;
+            int nextColumn = (j + 1) % (sectors + 1);
+
+            indices.push_back(i * (sectors + 1) + j);
+            indices.push_back(nextRow * (sectors + 1) + j);
+            indices.push_back(i * (sectors + 1) + nextColumn);
+
+            indices.push_back(i * (sectors + 1) + nextColumn);
+            indices.push_back(nextRow * (sectors + 1) + j);
+            indices.push_back(nextRow * (sectors + 1) + nextColumn);
+        }
+    }
+
+    const std::string path[] = { std::move(texturePath) };
+    dome = new Mesh(vertices, indices, path);
+    dome->SetScale(500);
+    dome->SetRotation(glm::degrees(90.0f),0,0);
+    dome->SetCollision(false);
+}

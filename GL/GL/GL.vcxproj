@@ -155,6 +155,7 @@
     <ClInclude Include="Rendering\BufferArrayManager.h" />
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Rendering\Utilities.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriangleRenderer.h" />
   </ItemGroup>
@@ -246,6 +247,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="TriangleRenderer.cpp" />
     <ClCompile Include="WeaponController.cpp" />
