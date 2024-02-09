@@ -6,7 +6,7 @@ Camera::Camera(Controller& roller) : control(roller)
     position = {0,0,-4};
     forwardVector = {0,0,1};
 
-    projectionMatrix = glm::perspective(fov, aspectRatio, nearClip, farClip);
+    projectionMatrix = glm::perspective(glm::degrees(fov), aspectRatio, nearClip, farClip);
     UpdateViewMatrix();
 }
 

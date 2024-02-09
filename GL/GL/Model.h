@@ -57,7 +57,8 @@ public:
 	Mesh* GetMesh() const { return gameMesh; }
 	std::vector<Mesh*> GetMeshes() const { return gameMeshes; }
 
-	void EnableTextureWrapping() const;
+	void SetUvScale(const glm::vec2& scale) const { gameMesh->SetUvScale(scale); } 
+	void SetUvScale(const float x, const float y) const { gameMesh->SetUvScale(x, y); } 
 	
 private:
 	Mesh* gameMesh;

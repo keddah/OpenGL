@@ -83,6 +83,18 @@ float Shader::GetFloatAttrib(const std::string& attribName) const
 	return value;
 }
 
+void Shader::SetVec2Attrib(const std::string& attribName, glm::vec2 newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
+	glCall(glUniform2f(id, newValue.x, newValue.y));
+}
+
+void Shader::SetVec2Attrib(const std::string& attribName, const float x, const float y) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
+	glCall(glUniform2f(id, x, y));
+}
+
 void Shader::SetVec3Attrib(const std::string& attribName, const glm::vec3 newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName.c_str());

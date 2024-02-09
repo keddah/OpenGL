@@ -28,8 +28,8 @@ Material::Material(Shader& _shader, const std::string matPath[]) : shader(_shade
         // Set texture parameters
         glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
         glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-        glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+        glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+        glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
         // Activate shader and set texture unit
         BindTextures(i);
@@ -70,4 +70,5 @@ void Material::BindTextures(const GLuint texIndex) const
     glCall(glBindTexture(GL_TEXTURE_2D, toBind));
     shader.Activate();
     shader.SetIntAttrib("tex" + std::to_string(texIndex), texIndex);
+    shader.SetVec2Attrib("uvScale", uvScale);
 }

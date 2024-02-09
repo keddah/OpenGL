@@ -24,6 +24,9 @@ public:
     void SetFloatAttrib(const std::string& attribName, float newValue) const;
     float GetFloatAttrib(const std::string& attribName) const;
     
+    void SetVec2Attrib(const std::string& attribName, glm::vec2 newValue) const;
+    void SetVec2Attrib(const std::string& attribName, float x, float y) const;
+
     void SetVec3Attrib(const std::string& attribName, glm::vec3 newValue) const;
     void SetVec3Attrib(const std::string& attribName, float x, float y, float z) const;
     

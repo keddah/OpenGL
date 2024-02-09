@@ -254,12 +254,3 @@ void Model::SetVisibility(bool value) const
 		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetVisibility(value);
 	}
 }
-
-void Model::EnableTextureWrapping() const
-{
-	if (gameMesh) gameMesh->EnableTextureWrapping();
-	else
-	{
-		for (const auto& mesh : gameMeshes) if (mesh) mesh->EnableTextureWrapping();
-	}
-}

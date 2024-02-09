@@ -15,6 +15,9 @@ public:
     void BindTextures(GLuint texIndex) const;
     void UnbindTextures() const { glCall(glBindTexture(GL_TEXTURE_2D, 0)); }
 
+    void SetUvScale(const glm::vec2& scale) { uvScale = scale; } 
+    void SetUvScale(const float x, const float y) { uvScale = {x, y}; } 
+    
     void EnableTextureWrapping() const
     {
         BindTextures(0);
@@ -29,7 +32,8 @@ private:
     int tex_width, tex_height, channelCount;
 
     float specular = .2f;
-    
+
+    glm::vec2 uvScale = {1,1};
     
     GLuint colour_texture;
     GLuint normal_texture;

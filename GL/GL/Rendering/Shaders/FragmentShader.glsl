@@ -11,6 +11,8 @@ uniform sampler2D tex0;
 // Normal Map
 uniform sampler2D tex1;
 
+uniform vec2 uvScale;
+
 uniform float intensity;
 uniform vec3 lightColour;
 uniform vec3 lightPos;
@@ -22,8 +24,10 @@ int texSize;
 out vec4 fragmentColour;
 void main() 
 { 
+    vec2 scaledTexure = texCoords * uvScale;
+    
     // The normal map (from a texture)
-    vec3 normalMapping = texture(tex1, texCoords).rgb;
+    vec3 normalMapping = texture(tex1, scaledTexure).rgb;
     normalMapping = normalize(normalMapping * 2 - 1);
     
     // Check if tex1 is valid by comparing its width and height to -1... if it's valid use the vertex data normal.
@@ -48,7 +52,7 @@ void main()
     float spec = pow(max(dot(viewDirection, reflection), 0), 32);
     vec3 specular = lightColour * specularStrength * spec;
 
-    vec3 texColour = texture(tex0, texCoords).rgb;
+    vec3 texColour = texture(tex0, scaledTexure).rgb;
     
     vec3 output = (ambient + diffusion) * texColour + specular;
 
