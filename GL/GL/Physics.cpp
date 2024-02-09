@@ -18,18 +18,21 @@ void Physics::AddForce(const float x, const float y, const float z, const float 
     if(abs(velocity.z) >= terminalVelocity.z) velocity.z = velocity.z > 0? terminalVelocity.z : -terminalVelocity.z;
 }
 
-void Physics::ApplyGravity(float deltaTime)
+void Physics::ApplyGravity(float deltaTime, const bool isPlayer)
 {
-    if(grounded)
+    if(isPlayer)
     {
-        velocity.y = 0;
-        gravMultiplier = .3f;
-        return;
-    }
+        if(grounded)
+        {
+            velocity.y = 0;
+            gravMultiplier = .3f;
+            return;
+        }
 
-    // Make things falls faster the longer they're in the air....
-    gravMultiplier += deltaTime * floatiness;
-    if(gravMultiplier > 3) gravMultiplier = 3;
+        // Make things falls faster the longer they're in the air....
+        gravMultiplier += deltaTime * floatiness;
+        if(gravMultiplier > 3) gravMultiplier = 3;
+    }
     
     velocity.y += gravity * gravMultiplier;
 

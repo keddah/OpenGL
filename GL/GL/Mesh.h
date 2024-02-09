@@ -38,6 +38,7 @@ public:
     
     void SetScale(const glm::vec3 newVal) { transform.scale = newVal;  CalculateAABoundingBox(); }
     void SetScale(const float x, const float y, const float z) { transform.scale = {x,y,z};  CalculateAABoundingBox(); }
+    void SetScale(const float xyz) { transform.scale = {xyz,xyz,xyz};  CalculateAABoundingBox(); }
 
     glm::vec3 GetPosition() const { return transform.position; }
     glm::vec3 GetRotation() const { return transform.rotation; }

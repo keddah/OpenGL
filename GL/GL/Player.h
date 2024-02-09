@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "BoundingBox.h"
+#include "Bullet.h"
 #include "Model.h"
 #include "Physics.h"
 
@@ -18,13 +19,18 @@ public:
 	void FixedUpdate(float deltaTime);
 
 	void Render(const Light& light) { wc.Render(cam, light); }
-	void Debug() { wc.Debug(); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 
 	glm::vec3 GetPosition() const { return position; }
 
 	void SetLevelMeshes(const std::vector<Mesh*>& newMeshes) { meshes = newMeshes; }
+	void AddLevelMesh(Mesh* newMesh) { meshes.push_back(newMesh); }
+	void RemoveLevelMesh(const Mesh* toRemove)
+	{
+		auto i = std::find(meshes.begin(), meshes.end(), toRemove);
+		meshes.erase(i);
+	}
 	std::vector<Mesh*> GetLevelMeshes() const { return meshes; }
 	
 private:
@@ -59,25 +65,24 @@ private:
 		~WeaponController() { delete pistolMesh; }
 
 		void Update(float deltaTime);
+		void FixedUpdate(float deltaTime);
 
 		void Render(Camera* cam, const Light& light) const;
-		void Debug() const { Raycast::DebugDrawRay(ray); }
 		
 	private:
 		void PullTrigger();
-		void Shoot();
-		bool Reload();
+		void Shoot(glm::vec3 shootPos, glm::vec3 direction);
+		void Reload();
 		void ShootTimer(float deltaTime);
 		
 		Player& rPlayer;
 		Model* pistolMesh;
 
-		Raycast::Ray ray;
+		std::vector<Bullet*> bullets;
 		
-		glm::vec3 shootPos;
-		bool canShoot;
+		bool canShoot = true;
 
-		const float shootDelay = .125f;
+		const float shootDelay = .2f;
 		float currentShootTime;
 
 		const unsigned short maxAmmo = 120;

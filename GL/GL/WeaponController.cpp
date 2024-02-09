@@ -13,24 +13,29 @@ Player::WeaponController::WeaponController(Player* player) : rPlayer(*player)
 
 void Player::WeaponController::Update(float deltaTime)
 {
-    const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
-    const glm::vec3 rightVec = rPlayer.cam->GetRightVector();
-
-    const glm::vec3 holdOffset = (rightVec * -0.4f) + glm::vec3(0, rPlayer.playerHeight * .125f, 0) + forwardVec * -2.325f;
-    const glm::vec3 handSocket = rPlayer.position + holdOffset + forwardVec * 3.0f;
-                                                                                                                                        // Flipping the rotation axis because the model is upside...
-    const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -10.0f, {0, -1, 0}));
-
-    if(pistolMesh)
+    for(int i = 0; i < bullets.size(); i++)
     {
-        pistolMesh->LookAtRotation(lookMatrix);
-        pistolMesh->SetPosition(handSocket);
+        if(bullets[i]->IsDead())
+        {
+            rPlayer.RemoveLevelMesh(bullets[i]->GetMesh());
+
+            // Delete after getting the mesh so that the mesh isn't deleted
+            delete bullets[i];
+            
+            bullets.erase(bullets.begin() + i);
+            continue;
+        }
+        
+        bullets[i]->Update(deltaTime);
     }
 
-    shootPos = rPlayer.position + forwardVec * .05f;
-        
     PullTrigger();
     ShootTimer(deltaTime);
+}
+
+void Player::WeaponController::FixedUpdate(float deltaTime)
+{
+    for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
 }
 
 void Player::WeaponController::Render(Camera* cam, const Light& light) const
@@ -40,43 +45,47 @@ void Player::WeaponController::Render(Camera* cam, const Light& light) const
 
 void Player::WeaponController::PullTrigger()
 {
+    const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
+    const glm::vec3 rightVec = rPlayer.cam->GetRightVector();
+
+    const glm::vec3 holdOffset = (rightVec * -0.4f) + glm::vec3(0, rPlayer.playerHeight * .125f, 0) + forwardVec * -2.325f;
+    const glm::vec3 handSocket = rPlayer.position + holdOffset + forwardVec * 3.0f;
+    // Flipping the rotation axis because the model is upside...
+    const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -10.0f, {0, -1, 0}));
+
+    if(pistolMesh)
+    {
+        pistolMesh->LookAtRotation(lookMatrix);
+        pistolMesh->SetPosition(handSocket);
+    }
+    
     if(!rPlayer.controller.LmbDown()) return;
 
-    Shoot();
+    const glm::vec3 shootPos = rPlayer.position + forwardVec * -.3f;
+    Shoot(shootPos, forwardVec);
 }
 
-void Player::WeaponController::Shoot()
+void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
 {
     if(!canShoot) return;
 
-    ray = Raycast::ShootRaycast(shootPos, rPlayer.cam->GetForwardVector(), 9000);
-
-    for(const auto& mesh : rPlayer.meshes)
-    {
-        const bool hit = Raycast::RayCollision(ray, mesh->GetBoundingBox());
-
-        if(hit)
-        {
-            std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
-
-            Model* spawnMesh = new Model("ModelAssets/Cube.obj", floorTex);
-            spawnMesh->SetScale(.3f,.3f,.3f);
-            spawnMesh->SetPosition(ray.hitPosition);
-            rPlayer.meshes.push_back(spawnMesh->GetMesh());
-            break;
-        }
-    }
+    Bullet* b = new Bullet(shootPos, direction);
+    rPlayer.AddLevelMesh(b->GetMesh());
+    bullets.emplace_back(b);
     
     currentMag--;
-    if(currentMag <= 0) if(!Reload()) canShoot = false;
+    canShoot = false;
+    
+    if(currentMag <= 0) Reload();
 }
 
-bool Player::WeaponController::Reload()
+void Player::WeaponController::Reload()
 {
+    // Remove the ammo from the reserve
     currentAmmo -= currentMag + (magCapcity - currentMag);
-    currentMag = currentMag + (magCapcity - currentMag);
 
-    return currentAmmo > 0;
+    // Add it to the mag
+    currentMag = currentMag + (magCapcity - currentMag);
 }
 
 void Player::WeaponController::ShootTimer(float deltaTime)

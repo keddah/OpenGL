@@ -110,13 +110,7 @@ void Game::Update(float deltaTime) const
 {
 	player->Update(deltaTime);
 
-	if (player->GetLevelMeshes().back())
-	{
-		// meshes.back()->AddPosition(.5f * deltaTime, 0,0);
-		player->GetLevelMeshes().back()->AddRotation(0, .005f * deltaTime, 0);
-	}
 	// if(model) model->AddRotation(0, .005f * deltaTime, 0);
-
 }
 
 void Game::FixedUpdate(float deltaTime)
@@ -138,10 +132,6 @@ void Game::Render() const
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if(model) model->Render(player->GetCamera(), light);
-
-	glUseProgram(0);
-	player->Debug();
-	
 
 	SDL_GL_SwapWindow(window);
 }

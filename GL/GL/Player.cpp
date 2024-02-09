@@ -16,8 +16,9 @@ void Player::Update(float deltaTime)
 }
 
 void Player::FixedUpdate(const float deltaTime)
-{
-    ApplyGravity(deltaTime);
+{   
+    wc.FixedUpdate(deltaTime);
+    ApplyGravity(deltaTime, true);
 
     Accelerate(deltaTime);
     Decelerate(deltaTime);

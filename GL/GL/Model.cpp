@@ -61,12 +61,13 @@ Model::Model(const string& filePath, string materialPaths[])
 
 
 		///// Inidices
-		for (int j = 0; j < mesh->mNumFaces; j++) {
+		for (int j = 0; j < mesh->mNumFaces; j++)
+		{
 			aiFace* f = &mesh->mFaces[j];
-			if (f->mNumIndices != 3) {
-				//only load triangluar faces
-				continue;
-			}
+			
+			//only load triangular faces
+			if (f->mNumIndices != 3) continue;
+			
 			indices.push_back(f->mIndices[0]);
 			indices.push_back(f->mIndices[1]);
 			indices.push_back(f->mIndices[2]);
@@ -79,7 +80,6 @@ Model::Model(const string& filePath, string materialPaths[])
 			gameMeshes.push_back(newMesh);
 		}
 	}
-	print(scene->mNumMeshes)
 
 	// Once the mesh/meshes have been added, there's no need for the scene.
 	importer.FreeScene();
