@@ -29,11 +29,11 @@ private:
     void Timers(float deltaTime);
 
     // Generate a random direction
-    void RandomDirection() { moveDir = linearRand(glm::vec3(-1.0f), glm::vec3(1.0f)); }
+    void RandomDirection() { if(!far) moveDir = linearRand(glm::vec3(-1.0f), glm::vec3(1.0f)); }
     
-    bool active;
-    bool moveable, changeDir;
-    const float relocateRadius = 50;
+    bool moveable, far;
+    bool changeDir;
+    const float relocateRadius = 40;
 
     const glm::vec3& rPlayerPos;
     float teleportTimer;
@@ -41,11 +41,11 @@ private:
     
     // The timer used to change direction whenever it elapses
     float directionTimer;
-    float moveSpeed = .1f;
+    float moveSpeed;
     glm::vec3 moveDir;
     unsigned short dirChanges = 0;
     
-    Transform transform = {{}, {}, {1,1,1}};
+    Transform transform = {{}, {}, {3,3,3}};
     Model* barrel;
 };
 

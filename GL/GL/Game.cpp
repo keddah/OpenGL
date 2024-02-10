@@ -108,11 +108,9 @@ void Game::InitObjects()
 	for(int i = 0; i < targetCount; i++)
 	{
 		// The chances that the target moves - 25%
-		constexpr unsigned short movingOdds = 4;
+		constexpr unsigned short movingOdds = 3;
 		const unsigned short rnd = rand() % (movingOdds);
 		Target* target = new Target(rnd == 0, player->GetPosition());
-		
-		target->Relocate();
 		targets.push_back(target);
 	}
 
