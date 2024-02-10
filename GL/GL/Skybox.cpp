@@ -75,4 +75,6 @@ void Skybox::CreateDome(std::string texturePath)
     dome->SetScale(500);
     dome->SetRotation(glm::degrees(90.0f),0,0);
     dome->SetCollision(false);
+
+    dome->SetMaterialSpecular(0);
 }

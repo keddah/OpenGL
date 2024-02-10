@@ -156,6 +156,7 @@
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Rendering\Utilities.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Target.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriangleRenderer.h" />
   </ItemGroup>
@@ -249,6 +250,7 @@
     </ClCompile>
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stb.cpp" />
+    <ClCompile Include="Target.cpp" />
     <ClCompile Include="TriangleRenderer.cpp" />
     <ClCompile Include="WeaponController.cpp" />
   </ItemGroup>

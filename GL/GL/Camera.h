@@ -33,7 +33,7 @@ public:
 	float GetPitch() const { return pitch; }
 	
 private:
-	const float fov = -78.0f;
+	const float fov = -70.0f;
 	const float aspectRatio = 1920 / 1080;
 	const float nearClip = .1f;
 	const float farClip = 600;

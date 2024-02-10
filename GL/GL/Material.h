@@ -28,6 +28,8 @@ public:
         UnbindTextures();
     }
 
+    void SetSpecular(const float spec) { specular = spec; }
+    
 private:
     int tex_width, tex_height, channelCount;
 

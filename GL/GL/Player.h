@@ -8,6 +8,7 @@
 #include "Bullet.h"
 #include "Model.h"
 #include "Physics.h"
+#include "Target.h"
 
 class Player : public Physics
 {
@@ -24,13 +25,9 @@ public:
 
 	glm::vec3 GetPosition() const { return position; }
 
+	void SetTargets(const std::vector<Target*>& trgts) { wc.SetTargets(trgts); } 
+	
 	void SetLevelMeshes(const std::vector<Mesh*>& newMeshes) { meshes = newMeshes; }
-	void AddLevelMesh(Mesh* newMesh) { meshes.push_back(newMesh); }
-	void RemoveLevelMesh(const Mesh* toRemove)
-	{
-		auto i = std::find(meshes.begin(), meshes.end(), toRemove);
-		meshes.erase(i);
-	}
 	std::vector<Mesh*> GetLevelMeshes() const { return meshes; }
 	
 private:
@@ -68,6 +65,8 @@ private:
 		void FixedUpdate(float deltaTime);
 
 		void Render(Camera* cam, const Light& light) const;
+
+		void SetTargets(const std::vector<Target*>& trgts) { targets = trgts; }
 		
 	private:
 		void PullTrigger();
@@ -79,6 +78,11 @@ private:
 		Model* pistolMesh;
 
 		std::vector<Bullet*> bullets;
+		std::vector<Target*> targets;
+
+		glm::vec3 handSocket;
+		bool isADS;
+		const float adsSpeed = .6f;
 		
 		bool canShoot = true;
 

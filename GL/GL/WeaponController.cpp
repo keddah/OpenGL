@@ -17,50 +17,59 @@ void Player::WeaponController::Update(float deltaTime)
     {
         if(bullets[i]->IsDead())
         {
-            rPlayer.RemoveLevelMesh(bullets[i]->GetMesh());
-
-            // Delete after getting the mesh so that the mesh isn't deleted
+            // Delete the bullet instance...
             delete bullets[i];
-            
+
+            // Then remove the empty space from the vector
             bullets.erase(bullets.begin() + i);
             continue;
         }
         
         bullets[i]->Update(deltaTime);
     }
-
+    isADS = rPlayer.controller.RmbDown();
     PullTrigger();
     ShootTimer(deltaTime);
 }
 
 void Player::WeaponController::FixedUpdate(float deltaTime)
 {
+    if(pistolMesh)
+    {
+        const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
+        const glm::vec3 rightVec = rPlayer.cam->GetRightVector();
+
+        const glm::vec3 hipOffset = (rightVec * -0.4f) + glm::vec3(0, rPlayer.playerHeight * .125f, 0) + forwardVec * .525f;
+        const glm::vec3 adsOffset = glm::vec3(0, rPlayer.playerHeight * .035f, 0) + forwardVec * .4f;
+        const glm::vec3 holdOffset = isADS? adsOffset : hipOffset;
+        handSocket = mix(handSocket, rPlayer.position + holdOffset, isADS? adsSpeed : 1.1f);
+        // handSocket = rPlayer.position + holdOffset;
+        
+        // Flipping the rotation axis because the model is upside...
+        const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -10.0f, {0, -1, 0}));
+        
+        pistolMesh->LookAtRotation(lookMatrix);
+        pistolMesh->SetPosition(handSocket);
+    }
+
+    
     for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
 }
 
 void Player::WeaponController::Render(Camera* cam, const Light& light) const
 {
     if(pistolMesh) pistolMesh->Render(cam, light);
+
+    for(const auto& bullet : bullets) bullet->Render(cam, light);
+
 }
 
 void Player::WeaponController::PullTrigger()
 {
-    const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
-    const glm::vec3 rightVec = rPlayer.cam->GetRightVector();
-
-    const glm::vec3 holdOffset = (rightVec * -0.4f) + glm::vec3(0, rPlayer.playerHeight * .125f, 0) + forwardVec * -2.325f;
-    const glm::vec3 handSocket = rPlayer.position + holdOffset + forwardVec * 3.0f;
-    // Flipping the rotation axis because the model is upside...
-    const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -10.0f, {0, -1, 0}));
-
-    if(pistolMesh)
-    {
-        pistolMesh->LookAtRotation(lookMatrix);
-        pistolMesh->SetPosition(handSocket);
-    }
-    
     if(!rPlayer.controller.LmbDown()) return;
 
+    const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
+    
     const glm::vec3 shootPos = rPlayer.position + forwardVec * -.3f;
     Shoot(shootPos, forwardVec);
 }
@@ -70,7 +79,6 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     if(!canShoot) return;
 
     Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
-    rPlayer.AddLevelMesh(b->GetMesh());
     bullets.emplace_back(b);
     
     currentMag--;

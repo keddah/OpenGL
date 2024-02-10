@@ -12,11 +12,13 @@ uniform sampler2D tex0;
 uniform sampler2D tex1;
 
 uniform vec2 uvScale;
+uniform float specularStrength;
 
 uniform float intensity;
 uniform vec3 lightColour;
 uniform vec3 lightPos;
 uniform vec3 camPos;
+
 
 bool normalPresent;
 int texSize;
@@ -46,7 +48,6 @@ void main()
     float diff = max(dot(normal, lightDirection), 0);
     vec3 diffusion = diff * lightColour;
 
-    float specularStrength = .2f;
     vec3 viewDirection = normalize(camPos - fragPosition);
     vec3 reflection = reflect(-lightDirection, normal);
     float spec = pow(max(dot(viewDirection, reflection), 0), 32);

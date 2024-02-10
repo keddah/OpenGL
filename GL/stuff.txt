@@ -1,4 +1,4 @@
 Normal map + normal vertex data
 Collisions
 Raycast debugging
-
+Make the gun stickier to the screen

@@ -14,9 +14,6 @@ void Bullet::Update(float deltaTime)
 {
     life += deltaTime;
     if(life >= lifeSpan) dead = true;
-    
-    if(bulletMesh) bulletMesh->SetPosition(position);
-    Collisions();
 }
 
 void Bullet::FixedUpdate(float deltaTime)
@@ -24,6 +21,8 @@ void Bullet::FixedUpdate(float deltaTime)
     ApplyGravity(deltaTime);
     
     position += velocity;
+    if(bulletMesh) bulletMesh->SetPosition(position);
+    Collisions();
 }
 
 void Bullet::Render(Camera* cam, const Light& light) const

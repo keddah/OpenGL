@@ -95,6 +95,9 @@ void Model::Render(Camera* cam, Light light) const
 
 }
 
+
+
+//////////////////////////////////// TRANSFORMS ////////////////////////////////////
 glm::vec3 Model::GetPosition() const
 {
 	if (gameMesh) return gameMesh->GetPosition();
@@ -110,12 +113,8 @@ glm::vec3 Model::GetRotation() const
 glm::vec3 Model::GetScale() const
 {
 	if (gameMesh) return gameMesh->GetScale();
-	else return gameMeshes[0]->GetScale();
+	return gameMeshes[0]->GetScale();
 }
-
-
-
-
 
 void Model::SetTransform(const float px, const float py, const float pz, const float rx, const float ry, const float rz, const float sx, const float sy, const float sz) const
 {
@@ -127,8 +126,7 @@ void Model::SetTransform(const float px, const float py, const float pz, const f
 	
 }
 
-//////////////////////////////////// TRANSFORMS ////////////////////////////////////
-void Model::SetPosition(const glm::vec3 newVal) const
+void Model::SetPosition(const glm::vec3& newVal) const
 {
 	if (gameMesh) gameMesh->SetPosition(newVal);
 	else
@@ -146,7 +144,7 @@ void Model::SetPosition(const float x, const float y, const float z) const
 	}
 }
 
-void Model::AddPosition(const glm::vec3 newVal) const
+void Model::AddPosition(const glm::vec3& newVal) const
 {
 	if (gameMesh) gameMesh->AddPosition(newVal);
 	else
@@ -164,7 +162,7 @@ void Model::AddPosition(const float x, const float y, const float z) const
 	}
 }
 
-void Model::SetRotation(const glm::vec3 newVal) const
+void Model::SetRotation(const glm::vec3& newVal) const
 {
 	if (gameMesh) gameMesh->SetRotation(newVal);
 	else
@@ -182,7 +180,7 @@ void Model::SetRotation(const float x, const float y, const float z) const
 	}
 }
 
-void Model::LookAtRotation(glm::mat4 matrix)
+void Model::LookAtRotation(const glm::mat4& matrix) const
 {
 	if (gameMesh) gameMesh->LookAtRotation(matrix);
 	else
@@ -191,7 +189,7 @@ void Model::LookAtRotation(glm::mat4 matrix)
 	}
 }
 
-void Model::AddRotation(const glm::vec3 newVal) const
+void Model::AddRotation(const glm::vec3& newVal) const
 {
 	if (gameMesh) gameMesh->AddRotation(newVal);
 	else
@@ -209,7 +207,7 @@ void Model::AddRotation(const float x, const float y, const float z) const
 	}
 }
 
-void Model::SetScale(const glm::vec3 newVal) const
+void Model::SetScale(const glm::vec3& newVal) const
 {
 	if (gameMesh) gameMesh->SetScale(newVal);
 	else

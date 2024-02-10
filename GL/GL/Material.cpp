@@ -72,4 +72,5 @@ void Material::BindTextures(const GLuint texIndex) const
     shader.Activate();
     shader.SetIntAttrib("tex" + std::to_string(texIndex), texIndex);
     shader.SetVec2Attrib("uvScale", uvScale);
+    shader.SetFloatAttrib("specularStrength", specular);
 }

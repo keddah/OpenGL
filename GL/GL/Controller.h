@@ -24,6 +24,7 @@ public:
     bool CrouchBtnDown() const { return crouch; }
     
     bool LmbDown() const { return lmb; }
+    bool RmbDown() const { return rmb; }
     
 private:
     void CheckInputs();
