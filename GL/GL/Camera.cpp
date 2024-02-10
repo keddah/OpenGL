@@ -38,5 +38,5 @@ void Camera::Look(glm::vec2 mouseDelta, float deltaTime)
     yaw = glm::eulerAngles(totalRotation).y;
 
     // print("Mouse delta: " << mouseDelta.x << ", " << mouseDelta.y)
-    print("LookAt: " << forwardVector.x << ", " << forwardVector.y << ", " << forwardVector.z)
+    // print("LookAt: " << forwardVector.x << ", " << forwardVector.y << ", " << forwardVector.z)
 }

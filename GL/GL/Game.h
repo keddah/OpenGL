@@ -30,9 +30,10 @@ public:
 	
 private:
 	// Need to initialise SDL before OpenGL
-	void Init() { InitSDL(); InitOpenGL(); }
+	void Init() { InitSDL(); InitOpenGL(); InitObjects(); }
 	void InitSDL();
 	void InitOpenGL();
+	void InitObjects();
 
 	bool& rRunning;
 	
@@ -42,8 +43,11 @@ private:
 	std::vector<Mesh*> meshes;
 	
 	TriangleRenderer* tri;
+
+	// Determines how many targets should spawn in.
+	const unsigned short targetCount = 9;
+	std::vector<Target*> targets;
 	
-	Model* model;
 	Skybox* skybox;
 	
 	Player* player;

@@ -19,11 +19,11 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render(const Light& light) { wc.Render(cam, light); }
+	void Render(const Light& light) const { wc.Render(cam, light); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 
-	glm::vec3 GetPosition() const { return position; }
+	const glm::vec3& GetPosition() const { return position; }
 
 	void SetTargets(const std::vector<Target*>& trgts) { wc.SetTargets(trgts); } 
 	

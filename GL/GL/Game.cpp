@@ -60,8 +60,17 @@ void Game::InitOpenGL()
 		print("Unable to use V-sync")
 		print(SDL_GetError())
 	}
-
 	rRunning = true;
+	
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+}
+
+void Game::InitObjects()
+{
+	skybox = new Skybox("Images/skydome.jpg");
+
+	
 	// tri = new TriangleRenderer(cam);
 
 	//________ A cube ________\\
@@ -90,35 +99,46 @@ void Game::InitOpenGL()
 	floor->SetScale(100, 8, 400);
 	floor->SetUvScale(200,200);
 
-	std::string barrelTex[] = {"Images/Barrel_d.png", "Images/Barrel_n.png"};
-	model = new Model("ModelAssets/Barrel2.obj", barrelTex);
-	model->AddPosition(0,-2.5f,-10);
-	model->SetScale(2.0f);
-
-	skybox = new Skybox("Images/skydome.jpg");
-	
 	meshes =
 	{
 		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh()
 	};
-
-
 	player->SetLevelMeshes(meshes);
-	
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+
+	for(int i = 0; i < targetCount; i++)
+	{
+		// The chances that the target moves - 25%
+		constexpr unsigned short movingOdds = 4;
+		const unsigned short rnd = rand() % (movingOdds);
+		Target* target = new Target(rnd == 0, player->GetPosition());
+		
+		target->Relocate();
+		targets.push_back(target);
+	}
+
+	// Ensures that atleast one of the targets is moving
+	bool hasMoving = false;
+	for(const auto& target : targets)
+	{
+		if(target->IsMoveable())
+		{
+			hasMoving = true; 
+			break;
+		}
+	}
+	if(!hasMoving) targets[0]->SetMoveable(true);
 }
 
 void Game::Update(float deltaTime) const
 {
 	player->Update(deltaTime);
-
-	// if(model) model->AddRotation(0, .005f * deltaTime, 0);
+	for(const auto& target: targets) if(target) target->Update(deltaTime);
 }
 
 void Game::FixedUpdate(float deltaTime)
 {
 	player->FixedUpdate(deltaTime);
+	for(const auto& target: targets) if(target) target->FixedUpdate(deltaTime);
 }
 
 void Game::Render() const
@@ -134,9 +154,10 @@ void Game::Render() const
 	}
 
 	if(skybox) skybox->Render(player->GetCamera(), light);
+
+	for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
 	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	if(model) model->Render(player->GetCamera(), light);
 
 	SDL_GL_SwapWindow(window);
 }
