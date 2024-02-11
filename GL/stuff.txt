@@ -1,4 +1,5 @@
 Normal map + normal vertex data
+heightmaps
 Collisions
-Raycast debugging
+Raycast/boundibg box debugging
 Make the gun stickier to the screen

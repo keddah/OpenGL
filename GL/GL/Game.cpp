@@ -113,7 +113,7 @@ void Game::InitObjects()
 		Target* target = new Target(rnd == 0, player->GetPosition());
 		targets.push_back(target);
 	}
-
+	
 	// Ensures that atleast one of the targets is moving
 	bool hasMoving = false;
 	for(const auto& target : targets)
@@ -125,6 +125,8 @@ void Game::InitObjects()
 		}
 	}
 	if(!hasMoving) targets[0]->SetMoveable(true);
+
+	player->SetTargets(targets);
 }
 
 void Game::Update(float deltaTime) const

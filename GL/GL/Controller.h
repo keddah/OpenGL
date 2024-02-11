@@ -26,6 +26,8 @@ public:
     bool LmbDown() const { return lmb; }
     bool RmbDown() const { return rmb; }
     
+    bool RKeyDown() const { return reload; }
+    
 private:
     void CheckInputs();
     void ClearInputs();
@@ -40,5 +42,5 @@ private:
 
     bool lmb, rmb;
 
-    bool sprint, jump, crouch;
+    bool sprint, jump, crouch, reload;
 };

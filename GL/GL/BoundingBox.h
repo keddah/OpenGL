@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glew.h>
+
 #include <iostream>
 #define print(x) { std::cout << x << std::endl; }
 #define GetError() { GLenum error = glGetError(); if (error != GL_NO_ERROR) { print("error code: " << error << "\n" << gluErrorString(error)); __debugbreak(); } }
@@ -32,7 +34,6 @@ struct BoundingBox
             position.z >= minBounds.z - threshold.z && position.z <= maxBounds.z + threshold.z
         );
     }
-
 };
 
 #include <gtc/type_ptr.hpp>
@@ -56,9 +57,9 @@ struct Raycast
         return { rayStart, rayStart + rayDirection * rayDistance, rayDirection };
     }
     
-    static bool RayCollision(const glm::vec3& rayStart, const glm::vec3& rayDirection, const float rayDistance, const BoundingBox& bb, glm::vec3& hitPosition)
+    static Ray RayCollision(const glm::vec3& rayStart, const glm::vec3& rayDirection, const float rayDistance, const BoundingBox& bb, glm::vec3& hitPosition)
     {
-        const Ray ray = ShootRaycast(rayStart, rayDirection, rayDistance);
+        Ray ray = ShootRaycast(rayStart, rayDirection, rayDistance);
 
         for (int i = 0; i < 3; ++i)
         {
@@ -70,13 +71,17 @@ struct Raycast
             const float tExit = glm::max(tMin, tMax);
 
             if (tEnter > tExit || tExit < 0)
-                return false;
-
+            {
+                ray.hit = false;
+                return ray;
+            }
+               
             // Update hit position when a collision occurs
             hitPosition[i] = ray.start[i] + tEnter * rayDirection[i];
         }
 
-        return true;
+        ray.hit = true;
+        return ray;
     }
 
     static bool RayCollision(Ray& ray, const BoundingBox& bb)
@@ -91,13 +96,18 @@ struct Raycast
             const float tExit = glm::max(tMin, tMax);
 
             if (tEnter > tExit || tExit < 0)
+            {
+                // Since the ray parameter is a reference ... this value is usable
+                ray.hit = false;
                 return false;
-
+            }
+               
             // Update hit position when a collision occurs
             ray.hitPosition[i] = ray.start[i] + tEnter * ray.direction[i];
         }
 
-        ray.hit = true; // Set hit flag to true
+        // Since the ray parameter is a reference ... this value is usable
+        ray.hit = true;
         return true;
     }
 

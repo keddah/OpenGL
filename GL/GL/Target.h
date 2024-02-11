@@ -23,6 +23,8 @@ public:
 
     bool IsMoveable() const { return moveable; }
     void SetMoveable(const bool move) { moveable = move; }
+
+    BoundingBox GetBoundingBox() const { return barrel->GetMesh()->GetBoundingBox(); }
     
 private:
     void Move();

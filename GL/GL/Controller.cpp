@@ -54,6 +54,7 @@ void Controller::CheckInputs()
 	jump = keyState[SDL_SCANCODE_SPACE];
 	crouch = keyState[SDL_SCANCODE_LCTRL];
 	sprint = keyState[SDL_SCANCODE_LSHIFT];
+	reload = keyState[SDL_SCANCODE_R];
 	
 	int mouse_x, mouse_y;
 	

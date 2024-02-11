@@ -64,7 +64,7 @@ private:
 		void Update(float deltaTime);
 		void FixedUpdate(float deltaTime);
 
-		void Render(Camera* cam, const Light& light) const;
+		void Render(Camera* camera, const Light& light) const;
 
 		void SetTargets(const std::vector<Target*>& trgts) { targets = trgts; }
 		
@@ -81,6 +81,7 @@ private:
 		std::vector<Target*> targets;
 
 		glm::vec3 handSocket;
+		glm::vec3 magSocket;
 		bool isADS;
 		const float adsSpeed = .6f;
 		
@@ -89,10 +90,10 @@ private:
 		const float shootDelay = .2f;
 		float currentShootTime;
 
-		const unsigned short maxAmmo = 120;
+		const unsigned short maxReserve = 120;
 		const unsigned short magCapcity = 9;
 
-		unsigned short currentAmmo = maxAmmo;
+		unsigned short currentReserve = maxReserve;
 		unsigned short currentMag = magCapcity;
 	};
 

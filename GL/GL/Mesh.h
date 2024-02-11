@@ -82,11 +82,12 @@ private:
     void CalculateAABoundingBox();
     void Lighting(const Camera* cam, const Light& light) const;
 
+    
     BoundingBox boundingBox;
     
     Shader shader;
     Material* mat;
-    
+
     Transform transform = {{}, {}, {1,1,1}};
 
     BufferArrayManager* baManager;

@@ -23,6 +23,7 @@ public:
 	void Render(Camera* cam, Light light) const;
 
 	glm::vec3 GetPosition() const;
+	glm::vec3 IndexedGetPosition(const short index) const { if(!gameMeshes.empty()) return gameMeshes[index]->GetPosition(); }
 	glm::vec3 GetRotation() const; 
 	glm::vec3 GetScale() const;
 
@@ -60,7 +61,7 @@ public:
 
 	void SetUvScale(const glm::vec2& scale) const; 
 	void SetUvScale(float x, float y) const;
-	
+
 private:
 	Mesh* gameMesh;
 	std::vector<Mesh*> gameMeshes;

@@ -103,7 +103,6 @@ void Mesh::Lighting(const Camera* cam, const Light& light) const
 	shader.SetVec3Attrib("camPos", cam->GetPosition());
 }
 
-
 void Mesh::Render(Camera* cam, const Light& light) const
 {
 	if(!visible) return;

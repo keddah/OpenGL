@@ -4,7 +4,6 @@ Player::WeaponController::WeaponController(Player* player) : rPlayer(*player)
 {
     string texturePaths [] = {"Images/PistolBaseColour.png", "Images/PistolNormal.png"};
     pistolMesh = new Model("ModelAssets/handgun2.obj", texturePaths);
-    // pistolMesh->CreateMaterial();
     
     pistolMesh->SetScale(.01f,.01f,.01f);
     
@@ -56,16 +55,19 @@ void Player::WeaponController::FixedUpdate(float deltaTime)
     for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
 }
 
-void Player::WeaponController::Render(Camera* cam, const Light& light) const
+void Player::WeaponController::Render(Camera* camera, const Light& light) const
 {
-    if(pistolMesh) pistolMesh->Render(cam, light);
+    if(pistolMesh) pistolMesh->Render(camera, light);
 
-    for(const auto& bullet : bullets) bullet->Render(cam, light);
+    for(const auto& bullet : bullets) bullet->Render(camera, light);
 
 }
 
 void Player::WeaponController::PullTrigger()
 {
+    // Check for reload input.
+    if(rPlayer.controller.RKeyDown()) Reload();
+    
     if(!rPlayer.controller.LmbDown()) return;
 
     const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
@@ -78,8 +80,23 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
 {
     if(!canShoot) return;
 
-    Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
-    bullets.emplace_back(b);
+    // Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
+    // bullets.emplace_back(b);
+
+    Raycast::Ray ray = Raycast::ShootRaycast(shootPos, direction, 4000);
+
+    for(const auto& target : targets)
+    {
+        if(Raycast::RayCollision(ray, target->GetBoundingBox()))
+        {
+            target->Relocate();
+            print("hit")
+            print("")
+            // Can't shoot though targets
+            break;
+        }
+
+    }
     
     currentMag--;
     canShoot = false;
@@ -89,11 +106,23 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
 
 void Player::WeaponController::Reload()
 {
+    // Not allowed to reload if the mag is already full
+    if(currentMag == magCapcity) return;
+    
+    if(currentReserve <= 0)
+    {
+        currentReserve = 0;
+        return;
+    }
+    
+    // The difference of the bullets shot and the mag capacity
+    const short bulletsShot = magCapcity - currentMag; 
+    
     // Remove the ammo from the reserve
-    currentAmmo -= currentMag + (magCapcity - currentMag);
+    currentReserve -= bulletsShot;
 
     // Add it to the mag
-    currentMag = currentMag + (magCapcity - currentMag);
+    currentMag += bulletsShot;
 }
 
 void Player::WeaponController::ShootTimer(float deltaTime)
