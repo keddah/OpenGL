@@ -18,7 +18,7 @@ protected:
     void ApplyGravity(float deltaTime, bool isPlayer = false);
     
     glm::vec3 velocity = {};
-    const glm::vec3 terminalVelocity {10, 1000, 10};
+    glm::vec3 terminalVelocity {10, 1000, 10};
     bool grounded = false;
     
     const float walkAccel = .075f;

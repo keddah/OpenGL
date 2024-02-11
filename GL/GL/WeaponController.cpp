@@ -45,7 +45,7 @@ void Player::WeaponController::FixedUpdate(float deltaTime)
         // handSocket = rPlayer.position + holdOffset;
         
         // Flipping the rotation axis because the model is upside...
-        const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -10.0f, {0, -1, 0}));
+        const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -1.0f, {0, -1, 0}));
         
         pistolMesh->LookAtRotation(lookMatrix);
         pistolMesh->SetPosition(handSocket);

@@ -118,6 +118,7 @@ void Game::InitObjects()
 	bool hasMoving = false;
 	for(const auto& target : targets)
 	{
+		target->SetMeshes(meshes);
 		if(target->IsMoveable())
 		{
 			hasMoving = true; 
@@ -127,6 +128,7 @@ void Game::InitObjects()
 	if(!hasMoving) targets[0]->SetMoveable(true);
 
 	player->SetTargets(targets);
+	
 }
 
 void Game::Update(float deltaTime) const

@@ -5,10 +5,11 @@
 #include <gtx/vector_angle.hpp> 
 
 #include "Model.h"
+#include "Physics.h"
 #include "Transform.h"
 
 
-class Target
+class Target : public  Physics
 {
 public:
     Target(bool moving, const glm::vec3& playerPos);
@@ -24,15 +25,19 @@ public:
     bool IsMoveable() const { return moveable; }
     void SetMoveable(const bool move) { moveable = move; }
 
+    void SetMeshes(const std::vector<Mesh*>& meshes) { otherMeshes = meshes; }
     BoundingBox GetBoundingBox() const { return barrel->GetMesh()->GetBoundingBox(); }
     
 private:
     void Move();
     void Timers(float deltaTime);
+    void Collisions();
+    void Decelerate();
 
     // Generate a random direction
     void RandomDirection() { if(!far) moveDir = linearRand(glm::vec3(-1.0f), glm::vec3(1.0f)); }
-    
+
+    glm::vec3 minVelocity;
     bool moveable, far;
     bool changeDir;
     const float relocateRadius = 40;
@@ -49,5 +54,7 @@ private:
     
     Transform transform = {{}, {}, {3,3,3}};
     Model* barrel;
+
+    std::vector<Mesh*> otherMeshes;
 };
 

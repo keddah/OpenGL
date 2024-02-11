@@ -6,6 +6,8 @@ Target::Target(const bool moving, const glm::vec3& playerPos) : moveable(moving)
     std::string path[] = {"Images/Barrel_d.png", "Images/Barrel_n.png" };
     barrel = new Model("ModelAssets/Barrel.obj", path);
     barrel->SetScale(transform.scale);
+
+    terminalVelocity = {.35f, .35f, .35f};
     
     Relocate();
     RandomDirection();
@@ -19,10 +21,10 @@ void Target::Update(float deltaTime)
 void Target::FixedUpdate(float deltaTime)
 {
     Move();
-    
-    // If the target goes under the map... fix it.
-    if(transform.position.y > -1.2f) transform.position.y = -1.2f;
+    Decelerate(); 
 
+    Collisions();
+    
     // The maximum distance a target is allowed to be from the player..
     constexpr float maxDistance = 65;
     
@@ -31,11 +33,21 @@ void Target::FixedUpdate(float deltaTime)
 
     // Speed up if far away
     moveSpeed = far? 1.5f : .5f;
+
+    // Limit how fast the targets can go
+    if(abs(velocity.x) >= terminalVelocity.x) velocity.x = velocity.x > 0? terminalVelocity.x : -terminalVelocity.x;
+    if(abs(velocity.y) >= terminalVelocity.y) velocity.y = velocity.y > 0? terminalVelocity.y : -terminalVelocity.y;
+    if(abs(velocity.z) >= terminalVelocity.z) velocity.z = velocity.z > 0? terminalVelocity.z : -terminalVelocity.z;
+    
+    transform.position += velocity;
     
     // If the target gets too far from the player move to the player (if it's moveable) otherwise teleport near the player.
     if(far && moveable) moveDir = normalize(rPlayerPos - transform.position);
     else if(far && !moveable) Relocate();
 
+    // If the target goes under the map... fix it.
+    if(transform.position.y > -1.2f) transform.position.y = -1.2f;
+    
     // Set position/rotation
     barrel->SetRotation(transform.rotation);
     barrel->SetPosition(transform.position);
@@ -58,7 +70,7 @@ void Target::Move()
     
     if(!moveable) return;
 
-    transform.position += moveDir * moveSpeed;
+    velocity += moveDir * moveSpeed;
 }
 
 void Target::Timers(const float deltaTime)
@@ -100,4 +112,35 @@ void Target::Timers(const float deltaTime)
     
     teleport = true;
     Relocate();
+}
+
+void Target::Collisions()
+{
+    if(otherMeshes.empty()) return;
+    
+    for(const auto& mesh : otherMeshes)
+    {
+        if (!mesh->IsCollisions()) continue;
+
+        const BoundingBox meshBox = mesh->GetBoundingBox();
+        const glm::vec3 predictedPos = transform.position + velocity;
+
+        const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
+
+        if(collided)
+        {
+            // Bounce
+            const glm::vec3 bounceDir = transform.position - mesh->GetPosition();
+            constexpr float bounceForce = 400;
+            moveDir = bounceDir;
+            AddForce(bounceDir, bounceForce);
+        }
+    }
+}
+
+void Target::Decelerate()
+{
+    if(!moveable) return;
+
+    velocity = glm::mix(velocity, minVelocity, .000002f);
 }

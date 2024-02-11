@@ -132,7 +132,7 @@ void Player::Collisions()
         const bool hitWall = BoundingBox::PositionInBounds(wallPos, meshBox.min, meshBox.max, velocity, .4f);
     
         // Check for floor
-        const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max, velocity, .4f);
+        const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);
         if(hitFloor && collided)
         {
             grounded = true;
