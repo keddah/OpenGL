@@ -66,34 +66,29 @@ void Mesh::CalculateAABoundingBox()
 	glm::vec3 minBounds = glm::vec3(std::numeric_limits<float>::max());
 	glm::vec3 maxBounds = glm::vec3(std::numeric_limits<float>::lowest());
 
-	// Convert Euler angles to quaternion
-	const glm::quat rotationQuat = glm::quat(transform.rotation);
-
-	// For each set of vertex data 
 	for (const auto& vert : vertices)
 	{
-		// Create a vector3 of the position of each set of vertex data
 		glm::vec3 vertex(vert.position[0], vert.position[1], vert.position[2]);
 
-		// Apply rotation to each vertex position
+		// Apply scaling
+		vertex *= transform.scale;
+
+		// Apply rotation
+		glm::quat rotationQuat = glm::quat(transform.rotation);
 		vertex = rotationQuat * vertex;
 
-		// Apply scale to each vertex position
-		vertex *= transform.scale;
-		
-		// Apply translation to each vertex position
+		// Apply translation
 		vertex += transform.position;
-		
 
 		// Update minBounds and maxBounds
-		minBounds = min(minBounds, vertex);
-		maxBounds = max(maxBounds, vertex);
-
+		minBounds = glm::min(minBounds, vertex);
+		maxBounds = glm::max(maxBounds, vertex);
 	}
 
 	boundingBox = { minBounds, maxBounds, (minBounds + maxBounds) * 0.5f };
-	transform.position = boundingBox.center;
 }
+
+
 
 void Mesh::Lighting(const Camera* cam, const Light& light) const
 {
@@ -103,8 +98,15 @@ void Mesh::Lighting(const Camera* cam, const Light& light) const
 	shader.SetVec3Attrib("camPos", cam->GetPosition());
 }
 
+void Mesh::Debug(Camera* cam) const
+{
+	debugger.BoundingBoxDebug(cam, boundingBox);
+}
+
 void Mesh::Render(Camera* cam, const Light& light) const
 {
+	// Debug(cam);
+	
 	if(!visible) return;
 
 	shader.Activate();

@@ -33,24 +33,7 @@ void Player::WeaponController::Update(float deltaTime)
 
 void Player::WeaponController::FixedUpdate(float deltaTime)
 {
-    if(pistolMesh)
-    {
-        const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
-        const glm::vec3 rightVec = rPlayer.cam->GetRightVector();
-
-        const glm::vec3 hipOffset = (rightVec * -0.4f) + glm::vec3(0, rPlayer.playerHeight * .125f, 0) + forwardVec * .525f;
-        const glm::vec3 adsOffset = glm::vec3(0, rPlayer.playerHeight * .035f, 0) + forwardVec * .4f;
-        const glm::vec3 holdOffset = isADS? adsOffset : hipOffset;
-        handSocket = mix(handSocket, rPlayer.position + holdOffset, isADS? adsSpeed : 1.1f);
-        // handSocket = rPlayer.position + holdOffset;
-        
-        // Flipping the rotation axis because the model is upside...
-        const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -1.0f, {0, -1, 0}));
-        
-        pistolMesh->LookAtRotation(lookMatrix);
-        pistolMesh->SetPosition(handSocket);
-    }
-
+    GunPlacement();
     
     for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
 }
@@ -59,8 +42,9 @@ void Player::WeaponController::Render(Camera* camera, const Light& light) const
 {
     if(pistolMesh) pistolMesh->Render(camera, light);
 
+    debugger.RayDebug(camera, ray);
+    
     for(const auto& bullet : bullets) bullet->Render(camera, light);
-
 }
 
 void Player::WeaponController::PullTrigger()
@@ -72,7 +56,7 @@ void Player::WeaponController::PullTrigger()
 
     const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
     
-    const glm::vec3 shootPos = rPlayer.position + forwardVec * -.3f;
+    const glm::vec3 shootPos = rPlayer.position + forwardVec * -.1f;
     Shoot(shootPos, forwardVec);
 }
 
@@ -83,8 +67,10 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     // Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
     // bullets.emplace_back(b);
 
-    Raycast::Ray ray = Raycast::ShootRaycast(shootPos, direction, 4000);
+    ray = Raycast::ShootRaycast(shootPos, direction, 6000);
 
+    std::string matPath[] = {"Images/defaultTexture.jpg"};
+    
     for(const auto& target : targets)
     {
         if(Raycast::RayCollision(ray, target->GetBoundingBox()))
@@ -134,4 +120,25 @@ void Player::WeaponController::ShootTimer(float deltaTime)
 
     currentShootTime = 0;
     canShoot = true;
+}
+
+void Player::WeaponController::GunPlacement()
+{
+    if(pistolMesh)
+    {
+        const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
+        const glm::vec3 rightVec = rPlayer.cam->GetRightVector();
+
+        const glm::vec3 hipOffset = (rightVec * -0.4f) + glm::vec3(0, rPlayer.playerHeight * .125f, 0) + forwardVec * .525f;
+        const glm::vec3 adsOffset = glm::vec3(0, rPlayer.playerHeight * .0925f, 0) + forwardVec * .4f;
+        const glm::vec3 holdOffset = isADS? adsOffset : hipOffset;
+        handSocket = mix(handSocket, rPlayer.position + holdOffset, isADS? adsSpeed : 1.1f);
+        // handSocket = rPlayer.position + holdOffset;
+        
+        // Flipping the rotation axis because the model is upside...
+        const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -1.0f, {0, -1, 0}));
+        
+        pistolMesh->LookAtRotation(lookMatrix);
+        pistolMesh->SetPosition(handSocket);
+    }
 }

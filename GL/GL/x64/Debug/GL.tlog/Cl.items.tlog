@@ -1,12 +1,14 @@
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Bullet.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Bullet.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Camera.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Camera.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Controller.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Controller.obj
+C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Debugger.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Debugger.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Game.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Game.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\GameLoop.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\GameLoop.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\HeightMap.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\HeightMap.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Light.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Light.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Material.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Material.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Mesh.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Mesh.obj
+C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\MeshCollider.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\MeshCollider.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Model.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Model.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Physics.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Physics.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Player.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Player.obj
@@ -15,5 +17,6 @@ C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Rendering\Shader.cpp;C:\Users\Deany
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Skybox.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Skybox.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\stb.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\stb.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Target.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Target.obj
+C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Terrain.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Terrain.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\TriangleRenderer.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\TriangleRenderer.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\WeaponController.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\WeaponController.obj

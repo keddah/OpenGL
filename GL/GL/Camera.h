@@ -28,7 +28,7 @@ public:
 	void SetPosition(const float x, const float y, const float z) { position = glm::vec3(x, y, z); }
 	glm::vec3 GetPosition() const { return position; }
 
-	glm::vec3 GetForwardVector() const { return forwardVector; }
+	glm::vec3 GetForwardVector() const { return normalize(forwardVector); }
 	glm::vec3 GetRightVector() const { return rightVector; }
 	float GetPitch() const { return pitch; }
 	

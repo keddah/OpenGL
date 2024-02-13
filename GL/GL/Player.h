@@ -6,6 +6,7 @@
 
 #include "BoundingBox.h"
 #include "Bullet.h"
+#include "Debugger.h"
 #include "Model.h"
 #include "Physics.h"
 #include "Target.h"
@@ -73,6 +74,7 @@ private:
 		void Shoot(glm::vec3 shootPos, glm::vec3 direction);
 		void Reload();
 		void ShootTimer(float deltaTime);
+		void GunPlacement();
 		
 		Player& rPlayer;
 		Model* pistolMesh;
@@ -80,6 +82,9 @@ private:
 		std::vector<Bullet*> bullets;
 		std::vector<Target*> targets;
 
+		Raycast::Ray ray;
+		Debugger debugger;
+		
 		glm::vec3 handSocket;
 		glm::vec3 magSocket;
 		bool isADS;

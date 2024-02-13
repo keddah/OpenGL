@@ -1,6 +1,8 @@
 #include "Game.h"
 #include <vector>
 
+#include "Terrain.h"
+
 void Game::InitSDL()
 {
 	// Make the SDL stuff
@@ -76,28 +78,34 @@ void Game::InitObjects()
 	//________ A cube ________\\
 
 	player = new Player(rRunning);
-	std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
 	
 	auto left = new Model("ModelAssets/Cube.obj");
 	auto right = new Model("ModelAssets/Cube.obj");
 	auto back = new Model("ModelAssets/Cube.obj");
 
-	auto floor = new Model("ModelAssets/Cube.obj", floorTex);
+	std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
+	// auto floor = new Model("ModelAssets/Cube.obj", floorTex);
+	auto floor = new Terrain("Images/terrain-heightmap.png");
 	
 	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
 
 	left->SetScale(.2f, 7.5f, 7.5f);
-	left->AddPosition(-7.5f, 0,0);
+	left->AddPosition(-7.5f, 5,0);
 
 	right->SetScale(.2f, 7.5f, 7.5);
-	right->AddPosition(7.5f, 0,0);
+	right->AddPosition(7.5f, 5,0);
 	
 	back->SetScale(7.5f, 7.5f, .2f);
-	back->AddPosition(0, 0, 7.5f);
+	back->AddPosition(0, 5, 7.5f);
+
+	// floor->AddPosition(0, 10.5, 0);
+	// floor->SetScale(100, 8, 400);
+	// floor->SetUvScale(200,200);
 	
-	floor->AddPosition(0, 10.5, 0);
-	floor->SetScale(100, 8, 400);
-	floor->SetUvScale(200,200);
+	floor->AddPosition(-100, 10.5, -100);
+	floor->SetScale(10, 8, 40);
+	floor->SetUvScale(20,80);
+	floor->GetMesh()->SetMaterialSpecular(.1f);
 
 	meshes =
 	{
@@ -128,7 +136,6 @@ void Game::InitObjects()
 	if(!hasMoving) targets[0]->SetMoveable(true);
 
 	player->SetTargets(targets);
-	
 }
 
 void Game::Update(float deltaTime) const
@@ -137,7 +144,7 @@ void Game::Update(float deltaTime) const
 	for(const auto& target: targets) if(target) target->Update(deltaTime);
 }
 
-void Game::FixedUpdate(float deltaTime)
+void Game::FixedUpdate(float deltaTime) const
 {
 	player->FixedUpdate(deltaTime);
 	for(const auto& target: targets) if(target) target->FixedUpdate(deltaTime);

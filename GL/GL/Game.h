@@ -17,7 +17,7 @@ public:
 	~Game() { Clean(); }
 
 	void Update(float deltaTime) const;
-	void FixedUpdate(float deltaTime);
+	void FixedUpdate(float deltaTime) const;
 
 	void Render() const;
 	void Clean() const { delete tri; for (const auto& mesh : meshes) delete mesh; SDL_DestroyWindow(window); SDL_Quit(); }

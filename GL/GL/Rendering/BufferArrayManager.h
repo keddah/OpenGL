@@ -1,6 +1,7 @@
 #pragma once
 #include <glew.h>
 #include <vector>
+#include <glm.hpp>
 #include <iostream>
 
 
@@ -18,6 +19,10 @@ struct Vertex
     static GLuint NormalCount() { return sizeof(normals) / sizeof(normals[0]); }
     static GLuint TexCoordsCount() { return sizeof(texCoords) / sizeof(texCoords[0]); }
     static GLuint GetCount() { return PositionCount() + NormalCount() + TexCoordsCount(); }
+
+    glm::vec3 GetPositionVec() const { return {position[0], position[1], position[2]}; }
+    glm::vec3 GetNormalVec() const { return {normals[0], normals[1], normals[2]}; }
+    glm::vec2 GetUvVec() const { return {texCoords[0], texCoords[1]}; }
 };
 
 class BufferArrayManager

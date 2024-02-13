@@ -13,8 +13,8 @@ Camera::Camera(Controller& roller) : control(roller)
 void Camera::Look(glm::vec2 mouseDelta, float deltaTime)
 {
     // Handle mouse look
-    const float sensitivity_x = 2.5f * deltaTime;
-    const float sensitivity_y = 4.25f * deltaTime;
+    const float sensitivity_x = 2.0f * deltaTime;
+    const float sensitivity_y = 3.0f * deltaTime;
     
     // Update lookAt based on mouse movement
     forwardVector = rotate(glm::mat4(1.0f), mouseDelta.x * sensitivity_x, glm::vec3(0, 1, 0)) * glm::vec4(forwardVector, 0.0f);

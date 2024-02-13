@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glew.h>
+#include <glm.hpp>
 
 #include <iostream>
 #define print(x) { std::cout << x << std::endl; }
@@ -33,6 +34,53 @@ struct BoundingBox
             position.y >= minBounds.y - threshold.y && position.y <= maxBounds.y + threshold.y &&
             position.z >= minBounds.z - threshold.z && position.z <= maxBounds.z + threshold.z
         );
+    }
+
+    static void DebugDrawBoundingBox(const BoundingBox& box)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Set wireframe mode
+
+        glBegin(GL_QUADS);
+
+        // Draw bottom face
+        glVertex3f(box.min.x, box.min.y, box.min.z);
+        glVertex3f(box.max.x, box.min.y, box.min.z);
+        glVertex3f(box.max.x, box.min.y, box.max.z);
+        glVertex3f(box.min.x, box.min.y, box.max.z);
+
+        // Draw top face
+        glVertex3f(box.min.x, box.max.y, box.min.z);
+        glVertex3f(box.max.x, box.max.y, box.min.z);
+        glVertex3f(box.max.x, box.max.y, box.max.z);
+        glVertex3f(box.min.x, box.max.y, box.max.z);
+
+        // Draw front face
+        glVertex3f(box.min.x, box.min.y, box.min.z);
+        glVertex3f(box.max.x, box.min.y, box.min.z);
+        glVertex3f(box.max.x, box.max.y, box.min.z);
+        glVertex3f(box.min.x, box.max.y, box.min.z);
+
+        // Draw back face
+        glVertex3f(box.min.x, box.min.y, box.max.z);
+        glVertex3f(box.max.x, box.min.y, box.max.z);
+        glVertex3f(box.max.x, box.max.y, box.max.z);
+        glVertex3f(box.min.x, box.max.y, box.max.z);
+
+        // Draw left face
+        glVertex3f(box.min.x, box.min.y, box.min.z);
+        glVertex3f(box.min.x, box.max.y, box.min.z);
+        glVertex3f(box.min.x, box.max.y, box.max.z);
+        glVertex3f(box.min.x, box.min.y, box.max.z);
+
+        // Draw right face
+        glVertex3f(box.max.x, box.min.y, box.min.z);
+        glVertex3f(box.max.x, box.max.y, box.min.z);
+        glVertex3f(box.max.x, box.max.y, box.max.z);
+        glVertex3f(box.max.x, box.min.y, box.max.z);
+
+        glEnd();
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to fill mode
     }
 };
 
@@ -113,14 +161,32 @@ struct Raycast
 
     static void DebugDrawRay(const Ray& ray)
     {
-        if(!Ray::IsValid(ray)) return;
-        glUseProgram(0);
+        if (!Ray::IsValid(ray)) return;
 
-        glColor3f(1.0f, 0.0f, 0.0f);  // Red color for the ray
+        GLuint vao, vbo;
+        glCreateVertexArrays(1, &vao);
+        glCreateBuffers(1, &vbo);
 
-        glBegin(GL_LINES);
-        glVertex3fv(glm::value_ptr(ray.start));
-        glVertex3fv(glm::value_ptr(ray.end));
-        glEnd();
+        glBindVertexArray(vao);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+        const glm::vec3 vertices[] = { ray.start, ray.end };
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+        // glColor3f(1.0f, 0.0f, 0.0f);  // Red color for the ray
+
+        glDrawArrays(GL_LINES, 0, 2);
+
+        glDisableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+
+        glDeleteBuffers(1, &vbo);
+        glDeleteVertexArrays(1, &vao);
     }
+
+
 };

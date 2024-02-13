@@ -123,14 +123,8 @@ void Player::Collisions()
         const glm::vec3 wallPos = { predictedPos.x, 0, predictedPos.z };
         const glm::vec3 floorPos = { 0, predictedPos.y, 0 };
 
-        // Used to make collisions while moving quickly more reliable.
-        const glm::vec3 direction = predictedPos - position;
-        
         const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
 
-        // Handle wall collisions
-        const bool hitWall = BoundingBox::PositionInBounds(wallPos, meshBox.min, meshBox.max, velocity, .4f);
-    
         // Check for floor
         const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);
         if(hitFloor && collided)
@@ -140,7 +134,7 @@ void Player::Collisions()
         }
         
         // If there's any collision at all
-        if (hitWall)
+        if (collided)
         {
             velocity = glm::vec3(0, velocity.y, 0);
     

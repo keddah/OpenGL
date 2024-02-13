@@ -8,12 +8,13 @@
 #include "Transform.h"
 #include "BoundingBox.h"
 #include "Camera.h"
+#include "Debugger.h"
 #include "Material.h"
-#include "Rendering/BufferArrayManager.h"
 #include "Rendering/Shader.h"
 #include "Light.h"
+#include "MeshCollider.h"
 
-class Mesh
+class Mesh : public MeshCollider
 {
 public:
     Mesh() = default;
@@ -65,6 +66,7 @@ public:
     void SetMaterialSpecular(const float spec) const { mat->SetSpecular(spec); }
     void SetUvScale(const glm::vec2& scale) const { if(mat) mat->SetUvScale(scale); } 
     void SetUvScale(const float x, const float y) const { if(mat) mat->SetUvScale(x, y); }
+    void SetUvScale(const float xy) const { if(mat) mat->SetUvScale(xy, xy); }
 
 private:
     void InitShaders(const std::string matPath[]);
@@ -82,9 +84,11 @@ private:
     void CalculateAABoundingBox();
     void Lighting(const Camera* cam, const Light& light) const;
 
+    void Debug(Camera* cam) const;
     
     BoundingBox boundingBox;
-    
+
+    Debugger debugger;
     Shader shader;
     Material* mat;
 
@@ -92,9 +96,6 @@ private:
 
     BufferArrayManager* baManager;
     
-    std::vector<Vertex> vertices;
-    std::vector<GLuint> indices;
-
     GLint vertArrayIndex = -1;
 
     bool looking;
