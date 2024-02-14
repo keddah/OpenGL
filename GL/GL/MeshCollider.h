@@ -14,7 +14,6 @@ public:
     MeshCollider() = default;
 
     bool CheckCollision(const glm::vec3& point) const;
-    bool IsPointInTriangle(const glm::vec3& p, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) const;
 
 protected:
     std::vector<GLuint> indices;

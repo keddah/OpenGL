@@ -109,7 +109,7 @@ void Game::InitObjects()
 
 	meshes =
 	{
-		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh()
+		/*left->GetMesh(), right->GetMesh(), back->GetMesh(),*/ floor->GetMesh(), box1->GetMesh()
 	};
 	player->SetLevelMeshes(meshes);
 

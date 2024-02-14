@@ -5,21 +5,6 @@ C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\BufferArrayManager.h(9,1
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message : see previous definition of 'GetError'
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Bullet.cpp(44,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Bullet.cpp(50,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Camera.cpp
-  Controller.cpp
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Controller.cpp(80,17): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Controller.cpp(81,17): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Debugger.cpp
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): warning C4005: 'GetError': macro redefinition
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): message : see previous definition of 'GetError'
   Game.cpp
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message : see previous definition of 'GetError'
@@ -27,11 +12,6 @@ C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message :
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message : see previous definition of 'GetError'
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\CustomTimer.h(31,39): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
-  HeightMap.cpp
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\HeightMap.cpp(25,46): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\HeightMap.cpp(25,32): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
-  Light.cpp
-  Material.cpp
   Mesh.cpp
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): message : see previous definition of 'GetError'
@@ -47,14 +27,11 @@ C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message :
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Model.cpp(25,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Model.cpp(33,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Model.cpp(64,21): warning C4018: '<': signed/unsigned mismatch
-  Physics.cpp
   Player.cpp
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): message : see previous definition of 'GetError'
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\BufferArrayManager.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message : see previous definition of 'GetError'
-  BufferArrayManager.cpp
-  Shader.cpp
   Skybox.cpp
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): message : see previous definition of 'GetError'
@@ -64,7 +41,6 @@ C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Skybox.cpp(27,37): warning C4244: 
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Skybox.cpp(27,30): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Skybox.cpp(33,70): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Skybox.cpp(33,35): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-  stb.cpp
   Target.cpp
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): message : see previous definition of 'GetError'
@@ -77,16 +53,10 @@ C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): warning C
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): message : see previous definition of 'GetError'
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\BufferArrayManager.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message : see previous definition of 'GetError'
-  Generating Code...
-  Compiling...
-  TriangleRenderer.cpp
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\BufferArrayManager.h(9,1): warning C4005: 'GetError': macro redefinition
-C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message : see previous definition of 'GetError'
   WeaponController.cpp
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\BoundingBox.h(8,1): message : see previous definition of 'GetError'
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\BufferArrayManager.h(9,1): warning C4005: 'GetError': macro redefinition
 C:\Users\S22154781\Downloads\Git\OpenGL\GL\GL\Rendering\Shader.h(9,1): message : see previous definition of 'GetError'
   Generating Code...
-  LINK : C:\Users\S22154781\Downloads\Git\OpenGL\GL\x64\Debug\GL.exe not found or not built by the last incremental link; performing full link
   GL.vcxproj -> C:\Users\S22154781\Downloads\Git\OpenGL\GL\x64\Debug\GL.exe
