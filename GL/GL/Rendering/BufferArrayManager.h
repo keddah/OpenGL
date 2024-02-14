@@ -11,7 +11,7 @@
 
 struct Vertex
 {
-    GLfloat position[3];        
+    GLfloat position[3];
     GLfloat normals[3];
     GLfloat texCoords[2];
 

@@ -36,52 +36,6 @@ struct BoundingBox
         );
     }
 
-    static void DebugDrawBoundingBox(const BoundingBox& box)
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
-
-        glBegin(GL_QUADS);
-
-        // Draw bottom face
-        glVertex3f(box.min.x, box.min.y, box.min.z);
-        glVertex3f(box.max.x, box.min.y, box.min.z);
-        glVertex3f(box.max.x, box.min.y, box.max.z);
-        glVertex3f(box.min.x, box.min.y, box.max.z);
-
-        // Draw top face
-        glVertex3f(box.min.x, box.max.y, box.min.z);
-        glVertex3f(box.max.x, box.max.y, box.min.z);
-        glVertex3f(box.max.x, box.max.y, box.max.z);
-        glVertex3f(box.min.x, box.max.y, box.max.z);
-
-        // Draw front face
-        glVertex3f(box.min.x, box.min.y, box.min.z);
-        glVertex3f(box.max.x, box.min.y, box.min.z);
-        glVertex3f(box.max.x, box.max.y, box.min.z);
-        glVertex3f(box.min.x, box.max.y, box.min.z);
-
-        // Draw back face
-        glVertex3f(box.min.x, box.min.y, box.max.z);
-        glVertex3f(box.max.x, box.min.y, box.max.z);
-        glVertex3f(box.max.x, box.max.y, box.max.z);
-        glVertex3f(box.min.x, box.max.y, box.max.z);
-
-        // Draw left face
-        glVertex3f(box.min.x, box.min.y, box.min.z);
-        glVertex3f(box.min.x, box.max.y, box.min.z);
-        glVertex3f(box.min.x, box.max.y, box.max.z);
-        glVertex3f(box.min.x, box.min.y, box.max.z);
-
-        // Draw right face
-        glVertex3f(box.max.x, box.min.y, box.min.z);
-        glVertex3f(box.max.x, box.max.y, box.min.z);
-        glVertex3f(box.max.x, box.max.y, box.max.z);
-        glVertex3f(box.max.x, box.min.y, box.max.z);
-
-        glEnd();
-
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
 };
 
 #include <gtc/type_ptr.hpp>

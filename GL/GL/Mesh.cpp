@@ -68,14 +68,17 @@ void Mesh::CalculateAABoundingBox()
 
 	for (const auto& vert : vertices)
 	{
-		glm::vec3 vertex(vert.position[0], vert.position[1], vert.position[2]);
+		vert.GetPositionVec();
+		glm::vec3 vertex = vert.GetPositionVec();
 
 		// Apply scaling
-		vertex *= transform.scale;
+		vertex.x *= transform.scale.x;
+		vertex.y *= transform.scale.y;
+		vertex.z *= transform.scale.z;
 
 		// Apply rotation
-		glm::quat rotationQuat = glm::quat(transform.rotation);
-		vertex = rotationQuat * vertex;
+		//glm::quat rotationQuat = glm::quat(transform.rotation);
+		//vertex = rotationQuat * vertex;
 
 		// Apply translation
 		vertex += transform.position;
@@ -100,12 +103,12 @@ void Mesh::Lighting(const Camera* cam, const Light& light) const
 
 void Mesh::Debug(Camera* cam) const
 {
-	debugger.BoundingBoxDebug(cam, boundingBox);
+	debugger.BoundingBoxDebug(cam, transform.position, boundingBox);
 }
 
 void Mesh::Render(Camera* cam, const Light& light) const
 {
-	// Debug(cam);
+	 Debug(cam);
 	
 	if(!visible) return;
 
@@ -127,7 +130,7 @@ void Mesh::Render(Camera* cam, const Light& light) const
 		modelMatrix = scale(modelMatrix, transform.scale);
 	}
 
-    cam->UpdateViewMatrix();
+    //cam->UpdateViewMatrix();
 
 	shader.SetMat4Attrib("modelMatrix", looking? rotMatrix : modelMatrix);
 	shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
@@ -139,8 +142,8 @@ void Mesh::Render(Camera* cam, const Light& light) const
 	baManager->BindIBuffer();
 	if(mat)
 	{
-		mat->BindTextures(1);
 		mat->BindTextures(0);
+		mat->BindTextures(1);
 	}
 
 	// Stride = all the compCounts added together
@@ -162,7 +165,7 @@ void Mesh::Render(Camera* cam, const Light& light) const
 
 void Mesh::LookAtRotation(const glm::mat4& matrix)
 {
-	// rotMatrix = translate(rotMatrix, transform.position);
+	rotMatrix = translate(rotMatrix, transform.position);
 	rotMatrix = matrix;
 	rotMatrix = scale(rotMatrix, transform.scale);
 

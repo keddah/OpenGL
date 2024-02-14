@@ -44,8 +44,6 @@ private:
 	
 	TriangleRenderer* tri;
 
-	// Determines how many targets should spawn in.
-	const unsigned short targetCount = 20;
 	std::vector<Target*> targets;
 	
 	Skybox* skybox;

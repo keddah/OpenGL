@@ -11,7 +11,8 @@ void Player::Update(float deltaTime)
 {
     controller.Update();
     cam->Look(controller.GetMouseDelta(), deltaTime);
-    
+    cam->UpdateViewMatrix();
+
     wc.Update(deltaTime);
 }
 
@@ -124,6 +125,8 @@ void Player::Collisions()
         const glm::vec3 floorPos = { 0, predictedPos.y, 0 };
 
         const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
+
+        print("collided: " << mesh->CheckCollision(predictedPos))
 
         // Check for floor
         const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);

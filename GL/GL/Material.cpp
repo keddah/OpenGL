@@ -53,17 +53,17 @@ void Material::BindTextures(const GLuint texIndex) const
     {
     case 0:
         toBind = colour_texture;
-        texture = GL_TEXTURE0;
+        texture = GL_TEXTURE0 + texIndex;
         break;
 
     case 1:
         toBind = normal_texture;
-        texture = GL_TEXTURE1;
+        texture = GL_TEXTURE0 + texIndex;
         break;
         
     default:
         toBind = colour_texture;
-        texture = GL_TEXTURE0;
+        texture = GL_TEXTURE0 + texIndex;
         break;
     }
     
@@ -71,6 +71,7 @@ void Material::BindTextures(const GLuint texIndex) const
     glCall(glBindTexture(GL_TEXTURE_2D, toBind));
     shader.Activate();
     shader.SetIntAttrib("tex" + std::to_string(texIndex), texIndex);
+
     shader.SetVec2Attrib("uvScale", uvScale);
     shader.SetFloatAttrib("specularStrength", specular);
 }

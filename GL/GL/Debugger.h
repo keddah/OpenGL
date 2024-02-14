@@ -10,8 +10,8 @@ class Debugger
 public:
     Debugger();
     
-    void DebugDrawBoundingBox(const BoundingBox& box) const;
-    void BoundingBoxDebug(Camera* cam, const BoundingBox& box) const;
+    void DebugDrawBoundingBox(const BoundingBox& box, const glm::vec3& meshPos) const;
+    void BoundingBoxDebug(Camera* cam, const glm::vec3& meshPos, const BoundingBox& box) const;
 
     void RayDebug(Camera* cam, const Raycast::Ray& ray) const;
 

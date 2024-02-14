@@ -72,7 +72,7 @@ void Skybox::CreateDome(std::string texturePath)
 
     const std::string path[] = { std::move(texturePath) };
     dome = new Mesh(vertices, indices, path);
-    dome->SetScale(500);
+    dome->SetScale(400);
     dome->SetRotation(glm::degrees(90.0f),0,0);
     dome->SetCollision(false);
 

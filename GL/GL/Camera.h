@@ -29,11 +29,11 @@ public:
 	glm::vec3 GetPosition() const { return position; }
 
 	glm::vec3 GetForwardVector() const { return normalize(forwardVector); }
-	glm::vec3 GetRightVector() const { return rightVector; }
+	glm::vec3 GetRightVector() const { return normalize(rightVector); }
 	float GetPitch() const { return pitch; }
 	
 private:
-	const float fov = -70.0f;
+	const float fov = 65.0f;
 	const float aspectRatio = 1920 / 1080;
 	const float nearClip = .1f;
 	const float farClip = 600;

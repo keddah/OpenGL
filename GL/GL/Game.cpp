@@ -84,7 +84,7 @@ void Game::InitObjects()
 	auto back = new Model("ModelAssets/Cube.obj");
 
 	std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
-	// auto floor = new Model("ModelAssets/Cube.obj", floorTex);
+	//auto floor = new Model("ModelAssets/Cube.obj", floorTex);
 	auto floor = new Terrain("Images/terrain-heightmap.png");
 	
 	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
@@ -109,10 +109,12 @@ void Game::InitObjects()
 
 	meshes =
 	{
-		/*left->GetMesh(), right->GetMesh(), back->GetMesh(),*/ floor->GetMesh(), box1->GetMesh()
+		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh()
 	};
 	player->SetLevelMeshes(meshes);
 
+	// Determines how many targets should spawn in.
+	constexpr unsigned short targetCount = 0;
 	for(int i = 0; i < targetCount; i++)
 	{
 		// The chances that the target moves - 25%
@@ -133,7 +135,7 @@ void Game::InitObjects()
 			break;
 		}
 	}
-	if(!hasMoving) targets[0]->SetMoveable(true);
+	//if(!hasMoving) targets[0]->SetMoveable(true);
 
 	player->SetTargets(targets);
 }

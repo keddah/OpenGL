@@ -36,6 +36,7 @@ int main()
 		// When the timer elapses... do the fixed update.
 		tickTimer += deltaTime;
 		while (tickTimer > timeStep)
+		
 		{
 			game.FixedUpdate(deltaTime);
 			tickTimer = 0;

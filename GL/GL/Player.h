@@ -74,8 +74,10 @@ private:
 		void Shoot(glm::vec3 shootPos, glm::vec3 direction);
 		void Reload();
 		void ShootTimer(float deltaTime);
-		void GunPlacement();
 		
+		void GunPlacement();
+		bool IsTransitioning(const glm::vec3& currentPos, const glm::vec3& targetPos);
+
 		Player& rPlayer;
 		Model* pistolMesh;
 

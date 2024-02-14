@@ -6,7 +6,7 @@ Debugger::Debugger()
     
 }
 
-void Debugger::BoundingBoxDebug(Camera* cam, const BoundingBox& box) const
+void Debugger::BoundingBoxDebug(Camera* cam, const glm::vec3& meshPos, const BoundingBox& box) const
 {
     shader.Activate();
 
@@ -19,19 +19,17 @@ void Debugger::BoundingBoxDebug(Camera* cam, const BoundingBox& box) const
     // modelMatrix = glm::rotate(modelMatrix, ...);
     // modelMatrix = glm::scale(modelMatrix, ...);
 
-    cam->UpdateViewMatrix();
-
     shader.SetMat4Attrib("modelMatrix", modelMatrix);
     shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
     shader.SetMat4Attrib("projectionMatrix", cam->GetProjectionMatrix());
 
     // Assuming DebugDrawBoundingBox uses VBOs for rendering
-    DebugDrawBoundingBox(box);
+    DebugDrawBoundingBox(box, meshPos);
 
     shader.Deactivate();
 }
 
-void Debugger::DebugDrawBoundingBox(const BoundingBox& box) const
+void Debugger::DebugDrawBoundingBox(const BoundingBox& box, const glm::vec3& meshPos) const
 {
     GLuint vao, vbo;
     glCreateVertexArrays(1, &vao);
@@ -42,14 +40,14 @@ void Debugger::DebugDrawBoundingBox(const BoundingBox& box) const
 
     // Define vertices for the bounding box
     glm::vec3 vertices[] = {
-        box.min,
-        {box.max.x, box.min.y, box.min.z},
-        {box.max.x, box.min.y, box.max.z},
-        {box.min.x, box.min.y, box.max.z},
-        {box.min.x, box.max.y, box.min.z},
-        {box.max.x, box.max.y, box.min.z},
-        box.max,
-        {box.min.x, box.max.y, box.max.z}
+        box.min - meshPos,
+        glm::vec3(box.max.x, box.min.y, box.min.z) - meshPos,
+        glm::vec3(box.max.x, box.min.y, box.max.z) - meshPos,
+        glm::vec3(box.min.x, box.min.y, box.max.z) - meshPos,
+        glm::vec3(box.min.x, box.max.y, box.min.z) - meshPos,
+        glm::vec3(box.max.x, box.max.y, box.min.z) - meshPos,
+        box.max - meshPos,
+        glm::vec3(box.min.x, box.max.y, box.max.z) - meshPos
     };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -83,8 +81,6 @@ void Debugger::RayDebug(Camera* cam, const Raycast::Ray& ray) const
     modelMatrix = rotate(modelMatrix, static_cast<float>(transform.rotation.z * 180 / M_PI), { 0,0,1 });
 
     modelMatrix = scale(modelMatrix, transform.scale);
-
-    cam->UpdateViewMatrix();
 
     shader.SetMat4Attrib("modelMatrix", modelMatrix);
     shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());

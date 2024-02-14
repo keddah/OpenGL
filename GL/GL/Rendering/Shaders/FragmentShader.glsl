@@ -20,7 +20,6 @@ uniform vec3 lightPos;
 uniform vec3 camPos;
 
 
-bool normalPresent;
 int texSize;
 
 out vec4 fragmentColour;
@@ -33,7 +32,7 @@ void main()
     normalMapping = normalize(normalMapping * 2 - 1);
     
     // Check if tex1 is valid by comparing its width and height to -1... if it's valid use the vertex data normal.
-    normalPresent = textureSize(tex1, 0).x != -1 && textureSize(tex1, 0).y != -1;
+    bool normalPresent = textureSize(tex1, 0).x > 1 && textureSize(tex1, 0).y > 1;
     texSize = textureSize(tex1, 0).x;
     
     // Normal from the vertex data
@@ -55,7 +54,7 @@ void main()
 
     vec3 texColour = texture(tex0, scaledTexure).rgb;
     
-    vec3 output = (ambient + diffusion) * texColour + specular;
+    vec3 output = ((ambient + diffusion) * texColour + specular) * (normalPresent ? 1000000.0f : 1.0f);
 
     fragmentColour = vec4(output, 1); 
 }
