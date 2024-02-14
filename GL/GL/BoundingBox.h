@@ -38,7 +38,7 @@ struct BoundingBox
 
     static void DebugDrawBoundingBox(const BoundingBox& box)
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Set wireframe mode
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
 
         glBegin(GL_QUADS);
 
@@ -80,7 +80,7 @@ struct BoundingBox
 
         glEnd();
 
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to fill mode
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 };
 
@@ -111,21 +111,24 @@ struct Raycast
 
         for (int i = 0; i < 3; ++i)
         {
+            // Using the inverse to avoid dividing
             const float invDirection = 1.0f / rayDirection[i];
-            const float tMin = (bb.min[i] - ray.start[i]) * invDirection;
-            const float tMax = (bb.max[i] - ray.start[i]) * invDirection;
+            const float minIntersect = (bb.min[i] - ray.start[i]) * invDirection;
+            const float maxIntersect = (bb.max[i] - ray.start[i]) * invDirection;
 
-            const float tEnter = glm::min(tMin, tMax);
-            const float tExit = glm::max(tMin, tMax);
+            const float entrance = glm::min(minIntersect, maxIntersect);
+            const float exit = glm::max(minIntersect, maxIntersect);
 
-            if (tEnter > tExit || tExit < 0)
+            // The entrance value should be smaller than the exit (the ray would be invalid otherwise)...
+            // If the exit is less than 0... it never entered (no hit)
+            if (entrance > exit || exit < 0)
             {
                 ray.hit = false;
                 return ray;
             }
                
             // Update hit position when a collision occurs
-            hitPosition[i] = ray.start[i] + tEnter * rayDirection[i];
+            hitPosition[i] = ray.start[i] + entrance * rayDirection[i];
         }
 
         ray.hit = true;
@@ -134,16 +137,19 @@ struct Raycast
 
     static bool RayCollision(Ray& ray, const BoundingBox& bb)
     {
-        for (int i = 0; i < 3; ++i)
+        for (int xyz = 0; xyz < 3; ++xyz)
         {
-            const float invDirection = 1.0f / ray.direction[i];
-            const float tMin = (bb.min[i] - ray.start[i]) * invDirection;
-            const float tMax = (bb.max[i] - ray.start[i]) * invDirection;
+            // Using the inverse to avoid dividing
+            const float invDirection = 1.0f / ray.direction[xyz];
+            const float minIntersect = (bb.min[xyz] - ray.start[xyz]) * invDirection;
+            const float maxIntersect = (bb.max[xyz] - ray.start[xyz]) * invDirection;
 
-            const float tEnter = glm::min(tMin, tMax);
-            const float tExit = glm::max(tMin, tMax);
+            const float entrance = glm::min(minIntersect, maxIntersect);
+            const float exit = glm::max(minIntersect, maxIntersect);
 
-            if (tEnter > tExit || tExit < 0)
+            // The entrance value should be smaller than the exit (the ray would be invalid otherwise)...
+            // If the exit is less than 0... it never entered (no hit)
+            if (entrance > exit || exit < 0)
             {
                 // Since the ray parameter is a reference ... this value is usable
                 ray.hit = false;
@@ -151,7 +157,7 @@ struct Raycast
             }
                
             // Update hit position when a collision occurs
-            ray.hitPosition[i] = ray.start[i] + tEnter * ray.direction[i];
+            ray.hitPosition[xyz] = ray.start[xyz] + entrance * ray.direction[xyz];
         }
 
         // Since the ray parameter is a reference ... this value is usable
