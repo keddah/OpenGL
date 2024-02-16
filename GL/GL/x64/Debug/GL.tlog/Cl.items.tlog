@@ -18,5 +18,7 @@ C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Skybox.cpp;C:\Users\Deany\Documents
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\stb.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\stb.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Target.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Target.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Terrain.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Terrain.obj
+C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\TextRenderer.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\TextRenderer.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\TriangleRenderer.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\TriangleRenderer.obj
+C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Ui.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Ui.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\WeaponController.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\WeaponController.obj

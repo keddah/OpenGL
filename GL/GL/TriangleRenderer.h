@@ -45,7 +45,7 @@ private:
 	GLuint vertex_buffer;
 	GLuint index_buffer;
 
-	Shader shader;
+	Shader shader {"Rendering/Shaders/VertexShader.glsl", "Rendering/Shaders/FragmentShader.glsl"};
 	float colourWave = 0;
 
 	Camera& rCam;

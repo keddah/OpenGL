@@ -12,8 +12,7 @@
 class Shader
 {
 public:
-    Shader() { }
-    Shader(const GLchar* properties[]);
+    Shader(std::string vertPath, std::string fragPath) : vertShaderPath(std::move(vertPath)), fragShaderPath(std::move(fragPath)) { }
     ~Shader() { glDeleteProgram(program_id); }
     
     void Init();
@@ -48,5 +47,7 @@ public:
     
 
 private:
+    std::string vertShaderPath;
+    std::string fragShaderPath;
     GLuint program_id;
 };

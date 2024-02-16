@@ -11,6 +11,7 @@
 #include "Physics.h"
 #include "Target.h"
 #include "Terrain.h"
+#include "TextRenderer.h"
 
 class Player : public Physics
 {
@@ -21,7 +22,7 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render(const Light& light) const { wc.Render(cam, light); }
+	void Render(const Light& light) const { /*wc.Render(cam, light); */ ui.Draw(); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 	
@@ -69,6 +70,11 @@ private:
 		void Render(Camera* camera, const Light& light) const;
 
 		void SetTargets(const std::vector<Target*>& trgts) { targets = trgts; }
+
+		// UI stuff
+		int GetHits() const { return targetsHit; }
+		short GetCurrentMag() const { return currentMag; }
+		short GetCurrentAmmo() const { return currentReserve; }
 		
 	private:
 		void PullTrigger();
@@ -77,7 +83,6 @@ private:
 		void ShootTimer(float deltaTime);
 		
 		void GunPlacement();
-		bool IsTransitioning(const glm::vec3& currentPos, const glm::vec3& targetPos);
 
 		Player& rPlayer;
 		Model* pistolMesh;
@@ -103,8 +108,30 @@ private:
 
 		unsigned short currentReserve = maxReserve;
 		unsigned short currentMag = magCapcity;
-	};
 
+		// The number of targets that have been hit
+		unsigned int targetsHit;
+	};
 	WeaponController wc = {this};
+
+#include <SDL_ttf.h>
+	class Ui
+	{
+	public:
+		Ui(Player* player);
+		void Draw() const;
+		void Update(float deltaTime);
+		
+	private:
+		void AmmoCount();
+		void ScoreCount();
+		
+		Player& rPlayer;
+		TextRenderer scoreRenderer;
+		TextRenderer ammoRenderer;
+		
+	};
+	
+	Ui ui {this};
 };
 

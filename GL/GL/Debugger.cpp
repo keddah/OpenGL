@@ -3,7 +3,6 @@
 Debugger::Debugger()
 {
     shader.Init();
-    
 }
 
 void Debugger::BoundingBoxDebug(Camera* cam, const glm::vec3& meshPos, const BoundingBox& box) const

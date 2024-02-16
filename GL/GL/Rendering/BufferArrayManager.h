@@ -15,7 +15,7 @@ struct Vertex
     GLfloat normals[3];
     GLfloat texCoords[2];
 
-    static GLuint PositionCount() { return sizeof(position) / sizeof(position[0]); }
+    static GLuint PositionCount() { return 3; }
     static GLuint NormalCount() { return sizeof(normals) / sizeof(normals[0]); }
     static GLuint TexCoordsCount() { return sizeof(texCoords) / sizeof(texCoords[0]); }
     static GLuint GetCount() { return PositionCount() + NormalCount() + TexCoordsCount(); }

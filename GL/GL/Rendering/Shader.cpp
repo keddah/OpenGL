@@ -4,10 +4,10 @@
 
 void Shader::Init()
 {
-	const string verText = Util::ReadFile("Rendering/Shaders/VertexShader.glsl");
+	const string verText = Util::ReadFile(vertShaderPath);
 	const GLchar* vShaderSource = verText.c_str();
 	
-	const string fragText = Util::ReadFile("Rendering/Shaders/FragmentShader.glsl");
+	const string fragText = Util::ReadFile(fragShaderPath);
 	const GLchar* fShaderSource = fragText.c_str();
 	
 	//print(vShaderSource)

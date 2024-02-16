@@ -160,12 +160,12 @@ void Game::Render() const
 	
 	for (const auto& mesh : player->GetLevelMeshes())
 	{
-		if(mesh) mesh->Render(player->GetCamera(), light);
+		// if(mesh) mesh->Render(player->GetCamera(), light);
 	}
 
-	if(skybox) skybox->Render(player->GetCamera(), light);
+	// if(skybox) skybox->Render(player->GetCamera(), light);
 
-	for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
+	// for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
 	
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

@@ -90,7 +90,7 @@ private:
     BoundingBox boundingBox;
 
     Debugger debugger;
-    Shader shader;
+    Shader shader {"Rendering/Shaders/VertexShader.glsl", "Rendering/Shaders/FragmentShader.glsl"};
     Material* mat;
 
     Transform transform = {{}, {}, {1,1,1}};

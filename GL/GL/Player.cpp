@@ -15,6 +15,7 @@ void Player::Update(float deltaTime)
     cam->UpdateViewMatrix();
 
     wc.Update(deltaTime);
+    ui.Update(deltaTime);
 }
 
 void Player::FixedUpdate(const float deltaTime)

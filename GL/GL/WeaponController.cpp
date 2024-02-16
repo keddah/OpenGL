@@ -77,6 +77,7 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
         if(Raycast::RayCollision(ray, target->GetBoundingBox()))
         {
             target->Relocate();
+            targetsHit++;
             print("hit")
             print("")
             // Can't shoot though targets

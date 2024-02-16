@@ -18,5 +18,5 @@ public:
 private:
     Transform transform = {{}, {}, {1,1,1}};
     
-    Shader shader;
+    Shader shader {"Rendering/Shaders/VertexShader.glsl", "Rendering/Shaders/FragmentShader.glsl"};
 };
