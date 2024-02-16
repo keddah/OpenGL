@@ -77,15 +77,16 @@ void Game::InitObjects()
 
 	//________ A cube ________\\
 
+	std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
+	terrain = new Terrain("Images/terrain-heightmap.png");
+	
 	player = new Player(rRunning);
 	
 	auto left = new Model("ModelAssets/Cube.obj");
 	auto right = new Model("ModelAssets/Cube.obj");
 	auto back = new Model("ModelAssets/Cube.obj");
+	auto floor = new Model("ModelAssets/Cube.obj");
 
-	std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
-	//auto floor = new Model("ModelAssets/Cube.obj", floorTex);
-	auto floor = new Terrain("Images/terrain-heightmap.png");
 	
 	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
 
@@ -98,23 +99,21 @@ void Game::InitObjects()
 	back->SetScale(7.5f, 7.5f, .2f);
 	back->AddPosition(0, 5, 7.5f);
 
-	// floor->AddPosition(0, 10.5, 0);
-	// floor->SetScale(100, 8, 400);
-	// floor->SetUvScale(200,200);
+	floor->AddPosition(0, 20, 0);
+	floor->SetScale(100, 8, 400);
+	floor->SetUvScale(200,200);
 	
-	floor->AddPosition(-100, 10.5, -100);
-	floor->SetScale(10, 8, 40);
-	floor->SetUvScale(20,80);
-	floor->GetMesh()->SetMaterialSpecular(.1f);
+	terrain->AddPosition(100, 5, -20);
+	terrain->GetMesh()->SetMaterialSpecular(.1f);
 
 	meshes =
 	{
-		left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh(), box1->GetMesh()
+		terrain->GetMesh(), box1->GetMesh(), left->GetMesh(), right->GetMesh(), back->GetMesh(), floor->GetMesh()
 	};
 	player->SetLevelMeshes(meshes);
 
 	// Determines how many targets should spawn in.
-	constexpr unsigned short targetCount = 0;
+	constexpr unsigned short targetCount = 10;
 	for(int i = 0; i < targetCount; i++)
 	{
 		// The chances that the target moves - 25%
@@ -135,7 +134,7 @@ void Game::InitObjects()
 			break;
 		}
 	}
-	//if(!hasMoving) targets[0]->SetMoveable(true);
+	if(!hasMoving) targets[0]->SetMoveable(true);
 
 	player->SetTargets(targets);
 }
@@ -156,7 +155,7 @@ void Game::Render() const
 {
 	glClearColor(.04f, .01f, .1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	player->Render(light);
 	
 	for (const auto& mesh : player->GetLevelMeshes())
@@ -168,7 +167,7 @@ void Game::Render() const
 
 	for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
 	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	// glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	SDL_GL_SwapWindow(window);
 }

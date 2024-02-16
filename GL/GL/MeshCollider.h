@@ -13,8 +13,7 @@ class MeshCollider
 public:
     MeshCollider() = default;
 
-    bool CheckCollision(const glm::vec3& point) const;
-
+    virtual bool CheckCollision(const glm::vec3& point) const;
 protected:
     std::vector<GLuint> indices;
     std::vector<Vertex> vertices;

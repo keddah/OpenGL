@@ -70,6 +70,9 @@ public:
 
 private:
     void InitShaders(const std::string matPath[]);
+    void CalculateAABoundingBox();
+    void Lighting(const Camera* cam, const Light& light) const;
+
     std::vector<GLfloat> GetVertexData() const
     {
         std::vector<GLfloat> data;
@@ -81,9 +84,7 @@ private:
         }
         return data;
     }
-    void CalculateAABoundingBox();
-    void Lighting(const Camera* cam, const Light& light) const;
-
+    
     void Debug(Camera* cam) const;
     
     BoundingBox boundingBox;

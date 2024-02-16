@@ -1,10 +1,11 @@
 #include "Player.h"
 
-#include <ext/quaternion_common.hpp>
 
-Player::Player(bool running) : controller(running)
+Player::Player(bool& running) : controller(running)
 {
     cam = new Camera(controller);
+
+    position.y -= 5;
 }
 
 void Player::Update(float deltaTime)
@@ -107,26 +108,23 @@ void Player::Jump()
 
 void Player::Crouch()
 {
-    // if(!grounded) return;
+    if(grounded) return;
     AddForce({0,1,0}, walkSpeed);
 }
 
 void Player::Collisions()
 {
     if(meshes.empty()) return;
-    
+
     for(const auto& mesh : meshes)
     {
         if (!mesh->IsCollisions()) continue;
 
         const BoundingBox meshBox = mesh->GetBoundingBox();
         const glm::vec3 predictedPos = glm::vec3(position.x , position.y + playerHeight, position.z) + velocity;
-        const glm::vec3 wallPos = { predictedPos.x, 0, predictedPos.z };
         const glm::vec3 floorPos = { 0, predictedPos.y, 0 };
 
         const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
-
-        print("collided: " << mesh->CheckCollision(predictedPos))
 
         // Check for floor
         const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);

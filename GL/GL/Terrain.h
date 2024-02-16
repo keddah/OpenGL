@@ -30,7 +30,11 @@ public:
 
 	void SetUvScale(const glm::vec3& uv) const { floor->SetUvScale(uv); }
 	void SetUvScale(const float u, const float v) const { floor->SetUvScale(u,v); }
-    
+
+	glm::vec3 GetPosition() const { return floor->GetPosition(); }
+	
 private:
 	Mesh* floor;
+
+
 };

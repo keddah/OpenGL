@@ -10,11 +10,12 @@
 #include "Model.h"
 #include "Physics.h"
 #include "Target.h"
+#include "Terrain.h"
 
 class Player : public Physics
 {
 public:
-	Player(bool running);
+	Player(bool& running);
 	~Player() { delete cam; DeleteMeshPtr(); }
 
 	void Update(float deltaTime);
@@ -23,7 +24,7 @@ public:
 	void Render(const Light& light) const { wc.Render(cam, light); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
-
+	
 	const glm::vec3& GetPosition() const { return position; }
 
 	void SetTargets(const std::vector<Target*>& trgts) { wc.SetTargets(trgts); } 

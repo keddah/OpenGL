@@ -1,6 +1,5 @@
 #include "Terrain.h"
 
-
 Terrain::Terrain(const std::string& heightPath) 
 {
 	SDL_Surface* heightMap = IMG_Load(heightPath.c_str());

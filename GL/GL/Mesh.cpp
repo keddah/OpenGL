@@ -39,6 +39,7 @@ Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _i
 	}
 	
 	InitShaders(materialPath);
+
 	
 	CalculateAABoundingBox();
 }
@@ -68,7 +69,6 @@ void Mesh::CalculateAABoundingBox()
 
 	for (const auto& vert : vertices)
 	{
-		vert.GetPositionVec();
 		glm::vec3 vertex = vert.GetPositionVec();
 
 		// Apply scaling
@@ -116,7 +116,6 @@ void Mesh::Render(Camera* cam, const Light& light) const
 		
 	Lighting(cam, light);
 
-
 	glm::mat4 modelMatrix = glm::mat4(1);
 
 	if (!looking)
@@ -129,8 +128,6 @@ void Mesh::Render(Camera* cam, const Light& light) const
 		
 		modelMatrix = scale(modelMatrix, transform.scale);
 	}
-
-    //cam->UpdateViewMatrix();
 
 	shader.SetMat4Attrib("modelMatrix", looking? rotMatrix : modelMatrix);
 	shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());

@@ -30,13 +30,13 @@ void Player::WeaponController::Update(float deltaTime)
     PullTrigger();
     ShootTimer(deltaTime);
 
-    GunPlacement();
 }
 
 void Player::WeaponController::FixedUpdate(float deltaTime)
 {
+    GunPlacement();
     
-    for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
+    // for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
 }
 
 void Player::WeaponController::Render(Camera* camera, const Light& light) const

@@ -16,7 +16,7 @@ public:
     
 protected:
     void ApplyGravity(float deltaTime, bool isPlayer = false);
-    
+
     glm::vec3 velocity = {};
     glm::vec3 terminalVelocity {10, 1000, 10};
     bool grounded = false;

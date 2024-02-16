@@ -48,6 +48,7 @@ private:
 	
 	Skybox* skybox;
 	
+	Terrain* terrain;
 	Player* player;
 	Light light;
 };
