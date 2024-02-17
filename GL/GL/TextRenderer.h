@@ -11,9 +11,9 @@
 class TextRenderer
 {
 public:
-    TextRenderer() { shader.Init(); }
+    TextRenderer() { Init(); }
 
-    void Draw(const glm::mat4& projectionpro) const;
+    void Draw(const std::string& toDisplay);
     void SetText(const std::string& toDisplay, const std::string& _fontPath);
     void SetFontSize(const short newSize) { fontSize = newSize; }
 
@@ -21,19 +21,21 @@ public:
     void SetDrawPosition(const float x, const float y) { drawPos = {x,y}; }
     
 private:
-    void CreateBufferManager();
-    BufferArrayManager* baManager;
+    void Init();
+    void GlRender();
+    
+    GLuint vertArrayIndex;
     
     std::string text;
     std::string fontPath;
     unsigned short fontSize = 12;
     glm::vec4 drawColour;
 
-    GLuint vertPosAddress, uvAddress;
     Shader shader {"Rendering/Shaders/UiVertShader.glsl", "Rendering/Shaders/UiFragShader.glsl"};
 
     glm::vec2 drawPos;
     glm::vec2 size;
     
     GLuint texture;
+
 };

@@ -133,7 +133,7 @@ void Mesh::Render(Camera* cam, const Light& light) const
 	shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
 	shader.SetMat4Attrib("projectionMatrix", cam->GetProjectionMatrix());
 
-	
+
 	baManager->BindArray();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();

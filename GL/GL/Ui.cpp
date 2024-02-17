@@ -16,15 +16,15 @@ Player::Ui::Ui(Player* player) : rPlayer(*player)
     scoreRenderer.SetDrawPosition(-.95f, -.95f);
 }
 
-void Player::Ui::Draw() const
+void Player::Ui::Draw()
 {
     // scoreRenderer.Draw(rPlayer.cam->GetProjectionMatrix());
-    ammoRenderer.Draw(rPlayer.cam->GetProjectionMatrix());
+    AmmoCount();
 }
 
 void Player::Ui::Update(float deltaTime)
 {
-    AmmoCount();
+    // AmmoCount();
     // ScoreCount();
 }
 
@@ -34,7 +34,7 @@ void Player::Ui::AmmoCount()
     const short reserve = rPlayer.wc.GetCurrentAmmo();
 
     const string output = to_string(mag) + " || " + to_string(reserve);
-    ammoRenderer.SetText(output, "Fonts/Quicksand-Regular.ttf");
+    ammoRenderer.Draw(output);
 }
 
 void Player::Ui::ScoreCount()

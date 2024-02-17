@@ -10,8 +10,8 @@ void Shader::Init()
 	const string fragText = Util::ReadFile(fragShaderPath);
 	const GLchar* fShaderSource = fragText.c_str();
 	
-	//print(vShaderSource)
-	//print(fShaderSource)
+	// print(vShaderSource)
+	// print(fShaderSource)
 	
 	// Create the program
 	program_id = glCreateProgram();

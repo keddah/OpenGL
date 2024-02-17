@@ -45,7 +45,7 @@ Material::Material(Shader& _shader, const std::string matPath[]) : shader(_shade
     }
 }
 
-void Material::BindTextures(const GLuint texIndex) const
+void Material:: BindTextures(const GLuint texIndex) const
 {
     GLuint toBind;
     GLint texture;

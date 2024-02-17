@@ -22,7 +22,7 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render(const Light& light) const { /*wc.Render(cam, light); */ ui.Draw(); }
+	void Render(const Light& light) { /*wc.Render(cam, light); */ ui.Draw(); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 	
@@ -119,7 +119,7 @@ private:
 	{
 	public:
 		Ui(Player* player);
-		void Draw() const;
+		void Draw();
 		void Update(float deltaTime);
 		
 	private:
