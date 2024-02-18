@@ -153,19 +153,19 @@ void Game::FixedUpdate(float deltaTime) const
 
 void Game::Render() const
 {
-	glClearColor(.04f, .01f, .1f, 1);
+	glClearColor(.04f, .01f, .1f, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	player->Render(light);
 	
 	for (const auto& mesh : player->GetLevelMeshes())
 	{
-		// if(mesh) mesh->Render(player->GetCamera(), light);
+		if(mesh) mesh->Render(player->GetCamera(), light);
 	}
 
-	// if(skybox) skybox->Render(player->GetCamera(), light);
+	if(skybox) skybox->Render(player->GetCamera(), light);
 
-	// for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
+	for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
 	
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

@@ -22,7 +22,8 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render(const Light& light) { /*wc.Render(cam, light); */ ui.Draw(); }
+	void Render(const Light& light) const
+	{ wc.Render(cam, light); ui.Draw(); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 	
@@ -72,9 +73,9 @@ private:
 		void SetTargets(const std::vector<Target*>& trgts) { targets = trgts; }
 
 		// UI stuff
-		int GetHits() const { return targetsHit; }
-		short GetCurrentMag() const { return currentMag; }
-		short GetCurrentAmmo() const { return currentReserve; }
+		unsigned int GetHits() const { return targetsHit; }
+		unsigned short GetCurrentMag() const { return currentMag; }
+		unsigned short GetCurrentAmmo() const { return currentReserve; }
 		
 	private:
 		void PullTrigger();
@@ -110,7 +111,7 @@ private:
 		unsigned short currentMag = magCapcity;
 
 		// The number of targets that have been hit
-		unsigned int targetsHit;
+		unsigned int targetsHit = 0;
 	};
 	WeaponController wc = {this};
 
@@ -119,16 +120,18 @@ private:
 	{
 	public:
 		Ui(Player* player);
-		void Draw();
+		void Draw() const;
 		void Update(float deltaTime);
 		
 	private:
-		void AmmoCount();
-		void ScoreCount();
+		void AmmoCount() const;
+		void ScoreCount() const;
 		
 		Player& rPlayer;
-		TextRenderer scoreRenderer;
-		TextRenderer ammoRenderer;
+		TextRenderer* ammoRenderer;
+		TextRenderer* scoreRenderer;
+
+		glm::vec2 screenSize;
 		
 	};
 	
