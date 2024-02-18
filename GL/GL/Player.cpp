@@ -5,7 +5,7 @@ Player::Player(bool& running) : controller(running)
 {
     cam = new Camera(controller);
 
-    position.y -= 5;
+    position.y -= 50;
 }
 
 void Player::Update(float deltaTime)
@@ -122,26 +122,32 @@ void Player::Collisions()
         if (!mesh->IsCollisions()) continue;
 
         const BoundingBox meshBox = mesh->GetBoundingBox();
-        const glm::vec3 predictedPos = glm::vec3(position.x , position.y + playerHeight, position.z) + velocity;
-        const glm::vec3 floorPos = { 0, predictedPos.y, 0 };
+        const glm::vec3 predictedPos = position + velocity;
+        const glm::vec3 floorPos = { 0, predictedPos.y + playerHeight, 0 };
 
         const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
 
-        // Check for floor
-        const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);
-        if(hitFloor && collided)
-        {
-            grounded = true;
-            return;
-        }
-        
         // If there's any collision at all
         if (collided)
         {
-            velocity = glm::vec3(0, velocity.y, 0);
-    
-            return; // Return early if there's a collision
+            // So that movement is less awkward when colliding with something
+            const glm::vec3 hitDirection = normalize(predictedPos - meshBox.center);
+            velocity.x = hitDirection.x * .01f;
+            velocity.z = hitDirection.z * .01f;
         }
+        
+        // Checks to see if the player lands on a y level that is equal to a collider 
+        const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);
+        if(hitFloor)
+        {
+            // if it is... check if it's within the x and z values
+            if(BoundingBox::PositionInBounds({predictedPos.x, predictedPos.y + playerHeight, predictedPos.z}, meshBox.min, meshBox.max))
+            {
+                grounded = true;
+                return;
+            }
+        }
+        
     }
     
     // If no collision, reset grounded state

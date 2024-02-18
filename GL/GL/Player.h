@@ -80,8 +80,12 @@ private:
 	private:
 		void PullTrigger();
 		void Shoot(glm::vec3 shootPos, glm::vec3 direction);
-		void Reload();
 		void ShootTimer(float deltaTime);
+
+		void ReloadTimer(float deltaTime);
+		void Reload();
+		
+		void GiveAmmo() { currentReserve += magCapcity * 3; }
 		
 		void GunPlacement();
 
@@ -101,9 +105,10 @@ private:
 		
 		bool canShoot = true;
 
-		const float shootDelay = .2f;
 		float currentShootTime;
 
+		float reloadTimer;
+		bool reloadOn;
 		const unsigned short maxReserve = 120;
 		const unsigned short magCapcity = 9;
 

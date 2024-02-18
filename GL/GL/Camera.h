@@ -30,6 +30,7 @@ public:
 
 	glm::vec3 GetForwardVector() const { return normalize(forwardVector); }
 	glm::vec3 GetRightVector() const { return normalize(rightVector); }
+	glm::vec3 GetUpVector() const { return normalize(upVector); }
 	float GetPitch() const { return pitch; }
 	
 private:
@@ -48,8 +49,7 @@ private:
 	// Y = up/down
 	// Z = forwards/backwards
 	glm::vec3 position;
-	glm::vec3 forwardVector;
-	glm::vec3 rightVector;
+	glm::vec3 forwardVector, rightVector, upVector;
 
 	Controller& control;
 };

@@ -30,12 +30,15 @@ void Player::WeaponController::Update(float deltaTime)
     PullTrigger();
     ShootTimer(deltaTime);
 
+    // Check for reload input. Activate the reload timer once R is pressed (after it elapses the mag is reloaded)
+    if(rPlayer.controller.RKeyDown()) reloadOn = true;
+    ReloadTimer(deltaTime);
+    
+    GunPlacement();
 }
 
 void Player::WeaponController::FixedUpdate(float deltaTime)
 {
-    GunPlacement();
-    
     // for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
 }
 
@@ -43,16 +46,13 @@ void Player::WeaponController::Render(Camera* camera, const Light& light) const
 {
     if(pistolMesh) pistolMesh->Render(camera, light);
 
-    debugger.RayDebug(camera, ray);
+    // debugger.RayDebug(camera, ray);
     
-    for(const auto& bullet : bullets) bullet->Render(camera, light);
+    // for(const auto& bullet : bullets) bullet->Render(camera, light);
 }
 
 void Player::WeaponController::PullTrigger()
 {
-    // Check for reload input.
-    if(rPlayer.controller.RKeyDown()) Reload();
-    
     if(!rPlayer.controller.LmbDown()) return;
 
     const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
@@ -68,6 +68,15 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     // Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
     // bullets.emplace_back(b);
 
+    if(currentMag == 0)
+    {
+        // Activate the reload timer once R is pressed (after it elapses the mag is reloaded)
+        reloadOn = true;
+        
+        canShoot = false;
+        return;
+    }
+    
     ray = Raycast::ShootRaycast(shootPos, direction, 6000);
 
     std::string matPath[] = {"Images/defaultTexture.jpg"};
@@ -78,8 +87,10 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
         {
             target->Relocate();
             targetsHit++;
-            print("hit")
-            print("")
+
+            // Give the player ammo after every 20 targets hit.
+            if(targetsHit % 20 == 0) GiveAmmo();
+            
             // Can't shoot though targets
             break;
         }
@@ -88,40 +99,58 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     
     currentMag--;
     canShoot = false;
-    
-    if(currentMag <= 0) Reload();
-}
-
-void Player::WeaponController::Reload()
-{
-    // Not allowed to reload if the mag is already full
-    if(currentMag == magCapcity) return;
-    
-    if(currentReserve <= 0)
-    {
-        currentReserve = 0;
-        return;
-    }
-    
-    // The difference of the bullets shot and the mag capacity
-    const short bulletsShot = magCapcity - currentMag; 
-    
-    // Remove the ammo from the reserve
-    currentReserve -= bulletsShot;
-
-    // Add it to the mag
-    currentMag += bulletsShot;
 }
 
 void Player::WeaponController::ShootTimer(float deltaTime)
 {
     if(canShoot) return;
 
+    constexpr float shootDelay = .2f;
+    
     currentShootTime += deltaTime;
     if(currentShootTime < shootDelay) return;
 
     currentShootTime = 0;
     canShoot = true;
+}
+
+void Player::WeaponController::Reload()
+{
+    // Not allowed to reload if the mag is already full
+    if (currentMag == magCapcity) return;
+       
+    // Check if there is enough reserve ammo
+    if (currentReserve <= 0)
+    {
+        currentReserve = 0;
+        return;
+    }
+
+    // Calculate the number of bullets to reload
+    const short bulletsToReload = std::min(magCapcity - currentMag, static_cast<int>(currentReserve));
+
+    // Remove ammo from the reserve
+    currentReserve -= bulletsToReload;
+
+    // Add ammo to the mag
+    currentMag += bulletsToReload;
+}
+
+void Player::WeaponController::ReloadTimer(float deltaTime)
+{
+    if(!reloadOn) return;
+
+    constexpr float reloadSpeed = .8f;
+    
+    reloadTimer += deltaTime;
+    if(reloadTimer < reloadSpeed) return;
+
+    // Reload once the timer elapses
+    Reload();
+
+    // Reset the timer
+    reloadTimer = 0;
+    reloadOn = false;
 }
 
 void Player::WeaponController::GunPlacement()
@@ -139,7 +168,7 @@ void Player::WeaponController::GunPlacement()
     handSocket = mix(handSocket, rPlayer.position + holdOffset, isADS? adsSpeed : 1.0f);
     //handSocket = rPlayer.position + holdOffset;
     pistolMesh->SetPosition(handSocket);
-        
+
     // Flipping the rotation axis because the model is upside...
     const glm::mat4 lookMatrix = glm::inverse(glm::lookAt(pistolMesh->GetPosition(), pistolMesh->GetPosition() + forwardVec * -1.0f, {0, -1, 0}));
     pistolMesh->LookAtRotation(lookMatrix);

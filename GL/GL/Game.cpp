@@ -89,7 +89,8 @@ void Game::InitObjects()
 
 	
 	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
-
+	box1->AddPosition(0, 10, 0);
+	
 	left->SetScale(.2f, 7.5f, 7.5f);
 	left->AddPosition(-7.5f, 5,0);
 
