@@ -21,7 +21,7 @@ public:
     void SetDrawColour(const unsigned char r, const unsigned char g, const unsigned char b, const unsigned char a) { drawColour = SDL_Color{r,g,b,a}; }
 
     void SetFontSize(short newSize);
-    glm::vec2 GetSize() const { return size; }
+    glm::vec2 GetDrawSize() const { return drawSize; }
     
     void SetDrawPosition(const glm::vec2& pos) { drawPos = pos; }
     void SetDrawPosition(const float x, const float y) { drawPos = {x,y}; }
@@ -40,7 +40,7 @@ private:
     Shader shader {"Rendering/Shaders/UiVertShader.glsl", "Rendering/Shaders/UiFragShader.glsl"};
 
     glm::vec2 drawPos;
-    glm::vec2 size;
+    glm::vec2 drawSize;
 
     glm::vec2 screenSize;
     

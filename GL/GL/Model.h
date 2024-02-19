@@ -18,7 +18,9 @@ class Model
 public:
 	// Always Base colour  -->  Normal
 	Model(const string& meshPath, string materialPaths[] = new string {"Images/defaultTexture.jpg"});
-	~Model() { delete gameMesh; }
+
+	// Delete all the game mesh (if there's more than one, gameMesh would be empty ... delete all the meshes in the vector and empty it.
+	~Model() { if(gameMesh) delete gameMesh; else for(const auto& mesh: gameMeshes) delete mesh; gameMeshes.clear(); }
 
 	void Render(Camera* cam, Light light) const;
 

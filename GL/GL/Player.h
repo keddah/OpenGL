@@ -7,6 +7,7 @@
 #include "BoundingBox.h"
 #include "Bullet.h"
 #include "Debugger.h"
+#include "ImageRenderer.h"
 #include "Model.h"
 #include "Physics.h"
 #include "Target.h"
@@ -17,7 +18,7 @@ class Player : public Physics
 {
 public:
 	Player(bool& running);
-	~Player() { delete cam; DeleteMeshPtr(); }
+	~Player() { delete cam; meshes.clear(); }
 
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
@@ -41,8 +42,6 @@ private:
 	void Crouch();
 	void Collisions();
 
-	void DeleteMeshPtr() const { for (const auto& mesh : meshes) delete mesh; }
-
 	bool accelerating;
 	
 	glm::vec3 position = { 0, -5, 1.5f};
@@ -63,7 +62,7 @@ private:
 	{
 	public:
 		WeaponController(Player* player);
-		~WeaponController() { delete pistolMesh; }
+		~WeaponController() { delete pistolMesh; bullets.clear(); targets.clear(); }
 
 		void Update(float deltaTime);
 		void FixedUpdate(float deltaTime);
@@ -125,6 +124,8 @@ private:
 	{
 	public:
 		Ui(Player* player);
+		~Ui() { delete ammoRenderer;  delete scoreRenderer; delete crosshair; }
+		
 		void Draw() const;
 		void Update(float deltaTime);
 		
@@ -135,9 +136,7 @@ private:
 		Player& rPlayer;
 		TextRenderer* ammoRenderer;
 		TextRenderer* scoreRenderer;
-
-		glm::vec2 screenSize;
-		
+		ImageRenderer* crosshair;
 	};
 	
 	Ui ui {this};

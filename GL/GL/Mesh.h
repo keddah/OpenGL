@@ -5,6 +5,7 @@
 #include <gtc/quaternion.hpp>
 #include <random>
 
+#include "Rendering/BufferArrayManager.h"
 #include "Transform.h"
 #include "BoundingBox.h"
 #include "Camera.h"
@@ -12,9 +13,8 @@
 #include "Material.h"
 #include "Rendering/Shader.h"
 #include "Light.h"
-#include "MeshCollider.h"
 
-class Mesh : public MeshCollider
+class Mesh
 {
 public:
     Mesh() = default;
@@ -87,6 +87,8 @@ private:
     
     void Debug(Camera* cam) const;
     
+    std::vector<GLuint> indices;
+    std::vector<Vertex> vertices;
     BoundingBox boundingBox;
 
     Debugger debugger;

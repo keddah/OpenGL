@@ -10,7 +10,7 @@ class Material
 public:
     // Always Base colour  -->  Normal
     Material(Shader& _shader, const std::string matPath[]);
-    ~Material(){ glDeleteTextures(1, &colour_texture); };
+    ~Material(){ glCall(glDeleteTextures(1, &colour_texture)); glCall(glDeleteTextures(1, &normal_texture)); };
 
     void BindTextures(GLuint texIndex) const;
     void UnbindTextures() const { glCall(glBindTexture(GL_TEXTURE_2D, 0)); }

@@ -14,8 +14,4 @@ class HeightMap
 {
 public:
     HeightMap(string filePath);
-
-private:
-    
-    
 };

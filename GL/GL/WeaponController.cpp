@@ -80,12 +80,12 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     ray = Raycast::ShootRaycast(shootPos, direction, 6000);
 
     std::string matPath[] = {"Images/defaultTexture.jpg"};
-    
-    for(const auto& target : targets)
+
+    for(int i = 0; i < targets.size(); i--)
     {
-        if(Raycast::RayCollision(ray, target->GetBoundingBox()))
+        if(Raycast::RayCollision(ray, targets[i]->GetBoundingBox()))
         {
-            target->Relocate();
+            targets[i]->Relocate();
             targetsHit++;
 
             // Give the player ammo after every 20 targets hit.
@@ -94,7 +94,6 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
             // Can't shoot though targets
             break;
         }
-
     }
     
     currentMag--;

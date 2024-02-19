@@ -172,3 +172,18 @@ void Game::Render() const
 
 	SDL_GL_SwapWindow(window);
 }
+
+void Game::Clean() const
+{
+	delete player;
+	delete skybox;
+	delete terrain;
+	delete tri;
+		
+		
+	for (const auto& mesh : meshes) delete mesh;
+	for (const auto& target : targets) delete target;
+		
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}

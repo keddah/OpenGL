@@ -147,6 +147,7 @@
     <ClInclude Include="externals\stb\stb_image.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HeightMap.h" />
+    <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="HeightMap.cpp" />
+    <ClCompile Include="ImageRenderer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -268,6 +270,7 @@
     <Content Include="Fonts\Quicksand-Regular.ttf" />
     <Content Include="Fonts\TEMPSITC.TTF" />
     <Content Include="Images\Barrel_d.png" />
+    <Content Include="Images\crosshair.png" />
     <Content Include="Images\download.png" />
     <Content Include="ModelAssets\Barrel.obj" />
     <Content Include="ModelAssets\Barrel_d.png" />

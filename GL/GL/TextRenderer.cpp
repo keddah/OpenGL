@@ -43,14 +43,14 @@ void TextRenderer::Draw(const std::string& toDisplay)
     
     textImage = convertedImg;
     
-    size = {textImage->w, textImage->h};
+    drawSize = {textImage->w, textImage->h};
     
     if(SDL_MUSTLOCK(textImage)) SDL_LockSurface(textImage);
     
     // Creating the texture
     glCall(glGenTextures(1, &texture));
     glCall(glBindTexture(GL_TEXTURE_2D, texture));
-    glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textImage->pixels));
+    glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, drawSize.x, drawSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textImage->pixels));
     
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
@@ -74,8 +74,8 @@ void TextRenderer::SetFontSize(const short newSize)
     }
     
     SDL_Surface* textImage = TTF_RenderText_Solid(font, text.c_str(), {});
-    size.x = textImage->w;
-    size.y = textImage->h;
+    drawSize.x = textImage->w;
+    drawSize.y = textImage->h;
 
     TTF_CloseFont(font);
     SDL_FreeSurface(textImage);
@@ -88,11 +88,11 @@ void TextRenderer::GlRender() const
     const Vertex verts[] =
     {
         {{drawPos.x, drawPos.y, 0.0f}, {0,0,0},{0.0f, 1.0f}},
-        {{drawPos.x, drawPos.y + size.y, 0.0f}, {0,0,0},{0.0f, 0.0f}},
-        {{drawPos.x + size.x, drawPos.y + size.y, 0.0f}, {0,0,0},{1.0f, 0.0f}},
+        {{drawPos.x, drawPos.y + drawSize.y, 0.0f}, {0,0,0},{0.0f, 0.0f}},
+        {{drawPos.x + drawSize.x, drawPos.y + drawSize.y, 0.0f}, {0,0,0},{1.0f, 0.0f}},
         
-        {{drawPos.x + size.x, drawPos.y + size.y, 0.0f}, {0,0,0},{1.0f, 0.0f}},
-        {{drawPos.x + size.x, drawPos.y, 0.0f}, {0,0,0},{1.0f, 1.0f}},
+        {{drawPos.x + drawSize.x, drawPos.y + drawSize.y, 0.0f}, {0,0,0},{1.0f, 0.0f}},
+        {{drawPos.x + drawSize.x, drawPos.y, 0.0f}, {0,0,0},{1.0f, 1.0f}},
         {{drawPos.x, drawPos.y, 0.0f}, {0,0,0},{0.0f, 1.0f}}
     };
     
@@ -131,6 +131,8 @@ void TextRenderer::GlRender() const
     glCall(glDisableVertexAttribArray(1));
     glCall(glBindVertexArray(0));
 
+    glCall(glDisable(GL_BLEND));
+    
     shader.Deactivate();
     glCall(glDeleteBuffers(1, &vboTextQuad));
 }

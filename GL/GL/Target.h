@@ -13,7 +13,7 @@ class Target : public  Physics
 {
 public:
     Target(bool moving, const glm::vec3& playerPos);
-    ~Target() { delete barrel; }
+    ~Target() { delete barrel; otherMeshes.clear(); }
     
     void Render(Camera* cam, const Light& light) const { if(barrel) barrel->Render(cam, light); }
     void Update(float deltaTime);
