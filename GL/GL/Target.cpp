@@ -46,7 +46,8 @@ void Target::FixedUpdate(float deltaTime)
     else if(far && !moveable) Relocate();
 
     // If the target goes under the map... fix it.
-    if(transform.position.y > -1.2f) transform.position.y = -1.2f;
+    constexpr short heightLimit = 8;
+    if(transform.position.y > heightLimit) transform.position.y = heightLimit;
     
     // Set position/rotation
     barrel->SetRotation(transform.rotation);
@@ -57,7 +58,7 @@ void Target::Relocate()
 {
     // Set the position of the target to a random position around the player
     const glm::vec3 randomOffset = glm::ballRand(relocateRadius);
-    transform.position = rPlayerPos + randomOffset;
+    transform.position = rPlayerPos + randomOffset + glm::vec3(0, 3, 0);
 }
 
 void Target::Move()
@@ -123,14 +124,12 @@ void Target::Collisions()
         if (!mesh->IsCollisions()) continue;
 
         const BoundingBox meshBox = mesh->GetBoundingBox();
-        const glm::vec3 predictedPos = transform.position + velocity;
-
-        const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
+        const bool collided = BoundingBox::BoundsIntersect(GetBoundingBox(), meshBox);
 
         if(collided)
         {
             // Bounce
-            const glm::vec3 bounceDir = transform.position - mesh->GetPosition();
+            const glm::vec3 bounceDir = normalize(transform.position - mesh->GetPosition());
             constexpr float bounceForce = 400;
             moveDir = bounceDir;
             AddForce(bounceDir, bounceForce);

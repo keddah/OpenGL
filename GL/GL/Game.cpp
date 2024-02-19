@@ -85,7 +85,7 @@ void Game::InitObjects()
 	auto left = new Model("ModelAssets/Cube.obj");
 	auto right = new Model("ModelAssets/Cube.obj");
 	auto back = new Model("ModelAssets/Cube.obj");
-	auto floor = new Model("ModelAssets/Cube.obj");
+	auto floor = new Model("ModelAssets/Cube.obj", floorTex);
 
 	
 	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
@@ -102,7 +102,8 @@ void Game::InitObjects()
 
 	floor->AddPosition(0, 20, 0);
 	floor->SetScale(100, 8, 400);
-	floor->SetUvScale(200,200);
+	floor->SetUvScale(100,400);
+	floor->GetMesh()->SetMaterialSpecular(0);
 	
 	terrain->AddPosition(100, 5, -20);
 	terrain->GetMesh()->SetMaterialSpecular(.1f);
@@ -117,14 +118,14 @@ void Game::InitObjects()
 	constexpr unsigned short targetCount = 10;
 	for(int i = 0; i < targetCount; i++)
 	{
-		// The chances that the target moves - 25%
-		constexpr unsigned short movingOdds = 3;
+		// The chances that the target moves - 50%
+		constexpr unsigned short movingOdds = 2;
 		const unsigned short rnd = rand() % (movingOdds);
 		Target* target = new Target(rnd == 0, player->GetPosition());
 		targets.push_back(target);
 	}
 	
-	// Ensures that atleast one of the targets is moving
+	// Ensures that at least one of the targets is moving
 	bool hasMoving = false;
 	for(const auto& target : targets)
 	{
@@ -157,16 +158,19 @@ void Game::Render() const
 	glClearColor(.04f, .01f, .1f, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	// Drawing the player last so that the text in the UI doesnt have the background
 	player->Render(light);
 	
 	for (const auto& mesh : player->GetLevelMeshes())
 	{
 		if(mesh) mesh->Render(player->GetCamera(), light);
 	}
-
+	
 	if(skybox) skybox->Render(player->GetCamera(), light);
 
 	for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
+
 	
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

@@ -20,6 +20,8 @@ void TextRenderer::Init()
 
 void TextRenderer::Draw(const std::string& toDisplay)
 {
+    if(!visible) return;
+    
     text = toDisplay;
     
     TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
@@ -56,7 +58,6 @@ void TextRenderer::Draw(const std::string& toDisplay)
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
     
     SDL_FreeSurface(textImage);
-
 
     GlRender();
 }

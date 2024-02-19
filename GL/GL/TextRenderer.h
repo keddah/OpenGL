@@ -25,10 +25,17 @@ public:
     
     void SetDrawPosition(const glm::vec2& pos) { drawPos = pos; }
     void SetDrawPosition(const float x, const float y) { drawPos = {x,y}; }
+    glm::vec2 GetDrawPosition() const { return drawPos; }
+
+    // Toggles if a value isn't given
+    void SetVisible() { visible = !visible; }
+    void SetVisible(const bool newVal) { visible = newVal; }
     
 private:
     void Init();
     void GlRender() const;
+
+    bool visible = true;
     
     GLuint vertArrayIndex;
     

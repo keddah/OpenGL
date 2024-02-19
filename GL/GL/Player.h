@@ -23,8 +23,8 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
 
-	void Render(const Light& light) const
-	{ wc.Render(cam, light); ui.Draw(); }
+	// Need to render the UI last
+	void Render(const Light& light) const { wc.Render(cam, light); ui.Draw(); }
 
 	Camera* GetCamera() const { if(!cam) print("unable to get Cam") return cam; }
 	
@@ -72,7 +72,7 @@ private:
 		void SetTargets(const std::vector<Target*>& trgts) { targets = trgts; }
 
 		// UI stuff
-		unsigned int GetHits() const { return targetsHit; }
+		unsigned int GetHits() const { return score; }
 		unsigned short GetCurrentMag() const { return currentMag; }
 		unsigned short GetCurrentAmmo() const { return currentReserve; }
 		
@@ -108,14 +108,14 @@ private:
 
 		float reloadTimer;
 		bool reloadOn;
-		const unsigned short maxReserve = 120;
+		const unsigned short maxReserve = 45;
 		const unsigned short magCapcity = 9;
 
 		unsigned short currentReserve = maxReserve;
 		unsigned short currentMag = magCapcity;
 
 		// The number of targets that have been hit
-		unsigned int targetsHit = 0;
+		unsigned int score = 0;
 	};
 	WeaponController wc = {this};
 

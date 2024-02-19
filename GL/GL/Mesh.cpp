@@ -108,7 +108,7 @@ void Mesh::Debug(Camera* cam) const
 
 void Mesh::Render(Camera* cam, const Light& light) const
 {
-	 Debug(cam);
+	 // Debug(cam);
 	
 	if(!visible) return;
 

@@ -46,7 +46,7 @@ void Player::WeaponController::Render(Camera* camera, const Light& light) const
 {
     if(pistolMesh) pistolMesh->Render(camera, light);
 
-    // debugger.RayDebug(camera, ray);
+    debugger.RayDebug(camera, ray);
     
     // for(const auto& bullet : bullets) bullet->Render(camera, light);
 }
@@ -80,20 +80,18 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     ray = Raycast::ShootRaycast(shootPos, direction, 6000);
 
     std::string matPath[] = {"Images/defaultTexture.jpg"};
-
-    for(int i = 0; i < targets.size(); i--)
+    
+    for(const auto& target : targets)
     {
-        if(Raycast::RayCollision(ray, targets[i]->GetBoundingBox()))
+        if(Raycast::RayCollision(ray, target->GetBoundingBox()))
         {
-            targets[i]->Relocate();
-            targetsHit++;
+            target->Relocate();
+            score++;
 
-            // Give the player ammo after every 20 targets hit.
-            if(targetsHit % 20 == 0) GiveAmmo();
-            
-            // Can't shoot though targets
-            break;
+            // Give the player ammo after every 100 points.
+            if(score % 100 == 0) GiveAmmo();
         }
+
     }
     
     currentMag--;

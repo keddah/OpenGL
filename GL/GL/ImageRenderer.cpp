@@ -46,6 +46,8 @@ void ImageRenderer::CreateTexture()
 
 void ImageRenderer::Draw() const
 {
+    if(!visible) return;
+    
     GLuint vboTextQuad, vertArray;
 
     // The vertices for a plane

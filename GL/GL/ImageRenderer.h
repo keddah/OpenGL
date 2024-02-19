@@ -17,36 +17,26 @@ public:
     void SetScreenSize(const glm::vec2& _size) { screenSize = _size; }
 
     glm::vec2 GetDrawSize() const { return drawSize; }
-    void SetDrawSize(const glm::vec2& _size)
-    {
-        if(_size == drawSize) return;
-
-        drawSize = _size;
-        CreateTexture();
-    }
+    void SetDrawSize(const glm::vec2& _size) { drawSize = _size; }
     
-    void SetDrawSize(const float x, const float y)
-    {
-        if(glm::vec2(x,y) == drawSize) return;
-
-        drawSize = {x, y};
-        CreateTexture();
-    }
-    
-
+    void SetDrawSize(const float x, const float y) { drawSize = {x, y}; }
     
     void SetDrawPosition(const glm::vec2& pos) { drawPos = pos; }
     void SetDrawPosition(const float x, const float y) { drawPos = {x,y}; }
+
+    // Toggles if a value isn't given
+    void SetVisible() { visible = !visible; }
+    void SetVisible(const bool newVal) { visible = newVal; }
     
 private:
     void Init();
-
     void CreateTexture();
+
+    bool visible = true;
     
     GLuint vertArrayIndex;
     
     std::string filePath;
-    unsigned short fontSize = 12;
 
     Shader shader {"Rendering/Shaders/UiVertShader.glsl", "Rendering/Shaders/UiFragShader.glsl"};
 
