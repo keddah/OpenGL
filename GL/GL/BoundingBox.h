@@ -14,25 +14,13 @@ struct BoundingBox
     glm::vec3 max;
     glm::vec3 center;
 
-    static bool PositionInBounds(const glm::vec3 position, const glm::vec3 minBounds, const glm::vec3 maxBounds, const glm::vec3 threshold = {})
+    static bool PositionInBounds(const glm::vec3 position, const BoundingBox& box, const glm::vec3 threshold = {})
     {
         return
         (
-            position.x >= minBounds.x - threshold.x && position.x <= maxBounds.x + threshold.x &&
-            position.y >= minBounds.y - threshold.y && position.y <= maxBounds.y + threshold.y &&
-            position.z >= minBounds.z - threshold.z && position.z <= maxBounds.z + threshold.z
-        );
-    }
-
-    static bool PositionInBounds(const glm::vec3 position, const glm::vec3 minBounds, const glm::vec3 maxBounds, glm::vec3 threshold, const float thresholdDynamism)
-    {
-        threshold *= thresholdDynamism;
-        
-        return
-        (
-            position.x >= minBounds.x - threshold.x && position.x <= maxBounds.x + threshold.x &&
-            position.y >= minBounds.y - threshold.y && position.y <= maxBounds.y + threshold.y &&
-            position.z >= minBounds.z - threshold.z && position.z <= maxBounds.z + threshold.z
+            position.x >= box.min.x - threshold.x && position.x <= box.max.x + threshold.x &&
+            position.y >= box.min.y - threshold.y && position.y <= box.max.y + threshold.y &&
+            position.z >= box.min.z - threshold.z && position.z <= box.max.z + threshold.z
         );
     }
 

@@ -3,7 +3,7 @@
 
 Target::Target(const bool moving, const glm::vec3& playerPos) : moveable(moving), rPlayerPos(playerPos)
 {
-    std::string path[] = {"Images/Barrel_d.png", "Images/Barrel_n.png" };
+    const std::vector<std::string>& path = {"Images/Barrel_d.png", "Images/Barrel_n.png" };
     barrel = new Model("ModelAssets/Barrel.obj", path);
     barrel->SetScale(transform.scale);
 
@@ -124,15 +124,16 @@ void Target::Collisions()
         if (!mesh->IsCollisions()) continue;
 
         const BoundingBox meshBox = mesh->GetBoundingBox();
-        const bool collided = BoundingBox::BoundsIntersect(GetBoundingBox(), meshBox);
+        const bool collided = BoundingBox::PositionInBounds(transform.position + velocity, meshBox);
 
         if(collided)
         {
             // Bounce
-            const glm::vec3 bounceDir = normalize(transform.position - mesh->GetPosition());
+            const glm::vec3 bounceDir = normalize(transform.position - meshBox.center);
             constexpr float bounceForce = 400;
             moveDir = bounceDir;
             AddForce(bounceDir, bounceForce);
+            break;
         }
     }
 }

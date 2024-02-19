@@ -1,7 +1,7 @@
 #include "Model.h"
 
 // Always Base colour  -->  Normal
-Model::Model(const string& filePath, string materialPaths[])
+Model::Model(const string& filePath, const std::vector<std::string>& materialPaths)
 {
 	Assimp::Importer importer;
 	const aiScene* scene = 
@@ -234,7 +234,7 @@ void Model::SetScale(const float xyz) const
 	}
 }
 
-void Model::CreateMaterial(const std::string texturePath[]) const
+void Model::CreateMaterial(const std::vector<std::string>& texturePath) const
 {
 	if(gameMesh) gameMesh->CreateMaterial(texturePath);
 	else

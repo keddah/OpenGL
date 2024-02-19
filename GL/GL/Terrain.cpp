@@ -64,7 +64,7 @@ Terrain::Terrain(const std::string& heightPath)
 		}
 	}
 
-	const std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
+	const std::vector<std::string>& floorTex = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
 	floor = new Mesh(vertices, indices, floorTex);	
 
 	SDL_FreeSurface(heightMap);

@@ -87,7 +87,7 @@ void Bullet::MakeSphere()
         }
     }
 
-    const std::string images[] = {"Images/defaultTexture.jpg"};
+    const std::vector<std::string> images = {"Images/defaultTexture.jpg"};
     bulletMesh = new Mesh(vertices, indices, images);
     bulletMesh->SetScale(.1f);
 }
@@ -100,7 +100,7 @@ void Bullet::Collisions()
         if(!mesh->IsCollisions()) continue;
         
         const BoundingBox& meshBB = mesh->GetBoundingBox(); 
-        const bool collided = BoundingBox::PositionInBounds(position + velocity * .1f, meshBB.min, meshBB.max);
+        const bool collided = BoundingBox::PositionInBounds(position + velocity * .1f, meshBB);
 
         // If it didn't collide with anything ... cycle through the rest of the meshes 
         if(!collided) continue;

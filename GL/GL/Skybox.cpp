@@ -15,7 +15,6 @@ void Skybox::Render(Camera* cam, const Light& light)
 
 void Skybox::CreateDome(std::string texturePath)
 {
-    constexpr float radius = 1;
     constexpr int stacks = 20;
     constexpr int sectors = 20;
     
@@ -25,14 +24,14 @@ void Skybox::CreateDome(std::string texturePath)
     for (int i = 0; i <= stacks; ++i)
     {
         const float latitude = M_PI * (-0.5 + static_cast<float>(i) / stacks);
-        float z0 = sin(latitude) * radius;
-        float zr0 = cos(latitude) * radius;
+        float z0 = sin(latitude);
+        float zr0 = cos(latitude);
 
         for (int j = 0; j <= sectors; ++j)
         {
             const float longitude = 2 * M_PI * static_cast<float>(j) / sectors;
-            float x = cos(longitude) * radius;
-            float y = sin(longitude) * radius;
+            float x = cos(longitude);
+            float y = sin(longitude);
 
             float u = -(static_cast<float>(j) / sectors);
             float v = -(1.0f - static_cast<float>(i) / stacks);
@@ -70,7 +69,7 @@ void Skybox::CreateDome(std::string texturePath)
         }
     }
 
-    const std::string path[] = { std::move(texturePath) };
+    const std::vector<std::string>& path= { std::move(texturePath) };
     dome = new Mesh(vertices, indices, path);
     dome->SetScale(400);
     dome->SetRotation(glm::degrees(90.0f),0,0);

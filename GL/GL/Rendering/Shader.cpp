@@ -68,6 +68,12 @@ void Shader::Init()
 	glCall(glDeleteShader(fragmentShader));
 }
 
+void Shader::SetBoolAttrib(const std::string& attribName, bool newValue) const
+{
+	const GLint id = glGetUniformLocation(program_id, attribName.c_str());
+	glCall(glUniform1i(id, newValue? 1 : 0));
+}
+
 void Shader::SetFloatAttrib(const std::string& attribName, const float newValue) const
 {
 	const GLint id = glGetUniformLocation(program_id, attribName.c_str());

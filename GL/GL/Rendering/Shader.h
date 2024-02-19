@@ -20,6 +20,8 @@ public:
     void Activate() const { glCall(glUseProgram(program_id)); }
     void Deactivate() const { glCall(glUseProgram(0)); }
     
+    void SetBoolAttrib(const std::string& attribName, bool newValue) const;
+
     void SetFloatAttrib(const std::string& attribName, float newValue) const;
     float GetFloatAttrib(const std::string& attribName) const;
     

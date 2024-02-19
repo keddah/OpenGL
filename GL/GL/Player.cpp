@@ -124,7 +124,7 @@ void Player::Collisions()
         const glm::vec3 predictedPos = position + velocity;
         const glm::vec3 floorPos = { 0, predictedPos.y + playerHeight, 0 };
 
-        const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox.min, meshBox.max);
+        const bool collided = BoundingBox::PositionInBounds(predictedPos, meshBox);
 
         // If there's any collision at all
         if (collided)
@@ -136,11 +136,11 @@ void Player::Collisions()
         }
         
         // Checks to see if the player lands on a y level that is equal to a collider 
-        const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox.min, meshBox.max);
+        const bool hitFloor = BoundingBox::PositionInBounds(floorPos, meshBox);
         if(hitFloor)
         {
             // if it is... check if it's within the x and z values
-            if(BoundingBox::PositionInBounds({predictedPos.x, predictedPos.y + playerHeight, predictedPos.z}, meshBox.min, meshBox.max))
+            if(BoundingBox::PositionInBounds({predictedPos.x, predictedPos.y + playerHeight, predictedPos.z}, meshBox))
             {
                 grounded = true;
                 return;

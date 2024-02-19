@@ -2,7 +2,7 @@
 
 Player::WeaponController::WeaponController(Player* player) : rPlayer(*player)
 {
-    string texturePaths [] = {"Images/PistolBaseColour.png", "Images/PistolNormal.png"};
+    const std::vector<std::string>& texturePaths = {"Images/PistolBaseColour.png", "Images/PistolNormal.png"};
     pistolMesh = new Model("ModelAssets/handgun2.obj", texturePaths);
     
     pistolMesh->SetScale(.01f,.01f,.01f);

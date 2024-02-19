@@ -3,21 +3,22 @@
 #include <string>
 
 // Always Base colour  -->  Normal
-Material::Material(Shader& _shader, const std::string matPath[]) : shader(_shader)
+Material::Material(Shader& _shader, const std::vector<std::string>& matPath) : shader(_shader), texturePaths(matPath)
 {
     // Generate texture ID
     glCall(glGenTextures(1, &colour_texture));
-    glCall(glGenTextures(1, &normal_texture));
     
     // Activate texture unit and bind texture
     glCall(glActiveTexture(GL_TEXTURE0));
     glCall(glBindTexture(GL_TEXTURE_2D, colour_texture));
-    
+
+    glCall(glGenTextures(1, &normal_texture));
     glCall(glActiveTexture(GL_TEXTURE1));
     glCall(glBindTexture(GL_TEXTURE_2D, normal_texture));
+    
 
     // Dividing by a byte to get the size of the array
-    for(int i = 0; i < sizeof(matPath) / 8; i++)
+    for(int i = 0; i < matPath.size(); i++)
     {
         unsigned char* image_bytes = stbi_load(matPath[i].c_str(), &tex_width, &tex_height, &channelCount, 4);
         if(!image_bytes)
@@ -45,10 +46,18 @@ Material::Material(Shader& _shader, const std::string matPath[]) : shader(_shade
     }
 }
 
-void Material:: BindTextures(const GLuint texIndex) const
+void Material:: BindTextures(const GLint texIndex) const
 {
-    GLuint toBind;
-    GLint texture;
+    // If trying to bind a Normal map texture when one wasn't  provided... return
+    if(texIndex == 1 && texturePaths.size() < 2)
+    {
+        return;
+    }
+    
+    GLuint toBind = colour_texture;
+    GLint texture = GL_TEXTURE0;
+    bool normalPresent = false;
+    
     switch (texIndex)
     {
     case 0:
@@ -59,6 +68,7 @@ void Material:: BindTextures(const GLuint texIndex) const
     case 1:
         toBind = normal_texture;
         texture = GL_TEXTURE0 + texIndex;
+        normalPresent = true;
         break;
         
     default:
@@ -71,6 +81,7 @@ void Material:: BindTextures(const GLuint texIndex) const
     glCall(glBindTexture(GL_TEXTURE_2D, toBind));
     shader.Activate();
     shader.SetIntAttrib("tex" + std::to_string(texIndex), texIndex);
+    shader.SetBoolAttrib("normalPresent", normalPresent);
 
     shader.SetVec2Attrib("uvScale", uvScale);
     shader.SetFloatAttrib("specularStrength", specular);

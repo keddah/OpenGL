@@ -18,7 +18,7 @@ class Mesh
 {
 public:
     Mesh() = default;
-    Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::string materialPath[]);
+    Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::vector<std::string>& materialPath);
     ~Mesh() { delete baManager; delete mat; }
     
     void Render(Camera* cam, const Light& light) const;
@@ -46,7 +46,7 @@ public:
     glm::vec3 GetScale() const { return transform.scale; }
     BoundingBox GetBoundingBox() const { return boundingBox; }
 
-    void CreateMaterial(const std::string texturePath[]);
+    void CreateMaterial(const std::vector<std::string>& texturePath);
     void SetVisibility(const bool newVal) { visible = newVal; }
     bool IsVisible() const { return visible; }
     
@@ -69,7 +69,7 @@ public:
     void SetUvScale(const float xy) const { if(mat) mat->SetUvScale(xy, xy); }
 
 private:
-    void InitShaders(const std::string matPath[]);
+    void InitShaders(const std::vector<std::string>& matPath);
     void CalculateAABoundingBox();
     void Lighting(const Camera* cam, const Light& light) const;
 

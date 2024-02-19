@@ -77,7 +77,7 @@ void Game::InitObjects()
 
 	//________ A cube ________\\
 
-	std::string floorTex[] = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
+	const std::vector<std::string>& floorTex = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
 	terrain = new Terrain("Images/terrain-heightmap.png");
 	
 	player = new Player(rRunning);

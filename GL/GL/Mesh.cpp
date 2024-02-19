@@ -2,7 +2,7 @@
 #include <gtx/quaternion.hpp>
 #include <gtx/string_cast.hpp>
 
-Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::string materialPath[])
+Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::vector<std::string>& materialPath)
 {
 	indices = _indices;
 	
@@ -44,7 +44,7 @@ Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _i
 	CalculateAABoundingBox();
 }
 
-void Mesh::InitShaders(const std::string matPath[])
+void Mesh::InitShaders(const std::vector<std::string>& matPath)
 {
 	shader.Init();
 
@@ -170,7 +170,7 @@ void Mesh::LookAtRotation(const glm::mat4& matrix)
 	looking = true;
 }
 
-void Mesh::CreateMaterial(const std::string texturePaths[])
+void Mesh::CreateMaterial(const std::vector<std::string>& texturePaths)
 {
 	delete mat;
 

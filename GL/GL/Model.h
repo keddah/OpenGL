@@ -17,7 +17,7 @@ class Model
 {
 public:
 	// Always Base colour  -->  Normal
-	Model(const string& meshPath, string materialPaths[] = new string {"Images/defaultTexture.jpg"});
+	Model(const string& meshPath, const std::vector<std::string>& materialPaths = {"Images/defaultTexture.jpg"});
 
 	// Delete all the game mesh (if there's more than one, gameMesh would be empty ... delete all the meshes in the vector and empty it.
 	~Model() { if(gameMesh) delete gameMesh; else for(const auto& mesh: gameMeshes) delete mesh; gameMeshes.clear(); }
@@ -54,7 +54,7 @@ public:
 	void SetScale(float x, float y, float z) const;
 	void SetScale(float xyz) const;
 
-	void CreateMaterial(const std::string texturePath[]) const;
+	void CreateMaterial(const std::vector<std::string>& texturePath) const;
 	void SetCollisionsEnabled(bool value) const;
 	void SetVisibility(bool value) const;
 
