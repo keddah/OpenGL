@@ -12,7 +12,7 @@ class TextRenderer
 {
 public:
     TextRenderer(std::string toDisplay, std::string _fontPath, const short size) : text(std::move(toDisplay)), fontPath(std::move(_fontPath)), fontSize(size) { Init(); SetFontSize(size); }
-
+    
     void Draw(const std::string& toDisplay);
     
     void SetScreenSize(const glm::vec2& _size) { screenSize = _size; }
@@ -20,7 +20,7 @@ public:
     void SetDrawColour(const SDL_Color& colour) { drawColour = colour; }
     void SetDrawColour(const unsigned char r, const unsigned char g, const unsigned char b, const unsigned char a) { drawColour = SDL_Color{r,g,b,a}; }
 
-    void SetFontSize(short newSize);
+    void SetFontSize(const short newSize) { fontSize = newSize; }
     glm::vec2 GetDrawSize() const { return drawSize; }
     
     void SetDrawPosition(const glm::vec2& pos) { drawPos = pos; }
@@ -51,6 +51,6 @@ private:
 
     glm::vec2 screenSize;
     
-    GLuint texture;
+    GLuint texture = 0;
 
 };

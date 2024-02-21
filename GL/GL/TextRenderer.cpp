@@ -16,6 +16,33 @@ void TextRenderer::Init()
     }
 
     shader.Deactivate();
+
+    TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
+    
+    if(!font)
+    {
+        print("bad filePath - text")
+        return;
+    }
+
+    SDL_Surface* textImage = TTF_RenderText_Solid(font, text.c_str(), drawColour);
+    SDL_Surface* convertedImg = SDL_ConvertSurfaceFormat(textImage, SDL_PIXELFORMAT_RGBA32, 0);
+    if(!textImage)
+    {
+        print("Unable to convert surface image")
+        return;
+    }
+    if (!convertedImg)
+    {
+        print("Unable to convert surface image")
+        return;
+    }
+
+    drawSize = glm::vec2(convertedImg->w, convertedImg->h);
+    
+    TTF_CloseFont(font);
+    SDL_FreeSurface(textImage);
+    SDL_FreeSurface(convertedImg);
 }
 
 void TextRenderer::Draw(const std::string& toDisplay)
@@ -31,56 +58,42 @@ void TextRenderer::Draw(const std::string& toDisplay)
         print("bad filePath - text")
         return;
     }
-    
-    // The following creates an image representing the text that we input
+
     SDL_Surface* textImage = TTF_RenderText_Solid(font, text.c_str(), drawColour);
     SDL_Surface* convertedImg = SDL_ConvertSurfaceFormat(textImage, SDL_PIXELFORMAT_RGBA32, 0);
-    TTF_CloseFont(font);
-    
-    if(!convertedImg)
+    if(!textImage)
     {
         print("Unable to convert surface image")
         return;
     }
+
+    if (!convertedImg)
+    {
+        print("Unable to convert surface image")
+        return;
+    }
+    TTF_CloseFont(font);
     
-    textImage = convertedImg;
+    drawSize = glm::vec2(convertedImg->w, convertedImg->h);
     
-    drawSize = {textImage->w, textImage->h};
+    if(SDL_MUSTLOCK(convertedImg)) SDL_LockSurface(convertedImg);
     
-    if(SDL_MUSTLOCK(textImage)) SDL_LockSurface(textImage);
-    
+    // Delete the old textures before creating new ones
+    glCall(glDeleteTextures(1, &texture));
+
     // Creating the texture
     glCall(glGenTextures(1, &texture));
     glCall(glBindTexture(GL_TEXTURE_2D, texture));
-    glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, drawSize.x, drawSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textImage->pixels));
+    glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, drawSize.x, drawSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, convertedImg->pixels));
     
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
     
     SDL_FreeSurface(textImage);
-
+    SDL_FreeSurface(convertedImg);
     GlRender();
 }
 
-void TextRenderer::SetFontSize(const short newSize)
-{
-    fontSize = newSize;
-
-    // Reset the size of the texture after the font size has been changed.
-    TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-    if(!font)
-    {
-        print("bad filePath - text")
-        return;
-    }
-    
-    SDL_Surface* textImage = TTF_RenderText_Solid(font, text.c_str(), {});
-    drawSize.x = textImage->w;
-    drawSize.y = textImage->h;
-
-    TTF_CloseFont(font);
-    SDL_FreeSurface(textImage);
-}
 
 void TextRenderer::GlRender() const
 {
@@ -136,4 +149,5 @@ void TextRenderer::GlRender() const
     
     shader.Deactivate();
     glCall(glDeleteBuffers(1, &vboTextQuad));
+    glCall(glDeleteVertexArrays(1, &vertArray));
 }

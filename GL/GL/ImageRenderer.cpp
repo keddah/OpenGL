@@ -101,6 +101,7 @@ void ImageRenderer::Draw() const
     
     shader.Deactivate();
     glCall(glDeleteBuffers(1, &vboTextQuad));
+    glCall(glDeleteVertexArrays(1, &vertArray));
 }
 
 
