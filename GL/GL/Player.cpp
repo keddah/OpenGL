@@ -5,7 +5,8 @@ Player::Player(bool& running) : controller(running)
 {
     cam = new Camera(controller);
 
-    position.y -= 50;
+    position.y -= 30;
+    position.z -= 5;
 }
 
 void Player::Update(float deltaTime)
