@@ -6,6 +6,7 @@ Target::Target(const bool moving, const glm::vec3& playerPos) : moveable(moving)
     const std::vector<std::string>& path = {"Images/Barrel_d.png", "Images/Barrel_n.png" };
     barrel = new Model("ModelAssets/Barrel.obj", path);
     barrel->SetScale(transform.scale);
+    barrel->SetBBOffset({0, -1, 0});
 
     terminalVelocity = {.35f, .35f, .35f};
     

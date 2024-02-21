@@ -77,7 +77,7 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
         return;
     }
     
-    ray = Raycast::ShootRaycast(shootPos, direction, 6000);
+    ray = Raycast::ShootRaycast(shootPos, direction, 600);
 
     std::string matPath[] = {"Images/defaultTexture.jpg"};
     
@@ -89,7 +89,7 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
             score++;
 
             // Give the player ammo after every 100 points.
-            if(score % 100 == 0) GiveAmmo();
+            if(score % 20 == 0) GiveAmmo();
         }
 
     }

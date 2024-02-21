@@ -54,68 +54,74 @@ struct Raycast
 
     static Ray ShootRaycast(const glm::vec3& rayStart, const glm::vec3& rayDirection, const float rayDistance) 
     {
-        return { rayStart, rayStart + rayDirection * rayDistance, rayDirection };
+        return { rayStart, rayStart + normalize(rayDirection) * rayDistance, normalize(rayDirection) };
     }
     
     static Ray RayCollision(const glm::vec3& rayStart, const glm::vec3& rayDirection, const float rayDistance, const BoundingBox& bb, glm::vec3& hitPosition)
     {
-        Ray ray = ShootRaycast(rayStart, rayDirection, rayDistance);
+        Ray ray = ShootRaycast(rayStart, normalize(rayDirection), rayDistance);
 
-        for (int i = 0; i < 3; ++i)
-        {
-            // Using the inverse to avoid dividing
-            const float invDirection = 1.0f / rayDirection[i];
-            const float minIntersect = (bb.min[i] - ray.start[i]) * invDirection;
-            const float maxIntersect = (bb.max[i] - ray.start[i]) * invDirection;
+        float tmin = -FLT_MAX, tmax = FLT_MAX;
 
-            const float entrance = glm::min(minIntersect, maxIntersect);
-            const float exit = glm::max(minIntersect, maxIntersect);
+        for (int i = 0; i < 3; ++i) {
+            if (ray.direction[i] != 0.0f) {
+                const float invDir = 1.0f / ray.direction[i];
+                const float t1 = (bb.min[i] - ray.start[i]) * invDir;
+                const float t2 = (bb.max[i] - ray.start[i]) * invDir;
 
-            // The entrance value should be smaller than the exit (the ray would be invalid otherwise)...
-            // If the exit is less than 0... it never entered (no hit)
-            if (entrance > exit || exit < 0)
-            {
-                ray.hit = false;
+                tmin = glm::max(tmin, glm::min(t1, t2));
+                tmax = glm::min(tmax, glm::max(t1, t2));
+            }
+            else if (ray.start[i] < bb.min[i] || ray.start[i] > bb.max[i]) {
+                // Ray is parallel to the axis and outside the bounding box
                 return ray;
             }
-               
-            // Update hit position when a collision occurs
-            hitPosition[i] = ray.start[i] + entrance * rayDirection[i];
         }
 
+        // Check if the ray misses the box
+        if (tmin > tmax || tmax < 0.0f) {
+            return ray;
+        }
+
+        // Update hit position when a collision occurs
+        ray.hitPosition = ray.start + tmin * ray.direction;
         ray.hit = true;
+
         return ray;
     }
 
-    static bool RayCollision(Ray& ray, const BoundingBox& bb)
+    static bool RayCollision(Ray& ray, const BoundingBox& box)
     {
-        for (int xyz = 0; xyz < 3; ++xyz)
-        {
-            // Using the inverse to avoid dividing
-            const float invDirection = 1.0f / ray.direction[xyz];
-            const float minIntersect = (bb.min[xyz] - ray.start[xyz]) * invDirection;
-            const float maxIntersect = (bb.max[xyz] - ray.start[xyz]) * invDirection;
+        float tmin = -FLT_MAX, tmax = FLT_MAX;
 
-            const float entrance = glm::min(minIntersect, maxIntersect);
-            const float exit = glm::max(minIntersect, maxIntersect);
+        for (int i = 0; i < 3; ++i) {
+            if (ray.direction[i] != 0.0f) {
+                const float invDir = 1.0f / ray.direction[i];
+                const float t1 = (box.min[i] - ray.start[i]) * invDir;
+                const float t2 = (box.max[i] - ray.start[i]) * invDir;
 
-            // The entrance value should be smaller than the exit (the ray would be invalid otherwise)...
-            // If the exit is less than 0... it never entered (no hit)
-            if (entrance > exit || exit < 0)
-            {
-                // Since the ray parameter is a reference ... this value is usable
-                ray.hit = false;
+                tmin = glm::max(tmin, glm::min(t1, t2));
+                tmax = glm::min(tmax, glm::max(t1, t2));
+            }
+            else if (ray.start[i] < box.min[i] || ray.start[i] > box.max[i]) {
+                // Ray is parallel to the axis and outside the bounding box
                 return false;
             }
-               
-            // Update hit position when a collision occurs
-            ray.hitPosition[xyz] = ray.start[xyz] + entrance * ray.direction[xyz];
         }
 
-        // Since the ray parameter is a reference ... this value is usable
+        // Check if the ray misses the box
+        if (tmin > tmax || tmax < 0.0f) {
+            return false;
+        }
+
+        // Update hit position when a collision occurs
+        ray.hitPosition = ray.start + tmin * ray.direction;
         ray.hit = true;
+
         return true;
     }
+
+
 
     static void DebugDrawRay(const Ray& ray)
     {

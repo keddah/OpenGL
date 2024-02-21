@@ -88,6 +88,8 @@ void Mesh::CalculateAABoundingBox()
 		maxBounds = glm::max(maxBounds, vertex);
 	}
 
+	minBounds += bbOffset;
+	maxBounds += bbOffset;
 	boundingBox = { minBounds, maxBounds, (minBounds + maxBounds) * 0.5f };
 }
 
@@ -108,7 +110,7 @@ void Mesh::Debug(Camera* cam) const
 
 void Mesh::Render(Camera* cam, const Light& light) const
 {
-	 // Debug(cam);
+	 Debug(cam);
 	
 	if(!visible) return;
 

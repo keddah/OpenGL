@@ -58,6 +58,8 @@ public:
 	void SetCollisionsEnabled(bool value) const;
 	void SetVisibility(bool value) const;
 
+	void SetBBOffset(const glm::vec3& offset) const { gameMesh->SetBBOffset(offset); }
+	
 	Mesh* GetMesh() const { return gameMesh; }
 	std::vector<Mesh*> GetMeshes() const { return gameMeshes; }
 

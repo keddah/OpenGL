@@ -44,6 +44,8 @@ public:
     glm::vec3 GetPosition() const { return transform.position; }
     glm::vec3 GetRotation() const { return transform.rotation; }
     glm::vec3 GetScale() const { return transform.scale; }
+
+    void SetBBOffset(const glm::vec3& offset) { bbOffset = offset; }
     BoundingBox GetBoundingBox() const { return boundingBox; }
 
     void CreateMaterial(const std::vector<std::string>& texturePath);
@@ -97,6 +99,8 @@ private:
 
     Transform transform = {{}, {}, {1,1,1}};
 
+    glm::vec3 bbOffset { 0,0,0};
+    
     BufferArrayManager* baManager;
     
     GLint vertArrayIndex = -1;
