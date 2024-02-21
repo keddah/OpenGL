@@ -80,14 +80,17 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     ray = Raycast::ShootRaycast(shootPos, direction, 600);
 
     std::string matPath[] = {"Images/defaultTexture.jpg"};
-    
+
+    // Get more points for hitting several targets with 1 shot
+    short hitMultiplier = 0;
     for(const auto& target : targets)
     {
         if(Raycast::RayCollision(ray, target->GetBoundingBox()))
         {
             target->Relocate();
-            score++;
-
+            hitMultiplier++;
+            score += hitMultiplier;
+            
             // Give the player ammo after every 100 points.
             if(score % 20 == 0) GiveAmmo();
         }
