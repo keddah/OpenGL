@@ -18,7 +18,7 @@ class Terrain
 public:
 	Terrain(const std::string& heightPath);
 	void Render(Camera* cam, const Light& light) const { if(floor) floor->Render(cam, light); }
-	~Terrain() { if(floor) delete floor; }
+	~Terrain() { delete floor; }
 	
 	Mesh* GetMesh() const { return floor; }
 

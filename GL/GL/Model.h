@@ -33,10 +33,9 @@ public:
 	// Delete all the game mesh (if there's more than one, gameMesh would be empty ... delete all the meshes in the vector and empty it.
 	~Model() { if(gameMesh) delete gameMesh; else for(const auto& mesh: gameMeshes) delete mesh; gameMeshes.clear(); }
 
-	void Render(Camera* cam, Light light) const;
+	void Render(const Camera* cam, const Light& light) const;
 
 	glm::vec3 GetPosition() const;
-	glm::vec3 IndexedGetPosition(const short index) const { if(!gameMeshes.empty()) return gameMeshes[index]->GetPosition(); }
 	glm::vec3 GetRotation() const; 
 	glm::vec3 GetScale() const;
 
@@ -45,7 +44,7 @@ public:
 	void SetTransform(const float x, const float y, const float z, const glm::vec3& rot, const glm::vec3& scale) const { gameMesh->SetTransform({x,y,z}, rot, scale); }
 	void SetTransform(const glm::vec3& pos, const float x, const float y, const float z, const glm::vec3& scale) const { gameMesh->SetTransform(pos, {x,y,z}, scale); }
 	void SetTransform(const glm::vec3& pos, const glm::vec3& rot, const float x, const float y, const float z) const { gameMesh->SetTransform(pos, rot, {x,y,z}); }
-	void SetTransform(const float px, const float py, const float pz, const float rx, const float ry, const float rz, const float sx, const float sy, const float sz) const;
+	void SetTransform(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz) const;
 	
 	void SetPosition(const glm::vec3& newVal) const;
 	void SetPosition(float x, float y, float z) const;

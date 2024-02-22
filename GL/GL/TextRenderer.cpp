@@ -32,7 +32,7 @@ void TextRenderer::Init()
     SDL_Surface* convertedImg = SDL_ConvertSurfaceFormat(textImage, SDL_PIXELFORMAT_RGBA32, 0);
     if(!textImage)
     {
-        print("Unable to convert surface image")
+        print("Unable to load surface image")
         return;
     }
     if (!convertedImg)

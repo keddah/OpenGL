@@ -189,15 +189,19 @@ void Game::Render() const
 
 void Game::Clean()
 {
+	delete player;
+	delete skybox;
+	delete tri;
+	
+	// Terrain is the first mesh of the meshes vector... The mesh will try to be deleted twice
+	delete terrain;
+	meshes.erase(meshes.begin());
+	
 	for (const auto& mesh : meshes) delete mesh;
 	for (const auto& target : targets) delete target;
 	meshes.clear();
 	targets.clear();
-	
-	delete player;
-	delete skybox;
-	delete terrain;
-	delete tri;
+
 
 		
 	SDL_DestroyWindow(window);

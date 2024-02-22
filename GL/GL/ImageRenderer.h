@@ -19,6 +19,7 @@ class ImageRenderer
 {
 public:
     ImageRenderer(std::string _filePath) : filePath(std::move(_filePath)) { Init(); }
+    ~ImageRenderer() { glCall(glDeleteTextures(1, &texture)); }
     
     void Draw() const;
     

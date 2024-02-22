@@ -56,8 +56,7 @@ int main()
 		game.Render();
 		Time::SetLastFrameTime();
 	}
-
-	game.Clean(); 
-
+	
+	// game.Clean() Ran in game's destructor
 	return 0;
 }

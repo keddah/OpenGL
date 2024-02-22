@@ -22,7 +22,7 @@ class Shader
 {
 public:
     Shader(std::string vertPath, std::string fragPath) : vertShaderPath(std::move(vertPath)), fragShaderPath(std::move(fragPath)) { }
-    ~Shader() { glDeleteProgram(program_id); }
+    ~Shader() { glCall(glDeleteProgram(program_id)); }
     
     void Init();
 

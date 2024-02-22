@@ -15,7 +15,7 @@ Skybox::Skybox(std::string texturePath)
     CreateDome(std::move(texturePath));
 }
 
-void Skybox::Render(Camera* cam, const Light& light)
+void Skybox::Render(const Camera* cam, const Light& light) const
 {
     dome->SetPosition(cam->GetPosition());
     dome->Render(cam, light);

@@ -25,12 +25,12 @@ public:
 	TriangleRenderer(Camera& camera) : rCam(camera) { Init(); }
 	~TriangleRenderer() { Clean(); }
 
-	void Update();
 	void Render() const;
 	void Clean() const
 	{
-		glDeleteBuffers(1, &vertex_buffer);
-		glDeleteProgram(shader.GetID());
+		glCall(glDeleteBuffers(1, &vertex_buffer));
+		glCall(glDeleteBuffers(1, &index_buffer));
+		glCall(glDeleteVertexArrays(1, &vertArrayIndex));
 	}
 
 private:
@@ -45,7 +45,7 @@ private:
 		.5f, -.5, 0// bottom right
 	};
 
-	GLint vertArrayIndex = -1;
+	GLuint vertArrayIndex;
 
 	// VertexBuffer* vBuffer;
 	// IndexBuffer* iBuffer;

@@ -16,6 +16,7 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Player.h"
+#include "Terrain.h"
 #include "Skybox.h"
 
 #define print(x) { std::cout << x << std::endl; }
@@ -46,7 +47,8 @@ private:
 	SDL_GLContext openGL_context;
 
 	std::vector<Mesh*> meshes;
-	
+
+	// Uninstantiated...
 	TriangleRenderer* tri;
 
 	std::vector<Target*> targets;

@@ -28,7 +28,7 @@ Model::Model(const string& filePath, const std::vector<std::string>& materialPat
 
 	if (!scene)
 	{
-		print("Couldn't import model")
+		print("Couldn't load scene")
 		return;
 	}
 
@@ -95,7 +95,7 @@ Model::Model(const string& filePath, const std::vector<std::string>& materialPat
 	importer.FreeScene();
 }
 
-void Model::Render(Camera* cam, Light light) const
+void Model::Render(const Camera* cam, const Light& light) const
 {
 	if (gameMesh) gameMesh->Render(cam, light); 
 	else
@@ -111,13 +111,13 @@ void Model::Render(Camera* cam, Light light) const
 glm::vec3 Model::GetPosition() const
 {
 	if (gameMesh) return gameMesh->GetPosition();
-	else return gameMeshes[0]->GetPosition();
+	return gameMeshes[0]->GetPosition();
 }
 
 glm::vec3 Model::GetRotation() const
 {
 	if (gameMesh) return gameMesh->GetRotation();
-	else return gameMeshes[0]->GetRotation();
+	return gameMeshes[0]->GetRotation();
 }
 
 glm::vec3 Model::GetScale() const

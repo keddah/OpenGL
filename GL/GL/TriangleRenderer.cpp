@@ -43,7 +43,7 @@ void TriangleRenderer::InitVertices()
 
 	// vBuffer = new VertexBuffer(vertices, 3 * 2 * sizeof(GLfloat));
 
-	GLuint indices[] = { 0, 1, 2 };
+	constexpr GLuint indices[] = { 0, 1, 2 };
 
 	// The index buffer (the correlation between the vertices)
 	glGenBuffers(1, &index_buffer);
@@ -77,7 +77,7 @@ void TriangleRenderer::Render() const
 	glUniformMatrix4fv(view_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetViewMatrix()));
 	glUniformMatrix4fv(projection_matrix_address, 1, GL_FALSE, value_ptr(rCam.GetProjectionMatrix()));
 	
-	// glUnifrom used to set values on the GPU
+	// glUniform used to set values on the GPU
 	const GLint colourID = glGetUniformLocation(shader.GetID(), "colour");
 	glUniform3f(colourID, .7f, .2f, .45f);
 

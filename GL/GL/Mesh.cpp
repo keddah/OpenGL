@@ -108,7 +108,7 @@ void Mesh::Lighting(const Camera* cam, const Light& light) const
 	shader.SetVec3Attrib("camPos", cam->GetPosition());
 }
 
-void Mesh::Render(Camera* cam, const Light& light) const
+void Mesh::Render(const Camera* cam, const Light& light) const
 {
 	debugger.BoundingBoxDebug(cam, transform.position, boundingBox);
 	

@@ -20,7 +20,6 @@ class Camera
 public:
 	Camera(Controller& roller); 
 
-	// void Update(float deltaTime) { }
 	void Look(glm::vec2 mouseDelta, float deltaTime);
 	void UpdateViewMatrix() { viewMatrix = glm::lookAt(position, forwardVector + position, glm::vec3(0,1,0)); }
 

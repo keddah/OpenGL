@@ -19,7 +19,7 @@ public:
     ~Skybox() { delete dome; }
 
     Mesh* GetDomeMesh() const { return dome; }
-    void Render(Camera* cam, const Light& light);
+    void Render(const Camera* cam, const Light& light) const;
     
 private:
     Mesh* dome;

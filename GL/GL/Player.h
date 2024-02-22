@@ -20,14 +20,13 @@
 #include "Model.h"
 #include "Physics.h"
 #include "Target.h"
-#include "Terrain.h"
 #include "TextRenderer.h"
 
 class Player : public Physics
 {
 public:
 	Player(bool& running);
-	~Player() { delete cam; meshes.clear(); }
+	~Player() { delete cam; }
 
 	void Update(float deltaTime);
 	void FixedUpdate(float deltaTime);
@@ -77,7 +76,7 @@ private:
 	{
 	public:
 		WeaponController(Player* player);
-		~WeaponController() { delete pistolMesh; bullets.clear(); targets.clear(); }
+		~WeaponController() { delete pistolMesh; DeleteBullets(); targets.clear(); }
 
 		void Update(float deltaTime);
 		void FixedUpdate(float deltaTime);
@@ -98,11 +97,12 @@ private:
 
 		void ReloadTimer(float deltaTime);
 		void Reload();
-		
 		void GiveAmmo() { currentReserve += magCapcity * 3; }
 		
 		void GunPlacement();
 
+		void DeleteBullets() { for(const auto& bullet : bullets) delete bullet; bullets.clear(); }
+		
 		Player& rPlayer;
 		Model* pistolMesh;
 

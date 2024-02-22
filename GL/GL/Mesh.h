@@ -29,9 +29,9 @@ class Mesh
 public:
     Mesh() = default;
     Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::vector<std::string>& materialPath);
-    ~Mesh() { if(baManager) delete baManager; delete mat; }
+    ~Mesh() { delete mat; delete baManager; }
     
-    void Render(Camera* cam, const Light& light) const;
+    void Render(const Camera* cam, const Light& light) const;
 
     void SetPosition(const glm::vec3& newVal) { transform.position = newVal;  CalculateAABoundingBox(); }
     void SetPosition(const float x, const float y, const float z) { transform.position = {x,y,z}; CalculateAABoundingBox(); }
