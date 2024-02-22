@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Text Renderer - Code
+*
+* Creates a plane and a texture based on text input. Renders the text input to the plane and displays it at a specified position
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "TextRenderer.h"
 
 #include <ext/matrix_clip_space.hpp>
@@ -8,12 +17,6 @@ void TextRenderer::Init()
     shader.Activate();
 
     vertArrayIndex = shader.GetAttribute("vertPos");
-
-    if (vertArrayIndex < 0)
-    {
-        print("Couldn't get shader attribute - Vertex Position")
-        print(glGetError())
-    }
 
     shader.Deactivate();
 

@@ -1,8 +1,17 @@
+/**************************************************************************************************************
+* Player - Header
+*
+* The header file for the Player class. Creates a private class for the Weapon controller and Ui class then creates instances of both.
+* Outlines the variables and functions that the player object needs in order to draw... and other things.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
 #pragma once
 #include "Camera.h"
 #include <glm.hpp>
-#include <utility>
 #include <vector>
+#include <SDL_ttf.h>
 
 #include "BoundingBox.h"
 #include "Bullet.h"
@@ -30,7 +39,7 @@ public:
 	
 	const glm::vec3& GetPosition() const { return position; }
 
-	void SetTargets(const std::vector<Target*>& trgts) { wc.SetTargets(trgts); } 
+	void SetTargets(const std::vector<Target*>& targets) { wc.SetTargets(targets); } 
 	
 	void SetLevelMeshes(const std::vector<Mesh*>& newMeshes) { meshes = newMeshes; }
 	std::vector<Mesh*> GetLevelMeshes() const { return meshes; }
@@ -55,6 +64,12 @@ private:
 	const float walkSpeed = .3f;
 	const float strafeSpeed = walkSpeed * .6f;
 	const float sprintSpeed = walkSpeed * 2.15f;
+	
+	const float walkAccel = .075f;
+	const float sprintAccel = walkAccel * .85f;
+
+	// Lateral (side-to-side) acceleration
+	const float latAcceleration = walkAccel * .9f;
 	
 	const float jumpForce = 1.25f;
 
@@ -119,7 +134,6 @@ private:
 	};
 	WeaponController wc = {this};
 
-#include <SDL_ttf.h>
 	class Ui
 	{
 	public:
@@ -127,7 +141,6 @@ private:
 		~Ui() { delete ammoRenderer;  delete scoreRenderer; delete crosshair; }
 		
 		void Draw() const;
-		void Update(float deltaTime);
 		
 	private:
 		void AmmoCount() const;

@@ -1,8 +1,18 @@
+/**************************************************************************************************************
+* Bullet - Code
+*
+* This class is UNUSED.
+* Creates a sphere to represent the bullet then creates a mesh out of it. When this class is instantiated, force is added instantly.
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Bullet.h"
 #include <gtx/quaternion.hpp>
 
 
-Bullet::Bullet(const glm::vec3 spawnPos, const glm::vec3 direction, const std::vector<Mesh*>& lvlMeshes) : levelMeshes(lvlMeshes)
+Bullet::Bullet(const glm::vec3& spawnPos, const glm::vec3& direction, const std::vector<Mesh*>& lvlMeshes) : levelMeshes(lvlMeshes)
 {
     MakeSphere();
     position = spawnPos;
@@ -12,6 +22,7 @@ Bullet::Bullet(const glm::vec3 spawnPos, const glm::vec3 direction, const std::v
 
 void Bullet::Update(float deltaTime)
 {
+    // Deletes itself after a certain amount of time has passed.
     life += deltaTime;
     if(life >= lifeSpan) dead = true;
 }
@@ -32,7 +43,6 @@ void Bullet::Render(Camera* cam, const Light& light) const
 
 void Bullet::MakeSphere()
 {
-    const float radius = 1;
     constexpr int stacks = 20;
     constexpr int sectors = 20;
     
@@ -42,22 +52,22 @@ void Bullet::MakeSphere()
     for (int i = 0; i <= stacks; ++i)
     {
         float lat0 = M_PI * (-0.5 + static_cast<float>(i) / stacks);
-        float z0 = sin(lat0) * radius;
-        float zr0 = cos(lat0) * radius;
+        float z0 = sin(lat0);
+        float zr0 = cos(lat0);
 
         for (int j = 0; j <= sectors; ++j)
         {
             float lng = 2 * M_PI * static_cast<float>(j) / sectors;
-            float x = cos(lng) * radius;
-            float y = sin(lng) * radius;
+            float x = cos(lng);
+            float y = sin(lng);
 
             float u = static_cast<float>(j) / sectors;
             float v = 1.0f - static_cast<float>(i) / stacks;
 
             // Vertex coordinates
-            vertices.push_back(x * zr0);  // X coordinate
-            vertices.push_back(y * zr0);  // Y coordinate
-            vertices.push_back(z0);       // Z coordinate
+            vertices.push_back(x * zr0);    // X coordinate
+            vertices.push_back(y * zr0);    // Y coordinate
+            vertices.push_back(z0);             // Z coordinate
 
             // Normal vector
             vertices.push_back(x);  // X normal
@@ -74,8 +84,8 @@ void Bullet::MakeSphere()
     {
         for (int j = 0; j <= sectors; ++j)
         {
-            int nextRow = i + 1;
-            int nextColumn = (j + 1) % (sectors + 1);
+            const int nextRow = i + 1;
+            const int nextColumn = (j + 1) % (sectors + 1);
 
             indices.push_back(i * (sectors + 1) + j);
             indices.push_back(nextRow * (sectors + 1) + j);

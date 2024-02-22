@@ -1,4 +1,14 @@
+/**************************************************************************************************************
+* Terrain - Header
+*
+* The header file for this class just supplies a path for outside classes to access the setter functions of the "floor" mesh.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
+
 #include "Mesh.h"
 #include <SDL_image.h>
 #include <vector>
@@ -8,8 +18,7 @@ class Terrain
 public:
 	Terrain(const std::string& heightPath);
 	void Render(Camera* cam, const Light& light) const { if(floor) floor->Render(cam, light); }
-	~Terrain() { delete floor; }
-	
+	~Terrain() { if(floor) delete floor; }
 	
 	Mesh* GetMesh() const { return floor; }
 
@@ -36,6 +45,5 @@ public:
 	
 private:
 	Mesh* floor;
-
 
 };

@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Mesh - Header
+*
+* Defines everything the mesh needs in order to be rendered also instantiates a transform struct which is used to render to the worldspace.
+* Also provides transform functions.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 #include <glew.h>
 #include <vector>
@@ -19,7 +29,7 @@ class Mesh
 public:
     Mesh() = default;
     Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _indices, const std::vector<std::string>& materialPath);
-    ~Mesh() { delete baManager; delete mat; }
+    ~Mesh() { if(baManager) delete baManager; delete mat; }
     
     void Render(Camera* cam, const Light& light) const;
 
@@ -71,7 +81,7 @@ public:
     void SetUvScale(const float xy) const { if(mat) mat->SetUvScale(xy, xy); }
 
 private:
-    void InitShaders(const std::vector<std::string>& matPath);
+    void Init(const std::vector<std::string>& matPath);
     void CalculateAABoundingBox();
     void Lighting(const Camera* cam, const Light& light) const;
 
@@ -87,14 +97,11 @@ private:
         return data;
     }
     
-    void Debug(Camera* cam) const;
-    
     std::vector<GLuint> indices;
     std::vector<Vertex> vertices;
     BoundingBox boundingBox;
 
     Debugger debugger;
-    Shader shader {"Rendering/Shaders/VertexShader.glsl", "Rendering/Shaders/FragmentShader.glsl"};
     Material* mat;
 
     Transform transform = {{}, {}, {1,1,1}};

@@ -1,26 +1,14 @@
-#include "Controller.h"
-
-
-// void Controller::CheckInputs()
-// {
-//     SDL_Event e;
-//     if (SDL_PollEvent(&e))
-//     {
-//         if (e.type == SDL_QUIT)
-//         {
-//             MANAGER::SetRunning(false);
-//         }
-//     }
-// }
-
-
 /**************************************************************************************************************
 * Player Controller - Code
 *
 * The code file for the Player controller class. Responsible for reading player inputs using SDL.
 *
-* Created by Dean Atkinson-Walker 2023
+* Created by Dean Atkinson-Walker 2024
 ***************************************************************************************************************/
+
+
+#include "Controller.h"
+
 
 Controller::Controller(bool& running) : rRunning(running)
 {
@@ -103,19 +91,4 @@ void Controller::CheckInputs()
 		}
 			
 	}
-}
-
-void Controller::ClearInputs()
-{
-	// Reset the mouse delta every frame
-	mouseDelta = {0,0};
-	// wheelUp = false;
-	// wheelDown = false;
-	//
-	// num1 = false;
-	// num2 = false;
-	// num3 = false;
-	// // num4 = false;
-	//
-	// for (bool& moveInput : moveInputs) moveInput = false;
 }

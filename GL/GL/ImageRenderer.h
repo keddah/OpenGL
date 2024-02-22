@@ -1,6 +1,14 @@
+/**************************************************************************************************************
+* Image Renderer - Header
+*
+* Defines transformation functions and instantiates a shader that's specific to creating UI.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 
-#include <iostream>
 #include <SDL_pixels.h>
 
 #include "Rendering/BufferArrayManager.h"

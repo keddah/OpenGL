@@ -1,3 +1,14 @@
+/**************************************************************************************************************
+* Vertex Buffer/Vertex Array Manager - Code
+*
+* This class manages the buffers and vertex array for meshes. This class was created so that managing the buffers/array was easier
+* and all in one place.
+* Responsible for generating the buffers and vertex array and setting vertex attributes. 
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "BufferArrayManager.h"
 
 BufferArrayManager::BufferArrayManager(const std::vector<GLfloat>& vertData, const std::vector<GLuint>& indices)

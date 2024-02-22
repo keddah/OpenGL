@@ -1,11 +1,23 @@
+/**************************************************************************************************************
+* Bullet - Header
+*
+* The header file for the UNUSED Bullet class.
+* It inherits from the Physics class so that forces and gravity can be applied. 
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
+
+
 #include "Mesh.h"
 #include "Physics.h"
 
 class Bullet : public Physics
 {
 public:
-    Bullet(glm::vec3 spawnPos, glm::vec3 direction, const std::vector<Mesh*>& lvlMeshes);
+    Bullet(const glm::vec3& spawnPos, const glm::vec3& direction, const std::vector<Mesh*>& lvlMeshes);
     ~Bullet() { delete bulletMesh; }
     
     void Update(float deltaTime);

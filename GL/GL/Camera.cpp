@@ -1,11 +1,25 @@
+/**************************************************************************************************************
+* Camera - Code
+*
+* Creates matrices that give models perspective. The camera is able to move/rotate and is responsible for providing the player with directional
+* vectors (up, right, forward)
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Camera.h"
 #include <gtx/quaternion.hpp>
 
 Camera::Camera(Controller& roller) : control(roller)
 {
-    position = {0,0,-4};
-    forwardVector = {0,0,1};
+    forwardVector = {0,0,-1};
 
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+    
+    aspectRatio = (float)(dm.w / dm.h);
+    
     projectionMatrix = glm::perspective(glm::degrees(fov), aspectRatio, nearClip, farClip);
     UpdateViewMatrix();
 }

@@ -1,3 +1,11 @@
+/**************************************************************************************************************
+* Triangle Renderer - Header
+*
+* The header file for an UNUSED Triangle Renderer class. Was used to render a single 2D triangle to.
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
 #pragma once
 #include "Camera.h"
 #include "Rendering/Shader.h"

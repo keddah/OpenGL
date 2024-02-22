@@ -1,4 +1,16 @@
+/**************************************************************************************************************
+* Vertex Buffer/Vertex Array Manager - Header
+*
+* This class manages the buffers and vertex array for meshes. This class was created so that managing the buffers/array was easier
+* and all in one place.
+* Creates functions that manage the buffers...
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
+
 #include <glew.h>
 #include <vector>
 #include <glm.hpp>
@@ -42,7 +54,12 @@ public:
     void UnbindVBuffer() const { glCall(glBindBuffer(GL_ARRAY_BUFFER, 0)); }
     void UnbindIBuffer() const { glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)); }
     void UnbindVArray() const { glCall(glBindVertexArray(0)); }
-    void DeleteAll() const { glCall(glDeleteBuffers(1, &vBuffer)); glCall(glDeleteBuffers(1, &iBuffer)); glCall(glDeleteVertexArrays(1, &vArray)); }
+    void DeleteAll() const
+    {
+        if(vBuffer) glCall(glDeleteBuffers(1, &vBuffer));
+        if(iBuffer) glCall(glDeleteBuffers(1, &iBuffer));
+        if(vArray) glCall(glDeleteVertexArrays(1, &vArray));
+    }
 
     GLuint VBufferID() const { return vBuffer; }
     GLuint IBufferID() const { return iBuffer; }

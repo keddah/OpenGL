@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Shader - Header
+*
+* Supplies a variable to store the program ID and defines several function for setting shader uniforms.
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 
 #include <iostream>

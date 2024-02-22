@@ -1,3 +1,14 @@
+/**************************************************************************************************************
+* Model - Header
+*
+* Responsible for keeping track of imported models. Some models contain several meshes. It's responsible for creating an easy path for other classes
+* to set transforms and material related things to each mesh of model. The difference between a mesh and a model in this project:
+* Models are imported and are made up of Meshes. Meshes contain the vertex data; models import that data.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 
 #include <assimp/Importer.hpp>
@@ -58,7 +69,7 @@ public:
 	void SetCollisionsEnabled(bool value) const;
 	void SetVisibility(bool value) const;
 
-	void SetBBOffset(const glm::vec3& offset) const { gameMesh->SetBBOffset(offset); }
+	void SetBBOffset(const glm::vec3& offset) const;
 	
 	Mesh* GetMesh() const { return gameMesh; }
 	std::vector<Mesh*> GetMeshes() const { return gameMeshes; }

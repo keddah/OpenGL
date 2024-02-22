@@ -1,16 +1,19 @@
+/**************************************************************************************************************
+* Camera - Header
+*
+* The header file for the Camera class. Responsible for providing get functions for the player class so that
+* it can read inputs (everything is private). 
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
+
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 
 #include "Controller.h"
-
-struct AngleConversion
-{
-	static glm::vec3 eulerToQuaternion(const float pitch, const float yaw, const float roll)
-	{
-		return {glm::radians(pitch), glm::radians(yaw), glm::radians(roll)};
-	}
-};
 
 class Camera
 {
@@ -35,7 +38,7 @@ public:
 	
 private:
 	const float fov = 65.0f;
-	const float aspectRatio = 1920 / 1080;
+	float aspectRatio;
 	const float nearClip = .1f;
 	const float farClip = 600;
 	

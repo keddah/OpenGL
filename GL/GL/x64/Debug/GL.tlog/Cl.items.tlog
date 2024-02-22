@@ -4,12 +4,9 @@ C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Controller.cpp;C:\Users\Deany\Docum
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Debugger.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Debugger.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Game.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Game.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\GameLoop.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\GameLoop.obj
-C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\HeightMap.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\HeightMap.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\ImageRenderer.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\ImageRenderer.obj
-C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Light.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Light.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Material.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Material.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Mesh.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Mesh.obj
-C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\MeshCollider.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\MeshCollider.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Model.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Model.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Physics.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Physics.obj
 C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\Player.cpp;C:\Users\Deany\Documents\GitHub\OpenGL\GL\GL\x64\Debug\Player.obj

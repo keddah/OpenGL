@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Mesh - Code
+*
+* Creates a vector of the Vertex struct from the supplied data from its constructor. Responsible for drawing the information to the screen
+* by creating several matrices. Responsible for updating its own bounding box from its transform which can be set by other classes.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Mesh.h"
 #include <gtx/quaternion.hpp>
 #include <gtx/string_cast.hpp>
@@ -6,23 +16,19 @@ Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _i
 {
 	indices = _indices;
 	
-	float x, y, z;
-	float nR, nG, nB;
-	float u, v;
-
 	// Loop through each set of vertex data
 	for (int i = 0; i < vertexData.size(); i += Vertex::GetCount())
 	{
-		x = vertexData[i];
-		y = vertexData[i + 1];
-		z = vertexData[i + 2];
-
-		nR = vertexData[i + 3];
-		nG = vertexData[i + 4];
-		nB = vertexData[i + 5];
+		const float x = vertexData[i];
+		const float y = vertexData[i + 1];
+		const float z = vertexData[i + 2];
 		
-		u = vertexData[i + 6];
-		v = vertexData[i + 7];
+		const float nR = vertexData[i + 3];
+		const float nG = vertexData[i + 4];
+		const float nB = vertexData[i + 5];
+		
+		const float u = vertexData[i + 6];
+		const float v = vertexData[i + 7];
 
 		Vertex newVertex;
 		newVertex.position[0] = x;
@@ -38,28 +44,26 @@ Mesh::Mesh(const std::vector<GLfloat>& vertexData, const std::vector<GLuint>& _i
 		vertices.emplace_back(newVertex);
 	}
 	
-	InitShaders(materialPath);
+	Init(materialPath);
 
 	
 	CalculateAABoundingBox();
 }
 
-void Mesh::InitShaders(const std::vector<std::string>& matPath)
+void Mesh::Init(const std::vector<std::string>& matPath)
 {
-	shader.Init();
-
-	vertArrayIndex = shader.GetAttribute("vertexPos");
+	// Initialise the vertices after the shaders.
+	baManager = new BufferArrayManager(GetVertexData(), indices);
+	mat = new Material(matPath);
+	
+	vertArrayIndex = mat->GetShader().GetAttribute("vertexPos");
 
 	if (vertArrayIndex == -1)
 	{
 		print("Couldn't get shader attribute - Vertex Position")
 		print(glGetError())
-		return;
 	}
 
-	// Initialise the vertices after the shaders.
-	baManager = new BufferArrayManager(GetVertexData(), indices);
-	mat = new Material(shader, matPath);
 }
 
 void Mesh::CalculateAABoundingBox()
@@ -77,8 +81,8 @@ void Mesh::CalculateAABoundingBox()
 		vertex.z *= transform.scale.z;
 
 		// Apply rotation
-		//glm::quat rotationQuat = glm::quat(transform.rotation);
-		//vertex = rotationQuat * vertex;
+		// glm::quat rotationQuat = glm::quat(transform.rotation);
+		// vertex = rotationQuat * vertex;
 
 		// Apply translation
 		vertex += transform.position;
@@ -97,22 +101,19 @@ void Mesh::CalculateAABoundingBox()
 
 void Mesh::Lighting(const Camera* cam, const Light& light) const
 {
+	const Shader& shader = mat->GetShader();
 	shader.SetFloatAttrib("intensity", light.GetIntensity());
 	shader.SetVec3Attrib("lightPos", light.GetPosition());
 	shader.SetVec3Attrib("lightColour", light.GetColour());
 	shader.SetVec3Attrib("camPos", cam->GetPosition());
 }
 
-void Mesh::Debug(Camera* cam) const
-{
-	debugger.BoundingBoxDebug(cam, transform.position, boundingBox);
-}
-
 void Mesh::Render(Camera* cam, const Light& light) const
 {
-	// Debug(cam);
+	debugger.BoundingBoxDebug(cam, transform.position, boundingBox);
 	
 	if(!visible) return;
+	const Shader& shader = mat->GetShader();
 
 	shader.Activate();
 		
@@ -146,7 +147,7 @@ void Mesh::Render(Camera* cam, const Light& light) const
 	}
 
 	// Stride = all the compCounts added together
-	constexpr GLsizei stride =  sizeof(Vertex);
+	constexpr GLsizei stride = sizeof(Vertex);
 	
 	// Using sizeof(Vertex) produces 96 ... That value is higher than it needs to be
 	baManager->SetArrayAttrib(0, Vertex::PositionCount(), GL_FLOAT, stride, nullptr);	// Position
@@ -176,5 +177,5 @@ void Mesh::CreateMaterial(const std::vector<std::string>& texturePaths)
 {
 	delete mat;
 
-	mat = new Material(shader, texturePaths);
+	mat = new Material(texturePaths);
 }

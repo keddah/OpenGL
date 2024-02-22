@@ -1,3 +1,14 @@
+/**************************************************************************************************************
+* UI - Code
+*
+* The code file that's used to create the UI for the player. Initiates SDL_TTF so that text can be drawn to the screen.
+* Creates instances of text renderers and image renderers to display elements to the screen and draws them separately.
+* This class is a manager for all the UI elements
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Player.h"
 
 Player::Ui::Ui(Player* player) : rPlayer(*player)

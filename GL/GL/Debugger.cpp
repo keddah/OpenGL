@@ -1,11 +1,15 @@
+/**************************************************************************************************************
+* Debugger - Code
+*
+* A class used to debug bounding boxes and raycasts (Draws either one in the worldspace)
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Debugger.h"
 
-Debugger::Debugger()
-{
-    shader.Init();
-}
-
-void Debugger::BoundingBoxDebug(Camera* cam, const glm::vec3& meshPos, const BoundingBox& box) const
+void Debugger::BoundingBoxDebug(const Camera* cam, const glm::vec3& meshPos, const BoundingBox& box) const
 {
     shader.Activate();
 
@@ -14,15 +18,10 @@ void Debugger::BoundingBoxDebug(Camera* cam, const glm::vec3& meshPos, const Bou
     // Adjust modelMatrix based on the bounding box position, rotation, and scale
     modelMatrix = glm::translate(modelMatrix, box.center);
 
-    // Note: Adjust rotation and scale as needed based on your bounding box orientation and size
-    // modelMatrix = glm::rotate(modelMatrix, ...);
-    // modelMatrix = glm::scale(modelMatrix, ...);
-
     shader.SetMat4Attrib("modelMatrix", modelMatrix);
     shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
     shader.SetMat4Attrib("projectionMatrix", cam->GetProjectionMatrix());
 
-    // Assuming DebugDrawBoundingBox uses VBOs for rendering
     DebugDrawBoundingBox(box, meshPos);
 
     shader.Deactivate();
@@ -38,7 +37,8 @@ void Debugger::DebugDrawBoundingBox(const BoundingBox& box, const glm::vec3& mes
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     // Define vertices for the bounding box
-    glm::vec3 vertices[] = {
+    const glm::vec3 vertices[] =
+    {
         box.min - meshPos,
         glm::vec3(box.max.x, box.min.y, box.min.z) - meshPos,
         glm::vec3(box.max.x, box.min.y, box.max.z) - meshPos,
@@ -67,7 +67,7 @@ void Debugger::DebugDrawBoundingBox(const BoundingBox& box, const glm::vec3& mes
 
 
 
-void Debugger::RayDebug(Camera* cam, const Raycast::Ray& ray) const
+void Debugger::RayDebug(const Camera* cam, const Raycast::Ray& ray) const
 {
     shader.Activate();
 

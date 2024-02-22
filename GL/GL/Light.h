@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Light - Header
+*
+* Basically just a container for values which are used to light the scene.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 
 #include <glm.hpp>
@@ -5,8 +14,6 @@
 class Light
 {
 public:
-	Light() = default;
-
 	void SetPosition(const glm::vec3 pos) { position = pos; }
 	void SetColour(const glm::vec3 col) { colour = col; }
 	void SetIntensity(const float val) { intensity = val; }

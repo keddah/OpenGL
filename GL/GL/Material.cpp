@@ -1,9 +1,18 @@
+/**************************************************************************************************************
+* Material - Code
+*
+* Creates textures from a given image filepath and applies the colour/normal map texture to the mesh that creates an instance of this class.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Material.h"
 
 #include <string>
 
 // Always Base colour  -->  Normal
-Material::Material(Shader& _shader, const std::vector<std::string>& matPath) : shader(_shader), texturePaths(matPath)
+Material::Material(const std::vector<std::string>& matPath) : texturePaths(matPath)
 {
     // Generate texture ID
     glCall(glGenTextures(1, &colour_texture));
@@ -16,6 +25,7 @@ Material::Material(Shader& _shader, const std::vector<std::string>& matPath) : s
     glCall(glActiveTexture(GL_TEXTURE1));
     glCall(glBindTexture(GL_TEXTURE_2D, normal_texture));
     
+    shader.Init();
 
     // Dividing by a byte to get the size of the array
     for(int i = 0; i < matPath.size(); i++)
@@ -44,18 +54,16 @@ Material::Material(Shader& _shader, const std::vector<std::string>& matPath) : s
         stbi_image_free(image_bytes);
         UnbindTextures();
     }
+
 }
 
 void Material:: BindTextures(const GLint texIndex) const
 {
     // If trying to bind a Normal map texture when one wasn't  provided... return
-    if(texIndex == 1 && texturePaths.size() < 2)
-    {
-        return;
-    }
+    if(texIndex == 1 && texturePaths.size() < 2) return;
     
-    GLuint toBind = colour_texture;
-    GLint texture = GL_TEXTURE0;
+    GLuint toBind;
+    GLint texture;
     bool normalPresent = false;
     
     switch (texIndex)

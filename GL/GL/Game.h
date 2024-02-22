@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Game - Header
+*
+* Defines pointers for the player, terrain and skybox as well as creates vectors for the targets and level meshes.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
+
 #pragma once
 
 #include <iostream>
@@ -20,14 +30,8 @@ public:
 	void FixedUpdate(float deltaTime) const;
 
 	void Render() const;
-	void Clean() const;
+	void Clean();
 
-	struct Vertex
-	{
-		glm::vec3 position;
-		glm::vec4 colour;
-	};
-	
 private:
 	// Need to initialise SDL before OpenGL
 	void Init() { InitSDL(); InitOpenGL(); InitObjects(); }
@@ -35,6 +39,7 @@ private:
 	void InitOpenGL();
 	void InitObjects();
 
+	// This is a reference so that the game can be ended easier by the player
 	bool& rRunning;
 	
 	SDL_Window* window;

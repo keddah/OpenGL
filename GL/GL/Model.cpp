@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Model - Code
+*
+* Imports a 3D model from a filepath then creates a mesh object from it. Some models can be made up of several meshes.
+* Creates a mesh using the data that is obtained from the imported file (includes vertex positions, normals and UV coordinates).
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Model.h"
 
 // Always Base colour  -->  Normal
@@ -259,6 +269,15 @@ void Model::SetVisibility(bool value) const
 	else
 	{
 		for (const auto& mesh : gameMeshes) if (mesh) mesh->SetVisibility(value);
+	}
+}
+
+void Model::SetBBOffset(const glm::vec3& offset) const
+{
+	if(gameMesh) gameMesh->SetBBOffset(offset);
+	else
+	{
+		for(const auto& mesh : gameMeshes) if(mesh) mesh->SetBBOffset(offset);
 	}
 }
 

@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Shader - Code
+*
+* The code file for the shader class which is responsible for making the connection between the GPU and CPU less complicated.
+* From a filepath, this class stores the fragment and vertex shader and makes activating/deactivating and setting uniforms for those shaders easier.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Shader.h"
 #include "Utilities.h"
 #include <gtc/type_ptr.hpp>

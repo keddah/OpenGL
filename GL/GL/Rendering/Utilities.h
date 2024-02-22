@@ -1,4 +1,14 @@
+/**************************************************************************************************************
+* Utilities - Header
+*
+* Responsible for reading shader files and supplying debugging functions. 
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
+
 #include <string>
 #include <fstream>
 #include <glew.h>

@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Fragment Shader - Shader
+*
+* The shader code responsible for rendering the colour of objects.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #version 330 core
 
 //in vec4 colour;
@@ -53,6 +62,7 @@ void main()
 
     vec3 texColour = texture(tex0, scaledTexure).rgb;
     
+    // Commented part for debugging (things that have a normal map will be white... things that don't will be normal).
     vec3 output = ((ambient + diffusion) * texColour + specular);// * (normalPresent == 1 ? 1000000.0f : 1.0f);
 
     fragmentColour = vec4(output, 1); 

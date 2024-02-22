@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Image Renderer - Code
+*
+* Creates a texture from the given filepath and creates a plane for the texture to be displayed on.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
+
 #include "ImageRenderer.h"
 
 #include <SDL_image.h>
@@ -11,13 +21,6 @@ void ImageRenderer::Init()
     shader.Activate();
 
     vertArrayIndex = shader.GetAttribute("vertPos");
-
-    if (vertArrayIndex < 0)
-    {
-        print("Couldn't get shader attribute - Vertex Position")
-        print(glGetError())
-    }
-
     shader.Deactivate();
 
     CreateTexture();

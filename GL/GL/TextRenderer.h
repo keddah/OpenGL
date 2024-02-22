@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Text Renderer - Header
+*
+* Supplies transformation functions and initialises a shader.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 
 #include <string>
@@ -12,6 +21,7 @@ class TextRenderer
 {
 public:
     TextRenderer(std::string toDisplay, std::string _fontPath, const short size) : text(std::move(toDisplay)), fontPath(std::move(_fontPath)), fontSize(size) { Init(); SetFontSize(size); }
+    ~TextRenderer() { glCall(glDeleteTextures(1, &texture)); glDeleteVertexArrays(1, &vertArrayIndex); }
     
     void Draw(const std::string& toDisplay);
     

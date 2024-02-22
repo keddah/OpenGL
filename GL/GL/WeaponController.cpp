@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Weapon Controller - Code
+*
+* The code file responsible for maintaining the player's weapon. This private class is used to spawn physical bullets in for its collision detection, now it uses raycasts.
+* Manages the ammo reserves/mags, responsible for shooting and reloading and creating the model for the gun.
+* Also allows bullets to be debugged so that you can see where they're supposed to be going.
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
 #include "Player.h"
 
 Player::WeaponController::WeaponController(Player* player) : rPlayer(*player)

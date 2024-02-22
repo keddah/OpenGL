@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Physics - Header
+*
+* Will be used as a inherited class for things that need to react to gravity or other forces. 
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 #include <glm.hpp>
 #include <iostream>
@@ -21,11 +30,6 @@ protected:
     glm::vec3 terminalVelocity {10, 1000, 10};
     bool grounded = false;
     
-    const float walkAccel = .075f;
-    const float sprintAccel = walkAccel * .85f;
-
-    // Lateral (side-to-side) acceleration
-    const float latAcceleration = walkAccel * .9f;
     const float drag = .135f;
 
     // Lower number = slower falling (positive number)

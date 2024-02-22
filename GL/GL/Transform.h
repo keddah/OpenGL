@@ -1,6 +1,12 @@
-#pragma once
+/**************************************************************************************************************
+* Transform - Header
+*
+* Contains a struct that's used to keep track of an object's position, rotation and scale (its transform).
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
 
-#include <glm.hpp>
+#pragma once
 
 struct Transform
 {

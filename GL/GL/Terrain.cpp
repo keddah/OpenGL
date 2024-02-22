@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Terrain - Code
+*
+* Creates a plane based off of a height map texture then changes the position of the vertices of the plane to reproduce the map.
+* The plane is created using the number of pixels the image has. 
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Terrain.h"
 
 Terrain::Terrain(const std::string& heightPath) 
@@ -25,10 +35,12 @@ Terrain::Terrain(const std::string& heightPath)
 		{
 			const unsigned char redPixel = imageData[((row * width) + column) * channels];
 
+			// Setting the position of the vertices depending on the value of the current pixel in the map
 			const float x = (float)column / (float)(width - 1) * scaling;
 			const float z = (float)row / (float)(height - 1) * scaling;
 			const float y = (float)redPixel / 255.0f * heightScaling;
-			
+
+			// Setting the UV 
 			const float u = (float)column / (float)(width - 1);
 			const float v = (float)(height - row) / (float)(height - 1);
 
@@ -48,6 +60,7 @@ Terrain::Terrain(const std::string& heightPath)
 		}
 	}
 
+	// Producing the indices for the plane
 	for (int row = 0; row < height - 1; row++)
 	{
 		for (int column = 0; column < width - 1; column++)

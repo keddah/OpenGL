@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Physics - Code
+*
+* Gives simple functionality to a physics system by creating AddForce functions and a Gravity function.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Physics.h"
 
 void Physics::AddForce(const glm::vec3 direction, const float force)

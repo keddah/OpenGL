@@ -1,3 +1,11 @@
+/**************************************************************************************************************
+* Skybox - Header
+*
+* Contains the class definition for the Skybox class. defines a Mesh pointer and supplies function to get that mesh and render it.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
 #pragma once
 
 

@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Bounding Box - Header
+*
+* Contains the struct for Bounding boxes. Also contains the struct for Raycasts. They are grouped together because raycast are very quite dependent on
+* boundind boxes.
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 
 #include <glew.h>

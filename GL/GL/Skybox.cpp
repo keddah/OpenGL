@@ -1,3 +1,11 @@
+/**************************************************************************************************************
+* Skybox - Code
+*
+* Creates the vertex positions and indices to produce a sphere and renders it.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
 #include "Skybox.h"
 
 #include <utility>

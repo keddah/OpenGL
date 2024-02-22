@@ -1,3 +1,14 @@
+/**************************************************************************************************************
+* Game - Code
+*
+* Instantiates SDL and OpenGL. Also instantiates all the game objects (The player, Targets, any level meshes).
+* This is where the Render function is. The looped functions (render, update, fixed update) are all called from the main function.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
+
 #include "Game.h"
 #include <vector>
 
@@ -159,7 +170,7 @@ void Game::Render() const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	// Drawing the player last so that the text in the UI doesnt have the background
+	// Drawing the player first so that the text in the UI has a background (hard to see otherwise)
 	player->Render(light);
 	
 	for (const auto& mesh : player->GetLevelMeshes())
@@ -170,23 +181,24 @@ void Game::Render() const
 	if(skybox) skybox->Render(player->GetCamera(), light);
 
 	for(const auto& target: targets) if(target) target->Render(player->GetCamera(), light);
-
 	
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	SDL_GL_SwapWindow(window);
 }
 
-void Game::Clean() const
+void Game::Clean()
 {
+	for (const auto& mesh : meshes) delete mesh;
+	for (const auto& target : targets) delete target;
+	meshes.clear();
+	targets.clear();
+	
 	delete player;
 	delete skybox;
 	delete terrain;
 	delete tri;
-		
-		
-	for (const auto& mesh : meshes) delete mesh;
-	for (const auto& target : targets) delete target;
+
 		
 	SDL_DestroyWindow(window);
 	SDL_Quit();

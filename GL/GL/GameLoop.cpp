@@ -1,3 +1,14 @@
+/**************************************************************************************************************
+* GameLoop - Code
+*
+* The file that contains the main function and the main game loop.
+* Creates an object of Game which creates everything else.
+*  
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
+
 #include "Game.h"
 #include "CustomTimer.h"
 

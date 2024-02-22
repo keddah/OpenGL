@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Triangle Renderer - Code
+*
+* The code file for an UNUSED Triangle Renderer class. At the start of the project this was used to get an understanding of OpenGL.
+* I started to abstract some parts to make expansion easier. After a certain point this wasn't needed and the abstraction made sure its components were
+* usable in bigger use-cases.
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
 #include "TriangleRenderer.h"
 
 #include <random>

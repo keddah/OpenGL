@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* Player - Code
+*
+* The code file for the Player class. Responsible for giving functionality to the player. Manages player collisions, produces responses to
+* player inputs, updates the camera/weapon controller.
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
 #include "Player.h"
 
 

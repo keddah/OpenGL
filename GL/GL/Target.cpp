@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Target - Code
+*
+* The code file for the Target class. Responsible for creating its model and managing its collisions.
+* Provides responses to being shot and hitting other things in the level.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #include "Target.h"
 
 
@@ -6,7 +16,9 @@ Target::Target(const bool moving, const glm::vec3& playerPos) : moveable(moving)
     const std::vector<std::string>& path = {"Images/Barrel_d.png", "Images/Barrel_n.png" };
     barrel = new Model("ModelAssets/Barrel.obj", path);
     barrel->SetScale(transform.scale);
-    barrel->SetBBOffset({0, -1, 0});
+
+    // The bounding box is always too low for this target.. moving it higher.
+    barrel->SetBBOffset({0, -.9f, 0});
 
     terminalVelocity = {.35f, .35f, .35f};
     

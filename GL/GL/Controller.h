@@ -1,3 +1,13 @@
+/**************************************************************************************************************
+* Controllers - Header
+*
+* The header file for the Player controller class. Responsible for providing get functions for the player class so that
+* it can read inputs (everything is private). 
+*
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #pragma once
 
 #include <vec2.hpp>
@@ -30,7 +40,6 @@ public:
     
 private:
     void CheckInputs();
-    void ClearInputs();
 
     bool& rRunning;
 
