@@ -32,7 +32,7 @@ public:
     };
     
     // Overlap = can play over other sounds
-    void PlaySound(Esounds sound, bool overlap = true) const;
+    void PlaySound(Esounds sound) const;
 
 private:
     Mix_Music* soundPlayer;

@@ -125,7 +125,7 @@ private:
 		float currentShootTime;
 
 		float reloadTimer;
-		bool reloadOn;
+		bool reloadOn, canReload;
 		bool reloadSfx;
 		const unsigned short maxReserve = 36;
 		const unsigned short magCapcity = 9;

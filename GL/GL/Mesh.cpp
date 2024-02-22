@@ -109,7 +109,8 @@ void Mesh::Lighting(const Camera* cam, const Light& light, const Shader& shader)
 
 void Mesh::Render(const Camera* cam, const Light& light) const
 {
-	debugger.BoundingBoxDebug(cam, transform.position, boundingBox);
+	// Show the bounding box
+	// debugger.BoundingBoxDebug(cam, transform.position, boundingBox);
 	
 	if(!visible) return;
 	const Shader& shader = mat->GetShader();

@@ -76,9 +76,8 @@ void Player::WeaponController::PullTrigger()
 
 void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
 {
-    if(!canShoot) return;
-
-    audio.PlaySound(AudioManager::Esounds::Gunshot);
+    // Can't shoot while reloading
+    if(!(canShoot && reloadTimer < .01f)) return;
     
     // Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
     // bullets.emplace_back(b);
@@ -92,6 +91,8 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
         audio.PlaySound(AudioManager::Esounds::Empty);
         return;
     }
+    
+    audio.PlaySound(AudioManager::Esounds::Gunshot);
 
     // Only shoot the ray once
     ray = Raycast::ShootRaycast(shootPos, direction, 600);
@@ -113,6 +114,7 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
     
     currentMag--;
     canShoot = false;
+    canReload = currentReserve > 0;
 }
 
 void Player::WeaponController::ShootTimer(float deltaTime)
@@ -149,11 +151,13 @@ void Player::WeaponController::Reload()
 
     // Add ammo to the mag
     currentMag += bulletsToReload;
+
+    canReload = false;
 }
 
 void Player::WeaponController::ReloadTimer(float deltaTime)
 {
-    if(!reloadOn) return;
+    if(!reloadOn || !canReload) return;
 
     // Only play the sound if it's not already playing
     if(!reloadSfx)

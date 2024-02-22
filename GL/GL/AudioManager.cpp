@@ -25,14 +25,14 @@ AudioManager::AudioManager()
         sounds.push_back(newSound);
     }
 
-    Mix_Volume(sfxChannel, 50);
+    Mix_Volume(0, 20);
+    Mix_Volume(1, 50);
+    Mix_Volume(2, 50);
 }
 
-void AudioManager::PlaySound(Esounds sound, const bool overlap) const
+void AudioManager::PlaySound(Esounds sound) const
 {
     // Stop the other sounds first if not allowed to overlap
-    if(Mix_Playing(sfxChannel) && !overlap) Mix_Pause(sfxChannel);
-
     short index;
     switch (sound)
     {
@@ -50,5 +50,6 @@ void AudioManager::PlaySound(Esounds sound, const bool overlap) const
 
     }
 
-    Mix_PlayChannel(sfxChannel, sounds[index], 0);
+    // Giving them their own channel so that the sounds overlap properly
+    Mix_PlayChannel(index, sounds[index], 0);
 }
