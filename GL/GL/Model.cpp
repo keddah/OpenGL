@@ -82,7 +82,8 @@ Model::Model(const string& filePath, const std::vector<std::string>& materialPat
 			indices.push_back(f->mIndices[1]);
 			indices.push_back(f->mIndices[2]);
 		}
-			
+
+		// If there's more than 1 mesh.. only set the gameMesh... otherwise only set the vector of meshes ("gameMesh" would be empty)
 		if (scene->mNumMeshes == 1) gameMesh = new Mesh(vertices, indices, materialPaths);
 		else
 		{

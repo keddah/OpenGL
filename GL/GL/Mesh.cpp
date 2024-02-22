@@ -99,9 +99,8 @@ void Mesh::CalculateAABoundingBox()
 
 
 
-void Mesh::Lighting(const Camera* cam, const Light& light) const
+void Mesh::Lighting(const Camera* cam, const Light& light, const Shader& shader) const
 {
-	const Shader& shader = mat->GetShader();
 	shader.SetFloatAttrib("intensity", light.GetIntensity());
 	shader.SetVec3Attrib("lightPos", light.GetPosition());
 	shader.SetVec3Attrib("lightColour", light.GetColour());
@@ -116,11 +115,11 @@ void Mesh::Render(const Camera* cam, const Light& light) const
 	const Shader& shader = mat->GetShader();
 
 	shader.Activate();
-		
-	Lighting(cam, light);
+	Lighting(cam, light, shader);
 
 	glm::mat4 modelMatrix = glm::mat4(1);
 
+	// Only used with the pistol to follow the player camera's look rotation
 	if (!looking)
 	{
 		modelMatrix = translate(modelMatrix, transform.position);
@@ -136,7 +135,6 @@ void Mesh::Render(const Camera* cam, const Light& light) const
 	shader.SetMat4Attrib("viewMatrix", cam->GetViewMatrix());
 	shader.SetMat4Attrib("projectionMatrix", cam->GetProjectionMatrix());
 
-
 	baManager->BindArray();
 	baManager->BindVBuffer();
 	baManager->BindIBuffer();
@@ -149,9 +147,8 @@ void Mesh::Render(const Camera* cam, const Light& light) const
 	// Stride = all the compCounts added together
 	constexpr GLsizei stride = sizeof(Vertex);
 	
-	// Using sizeof(Vertex) produces 96 ... That value is higher than it needs to be
-	baManager->SetArrayAttrib(0, Vertex::PositionCount(), GL_FLOAT, stride, nullptr);	// Position
-	baManager->SetArrayAttrib(1, Vertex::NormalCount(), GL_FLOAT, stride, (void*)offsetof(Vertex, normals));	// Colour
+	baManager->SetArrayAttrib(0, Vertex::PositionCount(), GL_FLOAT, stride, nullptr);						// Position
+	baManager->SetArrayAttrib(1, Vertex::NormalCount(), GL_FLOAT, stride, (void*)offsetof(Vertex, normals));		// Colour
 	baManager->SetArrayAttrib(2, Vertex::TexCoordsCount(), GL_FLOAT, stride, (void*)offsetof(Vertex, texCoords));	// TexCoords
 
     glCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL));

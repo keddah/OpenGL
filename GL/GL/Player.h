@@ -44,8 +44,8 @@ public:
 	std::vector<Mesh*> GetLevelMeshes() const { return meshes; }
 	
 private:
-	void Accelerate(float deltaTime);
-	void Decelerate(float deltaTime);
+	void Accelerate();
+	void Decelerate();
 	void Jump();
 	void Crouch();
 	void Collisions();
@@ -81,7 +81,7 @@ private:
 		void Update(float deltaTime);
 		void FixedUpdate(float deltaTime);
 
-		void Render(Camera* camera, const Light& light) const;
+		void Render(const Camera* camera, const Light& light) const;
 
 		void SetTargets(const std::vector<Target*>& trgts) { targets = trgts; }
 
@@ -123,7 +123,7 @@ private:
 
 		float reloadTimer;
 		bool reloadOn;
-		const unsigned short maxReserve = 45;
+		const unsigned short maxReserve = 36;
 		const unsigned short magCapcity = 9;
 
 		unsigned short currentReserve = maxReserve;

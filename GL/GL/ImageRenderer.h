@@ -18,13 +18,11 @@
 class ImageRenderer
 {
 public:
-    ImageRenderer(std::string _filePath) : filePath(std::move(_filePath)) { Init(); }
+    ImageRenderer(std::string _filePath, const glm::vec2& screensize) : screenSize(screensize), filePath(std::move(_filePath)) { Init(); }
     ~ImageRenderer() { glCall(glDeleteTextures(1, &texture)); }
     
     void Draw() const;
     
-    void SetScreenSize(const glm::vec2& _size) { screenSize = _size; }
-
     glm::vec2 GetDrawSize() const { return drawSize; }
     void SetDrawSize(const glm::vec2& _size) { drawSize = _size; }
     

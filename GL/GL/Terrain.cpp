@@ -77,6 +77,7 @@ Terrain::Terrain(const std::string& heightPath)
 		}
 	}
 
+	// Create a mesh from the vertex data and the vertices
 	const std::vector<std::string>& floorTex = {"Images/gravelBaseColour.jpg", "Images/gravelNormal.jpg"};
 	floor = new Mesh(vertices, indices, floorTex);	
 

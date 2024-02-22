@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* UI Fragment Shader - Shader
+*
+* The shader code responsible for rendering the colour of UI elements.
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #version 330 core
 
 in vec2 uv;

@@ -11,8 +11,10 @@
 
 void Physics::AddForce(const glm::vec3 direction, const float force)
 {
+    // Add the force
     velocity += direction * force;
 
+    // Then limit the velocity if it goes over the terminal velocity
     if(abs(velocity.x) >= terminalVelocity.x) velocity.x = velocity.x > 0? terminalVelocity.x : -terminalVelocity.x;
     if(abs(velocity.y) >= terminalVelocity.y) velocity.y = velocity.y > 0? terminalVelocity.y : -terminalVelocity.y;
     if(abs(velocity.z) >= terminalVelocity.z) velocity.z = velocity.z > 0? terminalVelocity.z : -terminalVelocity.z;
@@ -20,8 +22,10 @@ void Physics::AddForce(const glm::vec3 direction, const float force)
 
 void Physics::AddForce(const float x, const float y, const float z, const float force)
 {
+    // Add the force
     velocity += glm::vec3(x,y,z) * force;
 
+    // Then limit the velocity if it goes over the terminal velocity
     if(abs(velocity.x) >= terminalVelocity.x) velocity.x = velocity.x > 0? terminalVelocity.x : -terminalVelocity.x;
     if(abs(velocity.y) >= terminalVelocity.y) velocity.y = velocity.y > 0? terminalVelocity.y : -terminalVelocity.y;
     if(abs(velocity.z) >= terminalVelocity.z) velocity.z = velocity.z > 0? terminalVelocity.z : -terminalVelocity.z;

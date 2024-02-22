@@ -6,8 +6,8 @@
 * Created by Dean Atkinson-Walker 2024
 ***************************************************************************************************************/
 
-#pragma once
 
+#pragma once
 
 #include "Camera.h"
 #include "Mesh.h"

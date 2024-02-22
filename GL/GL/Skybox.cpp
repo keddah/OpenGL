@@ -17,7 +17,9 @@ Skybox::Skybox(std::string texturePath)
 
 void Skybox::Render(const Camera* cam, const Light& light) const
 {
+    // The skybox needs to move with the camera to make it seem massive
     dome->SetPosition(cam->GetPosition());
+    
     dome->Render(cam, light);
 }
 
@@ -64,8 +66,8 @@ void Skybox::CreateDome(std::string texturePath)
     {
         for (int j = 0; j <= sectors; ++j)
         {
-            int nextRow = i + 1;
-            int nextColumn = (j + 1) % (sectors + 1);
+            const int nextRow = i + 1;
+            const int nextColumn = (j + 1) % (sectors + 1);
 
             indices.push_back(i * (sectors + 1) + j);
             indices.push_back(nextRow * (sectors + 1) + j);

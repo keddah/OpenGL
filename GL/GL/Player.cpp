@@ -32,8 +32,8 @@ void Player::FixedUpdate(const float deltaTime)
     wc.FixedUpdate(deltaTime);
     ApplyGravity(deltaTime, true);
 
-    Accelerate(deltaTime);
-    Decelerate(deltaTime);
+    Accelerate();
+    Decelerate();
 
     // Collision has to be ran after both gravity and movement so that the velocity can be set to 0 if there's a collision
     // ....COLLISIONS are unreliable when the player is moving quickly
@@ -44,7 +44,7 @@ void Player::FixedUpdate(const float deltaTime)
     cam->SetPosition(position);
 }
 
-void Player::Accelerate(float deltaTime)
+void Player::Accelerate()
 {
     const bool* inputs = controller.GetMoveInputs();
     const glm::vec2 lookat2D = { cam->GetForwardVector().x, cam->GetForwardVector().z };
@@ -71,14 +71,11 @@ void Player::Accelerate(float deltaTime)
     if(controller.JumpBtnDown()) Jump();
     if(controller.CrouchBtnDown()) Crouch();
 
-
     
     // Shift down and not moving backwards?
     const bool sprinting = controller.ShiftBtnDown() && !inputs[1];
     const float accel = sprinting? sprintAccel : walkAccel;
     
-    // If trying to go in the opposite forward direction... use a multiplier
-
     /////// Forwards
     if(inputs[0] || inputs[1] )
     {
@@ -89,18 +86,16 @@ void Player::Accelerate(float deltaTime)
         // Lerp to the movementSpeed using acceleration as the alpha
         velocity.x = mix(velocity2D, moveSpeed, accel).x;
         velocity.z = mix(velocity2D, moveSpeed, accel).y;
-    }   
-    // print ("2ndLast: " << velocity.x << ", " << velocity.y << ", " << velocity.z)
-    // print("")
+    }
+    
     // Cap the velocity on the x/z axis to the terminal velocity
     if(abs(velocity.x) >= terminalVelocity.x) velocity.x = velocity.x > 0? terminalVelocity.x : -terminalVelocity.x;
     if(abs(velocity.z) >= terminalVelocity.z) velocity.z = velocity.z > 0? terminalVelocity.z : -terminalVelocity.z;
-
-    // print ("Last: " << velocity.x << ", " << velocity.y << ", " << velocity.z)
 }
 
-void Player::Decelerate(float deltaTime)
+void Player::Decelerate()
 {
+    // Don't decelerate if the player is trying to move
     if(accelerating) return;
 
     // Interpolate towards 0 velocity whilst the player isn't accelerating
@@ -116,6 +111,7 @@ void Player::Jump()
     AddForce({0,-1,0}, jumpForce);
 }
 
+// Was used before gravity was implemented ... (doesn't do anything now)
 void Player::Crouch()
 {
     if(grounded) return;

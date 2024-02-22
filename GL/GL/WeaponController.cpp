@@ -12,11 +12,12 @@
 
 Player::WeaponController::WeaponController(Player* player) : rPlayer(*player)
 {
+    // Create the pistol mesh
     const std::vector<std::string>& texturePaths = {"Images/PistolBaseColour.png", "Images/PistolNormal.png"};
     pistolMesh = new Model("ModelAssets/handgun2.obj", texturePaths);
-    
     pistolMesh->SetScale(.01f,.01f,.01f);
-    
+
+    // Disable collisions...
     pistolMesh->SetCollisionsEnabled(false);
 }
 
@@ -52,7 +53,7 @@ void Player::WeaponController::FixedUpdate(float deltaTime)
     // for(const auto& bullet : bullets) bullet->FixedUpdate(deltaTime);
 }
 
-void Player::WeaponController::Render(Camera* camera, const Light& light) const
+void Player::WeaponController::Render(const Camera* camera, const Light& light) const
 {
     if(pistolMesh) pistolMesh->Render(camera, light);
 
@@ -63,11 +64,13 @@ void Player::WeaponController::Render(Camera* camera, const Light& light) const
 
 void Player::WeaponController::PullTrigger()
 {
+    // Don't do anything until the lmb is pressed
     if(!rPlayer.controller.LmbDown()) return;
 
     const glm::vec3 forwardVec = rPlayer.cam->GetForwardVector();
-    
-    const glm::vec3 shootPos = rPlayer.position + forwardVec * -.025f;
+
+    // Slightly in front of  the camera
+    const glm::vec3 shootPos = rPlayer.position + forwardVec;
     Shoot(shootPos, forwardVec);
 }
 
@@ -86,10 +89,9 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
         canShoot = false;
         return;
     }
-    
-    ray = Raycast::ShootRaycast(shootPos, direction, 600);
 
-    std::string matPath[] = {"Images/defaultTexture.jpg"};
+    // Only shoot the ray once
+    ray = Raycast::ShootRaycast(shootPos, direction, 600);
 
     // Get more points for hitting several targets with 1 shot
     short hitMultiplier = 0;
@@ -101,10 +103,9 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
             hitMultiplier++;
             score += hitMultiplier;
             
-            // Give the player ammo after every 100 points.
+            // Give the player ammo after every 20 points.
             if(score % 20 == 0) GiveAmmo();
         }
-
     }
     
     currentMag--;
@@ -113,6 +114,7 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
 
 void Player::WeaponController::ShootTimer(float deltaTime)
 {
+    // Only start the timer if the player is unable to shoot
     if(canShoot) return;
 
     constexpr float shootDelay = .2f;
@@ -139,7 +141,7 @@ void Player::WeaponController::Reload()
     // Calculate the number of bullets to reload
     const short bulletsToReload = std::min(magCapcity - currentMag, static_cast<int>(currentReserve));
 
-    // Remove ammo from the reserve
+    // Remove ammo from the reserve...
     currentReserve -= bulletsToReload;
 
     // Add ammo to the mag
@@ -176,7 +178,6 @@ void Player::WeaponController::GunPlacement()
     const glm::vec3 holdOffset = isADS? adsOffset : hipOffset;
     
     handSocket = mix(handSocket, rPlayer.position + holdOffset, isADS? adsSpeed : 1.0f);
-    //handSocket = rPlayer.position + holdOffset;
     pistolMesh->SetPosition(handSocket);
 
     // Flipping the rotation axis because the model is upside...

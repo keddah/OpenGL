@@ -1,3 +1,12 @@
+/**************************************************************************************************************
+* UI Vertex Shader - Shader
+*
+* The shader code responsible for providing the data required for the placement of UI elements
+* 
+* Created by Dean Atkinson-Walker 2024
+***************************************************************************************************************/
+
+
 #version 330 core
 
 layout(location = 0) in vec3 vertPos;

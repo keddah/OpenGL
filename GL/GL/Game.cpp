@@ -92,14 +92,14 @@ void Game::InitObjects()
 	terrain = new Terrain("Images/terrain-heightmap.png");
 	
 	player = new Player(rRunning);
-	
-	auto left = new Model("ModelAssets/Cube.obj");
-	auto right = new Model("ModelAssets/Cube.obj");
-	auto back = new Model("ModelAssets/Cube.obj");
-	auto floor = new Model("ModelAssets/Cube.obj", floorTex);
 
-	
-	auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
+	const auto left = new Model("ModelAssets/Cube.obj");
+	const auto right = new Model("ModelAssets/Cube.obj");
+	const auto back = new Model("ModelAssets/Cube.obj");
+	const auto floor = new Model("ModelAssets/Cube.obj", floorTex);
+
+
+	const auto box1 = new Model("ModelAssets/Cube.obj", floorTex);
 	box1->AddPosition(0, 10, 0);
 	
 	left->SetScale(.2f, 7.5f, 7.5f);

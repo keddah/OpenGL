@@ -20,13 +20,11 @@
 class TextRenderer
 {
 public:
-    TextRenderer(std::string toDisplay, std::string _fontPath, const short size) : text(std::move(toDisplay)), fontPath(std::move(_fontPath)), fontSize(size) { Init(); SetFontSize(size); }
+    TextRenderer(std::string toDisplay, std::string _fontPath, const short size, const glm::vec2& screensize ) : screenSize(screensize), text(std::move(toDisplay)), fontPath(std::move(_fontPath)), fontSize(size) { Init(); SetFontSize(size); }
     ~TextRenderer() { glCall(glDeleteTextures(1, &texture)); glDeleteVertexArrays(1, &vertArrayIndex); }
     
     void Draw(const std::string& toDisplay);
     
-    void SetScreenSize(const glm::vec2& _size) { screenSize = _size; }
-
     void SetDrawColour(const SDL_Color& colour) { drawColour = colour; }
     void SetDrawColour(const unsigned char r, const unsigned char g, const unsigned char b, const unsigned char a) { drawColour = SDL_Color{r,g,b,a}; }
 

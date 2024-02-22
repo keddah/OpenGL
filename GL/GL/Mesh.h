@@ -83,7 +83,7 @@ public:
 private:
     void Init(const std::vector<std::string>& matPath);
     void CalculateAABoundingBox();
-    void Lighting(const Camera* cam, const Light& light) const;
+    void Lighting(const Camera* cam, const Light& light, const Shader& shader) const;
 
     std::vector<GLfloat> GetVertexData() const
     {
