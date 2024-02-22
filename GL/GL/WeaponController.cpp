@@ -78,6 +78,8 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
 {
     if(!canShoot) return;
 
+    audio.PlaySound(AudioManager::Esounds::Gunshot);
+    
     // Bullet* b = new Bullet(shootPos, direction, rPlayer.meshes);
     // bullets.emplace_back(b);
 
@@ -87,6 +89,7 @@ void Player::WeaponController::Shoot(glm::vec3 shootPos, glm::vec3 direction)
         reloadOn = true;
         
         canShoot = false;
+        audio.PlaySound(AudioManager::Esounds::Empty);
         return;
     }
 
@@ -152,11 +155,21 @@ void Player::WeaponController::ReloadTimer(float deltaTime)
 {
     if(!reloadOn) return;
 
+    // Only play the sound if it's not already playing
+    if(!reloadSfx)
+    {
+        audio.PlaySound(AudioManager::Esounds::Reload);
+        reloadSfx = true;
+    }
+    
     constexpr float reloadSpeed = .8f;
     
     reloadTimer += deltaTime;
     if(reloadTimer < reloadSpeed) return;
 
+    // Allow the reload sound to happen again (for the next reload)
+    reloadSfx = false;
+    
     // Reload once the timer elapses
     Reload();
 

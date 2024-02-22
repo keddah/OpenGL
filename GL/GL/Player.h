@@ -13,6 +13,7 @@
 #include <vector>
 #include <SDL_ttf.h>
 
+#include "AudioManager.h"
 #include "BoundingBox.h"
 #include "Bullet.h"
 #include "Debugger.h"
@@ -111,6 +112,8 @@ private:
 
 		Raycast::Ray ray;
 		Debugger debugger;
+
+		AudioManager audio;
 		
 		glm::vec3 handSocket;
 		glm::vec3 magSocket;
@@ -123,6 +126,7 @@ private:
 
 		float reloadTimer;
 		bool reloadOn;
+		bool reloadSfx;
 		const unsigned short maxReserve = 36;
 		const unsigned short magCapcity = 9;
 
